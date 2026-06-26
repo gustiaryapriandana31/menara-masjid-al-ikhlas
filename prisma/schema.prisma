@@ -38,7 +38,7 @@ model Transaction {
   date                  DateTime
   description           String
   category              ExpenseCategory?      // Hanya terisi jika type == EXPENSE
-  receiptUrl            String?               // Foto kuitansi / nota pengeluaran
+  receiptUrls           String[]              // Foto kuitansi / nota pengeluaran
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
   
@@ -55,7 +55,7 @@ model DonationConfirmation {
   amount          Decimal        @db.Decimal(12, 2)
   transferDate    DateTime
   paymentChannel  String         // misal: "BSI", "Mandiri", "QRIS"
-  proofUrl        String         // Url gambar bukti transfer di Supabase Storage
+  proofUrls       String[]       // Url gambar bukti transfer di Supabase Storage
   status          DonationStatus @default(PENDING)
   rejectionReason String?        // Catatan dari panitia jika ditolak
   validatedAt     DateTime?
