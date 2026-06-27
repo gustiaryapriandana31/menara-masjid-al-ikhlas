@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { PlusCircle, MinusCircle, Home, FileText, LogOut } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText, LogOut, ShieldAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logoutAction } from "@/app/login/actions"
 
@@ -24,6 +24,13 @@ export function Sidebar() {
       icon: FileText,
       activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
       activeText: "text-neutral-800 font-bold",
+    },
+    {
+      title: "Validasi Donasi",
+      url: "/admin/validasi",
+      icon: ShieldAlert,
+      activeBg: "bg-blue-50 text-blue-600 border-blue-500",
+      activeText: "text-blue-600 font-bold",
     },
     {
       title: "Pemasukan",

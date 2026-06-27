@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { PlusCircle, MinusCircle, Home, FileText } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText, ShieldAlert } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -11,18 +11,25 @@ export function BottomNavbar() {
 
   const navItems = [
     {
-      title: "Laporan Keuangan",
+      title: "Laporan",
       url: "/admin/laporan-keuangan",
       icon: Home,
       activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
       activeText: "text-neutral-800 font-bold",
     },
     {
-      title: "Rincian Dana",
+      title: "Rincian",
       url: "/admin/rincian-dana",
       icon: FileText,
       activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
       activeText: "text-neutral-800 font-bold",
+    },
+    {
+      title: "Validasi",
+      url: "/admin/validasi",
+      icon: ShieldAlert,
+      activeBg: "bg-blue-50 text-blue-600 border-blue-500",
+      activeText: "text-blue-600 font-bold",
     },
     {
       title: "Pemasukan",
@@ -42,7 +49,7 @@ export function BottomNavbar() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 h-16 max-w-md mx-auto border-[2.5px] border-black bg-card rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-      <div className="flex h-full items-center justify-around px-2">
+      <div className="flex h-full items-center justify-around px-1">
         {navItems.map((item) => {
           const isActive = pathname === item.url
           const Icon = item.icon
@@ -51,11 +58,11 @@ export function BottomNavbar() {
             <Link
               key={item.title}
               href={item.url}
-              className="flex flex-col items-center justify-center w-24 h-full gap-0.5 transition-all active:scale-95"
+              className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all active:scale-95 overflow-hidden"
             >
               <div
                 className={cn(
-                  "flex h-8 w-14 items-center justify-center rounded-[12px] border-[1.5px] border-transparent transition-all",
+                  "flex h-8 w-11 items-center justify-center rounded-[10px] border-[1.5px] border-transparent transition-all",
                   isActive 
                     ? cn("border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]", item.activeBg) 
                     : "text-muted-foreground hover:text-foreground"
@@ -63,7 +70,7 @@ export function BottomNavbar() {
               >
                 <Icon className="h-4 w-4" />
               </div>
-              <span className={cn("text-[9px] uppercase tracking-wider font-medium", isActive ? item.activeText : "text-muted-foreground")}>
+              <span className={cn("text-[8px] uppercase tracking-wider font-semibold text-center truncate w-full", isActive ? item.activeText : "text-muted-foreground")}>
                 {item.title}
               </span>
             </Link>

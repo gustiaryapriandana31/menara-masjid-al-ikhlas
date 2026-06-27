@@ -78,7 +78,7 @@ export async function loginAction(prevState: any, formData: FormData) {
   }
 
   // Redirect on success (needs to be outside the try-catch block to avoid catching redirect exception)
-  redirect('/admin/pemasukan')
+  redirect('/admin/laporan-keuangan')
 }
 
 /**
