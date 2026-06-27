@@ -280,339 +280,366 @@ export default function KonfirmasiDonasiPage() {
           <span className="text-xl">🕌</span>
           <span className="text-sm font-black tracking-tight uppercase">Menara Al-Ikhlas</span>
         </div>
-        <div className="w-16" /> {/* Spacer to center */}
       </header>
 
       {/* Main Content Area */}
-      <main className="p-4 md:p-6 max-w-md mx-auto space-y-5 animate-in fade-in duration-300">
+      <main className="p-4 md:p-8 w-full max-w-4xl lg:max-w-5xl mx-auto animate-in fade-in duration-300 pb-24">
         
-        {/* Banner Syiar */}
-        <div className="w-full border-[2.5px] border-black rounded-[18px] bg-gradient-to-br from-emerald-800 to-emerald-950 p-4 text-white shadow-[4px_4px_0px_0px_#ca8a04]">
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="p-1 bg-amber-400 border border-black rounded-md text-emerald-950">
-              <Heart className="h-4 w-4 fill-amber-950" />
-            </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-amber-300">Amalan Jariyah</span>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          
+          {/* KOLOM KIRI (md:col-span-5) - QRIS & INFORMASI REKENING */}
+          <div className="md:col-span-5 space-y-4">
+            <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+              <CardHeader className="pb-3 border-b-[2.5px] border-black bg-amber-50/50">
+                <CardTitle className="text-xs font-black uppercase tracking-tight text-amber-900">🕌 Pindai QRIS / Transfer</CardTitle>
+                <CardDescription className="text-[10px] text-neutral-700 font-medium">Salurkan infaq/donasi terbaik Anda melalui saluran resmi di bawah ini.</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-4">
+                {/* QRIS Image */}
+                <div className="relative group rounded-[16px] border-[2.5px] border-black bg-white p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden max-w-[220px] mx-auto transition-transform hover:scale-102">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/qris-masjid.png" alt="QRIS Masjid Al-Ikhlas" className="object-contain w-full h-auto rounded-[10px]" />
+                </div>
+                
+                <hr className="border-t-[2px] border-black" />
+                
+                {/* Rekening Info */}
+                <div className="space-y-3 bg-[#fffbeb] border-[2px] border-black p-4 rounded-[16px] shadow-[2.5px_2.5px_0px_0px_#ca8a04] text-[10px] font-bold text-neutral-800">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-amber-900 flex items-center gap-1">
+                    📌 Rekening Pembangunan
+                  </h4>
+                  <p className="leading-relaxed font-semibold">
+                    Silakan lakukan transfer bank langsung ke rekening resmi pembangunan menara Masjid Al-Ikhlas:
+                  </p>
+                  <div className="border-l-[3px] border-amber-500 pl-3 space-y-1 my-2">
+                    <span className="text-neutral-500 block">BANK SUMSEL BABEL SYARIAH</span>
+                    <span className="text-neutral-900 text-sm font-black tracking-wider block">829-09-00017</span>
+                    <span className="text-[9px] text-neutral-600 block leading-tight">a.n. Infaq Pembangunan Masjid Al-Ikhlas</span>
+                  </div>
+                  <p className="text-[9px] text-amber-800 italic font-bold">
+                    *Simpan bukti transfer Anda untuk diunggah pada formulir konfirmasi di sebelah kanan.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-          <h2 className="text-sm font-extrabold leading-tight">
-            Pencatatan Konfirmasi Donasi
-          </h2>
-          <p className="text-[10px] text-emerald-100/90 font-medium mt-1">
-            Silakan lengkapi formulir di bawah ini untuk melaporkan donasi transfer bank atau scan QRIS Anda agar divalidasi oleh panitia.
-          </p>
-        </div>
 
-        {/* Notifikasi Sukses */}
-        {success && (
-          <div className="flex flex-col gap-2 rounded-[18px] border-[2.5px] border-black bg-amber-50 p-4 text-xs font-bold shadow-[4px_4px_0px_0px_#047857] animate-in zoom-in-95 duration-200">
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold border-[1.5px] border-black text-[11px]">✓</div>
-              <span className="text-emerald-900 text-sm font-black uppercase">Konfirmasi Terkirim!</span>
-            </div>
-            <p className="text-neutral-700 font-medium pl-8 text-[11px]">
-              Alhamdulillah, konfirmasi donasi Anda telah kami terima dengan status <strong className="text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">PENDING</strong>. 
-              Mohon tunggu beberapa saat hingga panitia selesai memeriksa mutasi rekening & melakukan verifikasi.
-            </p>
-            <div className="pl-8 pt-1">
-              <Button 
-                onClick={() => setSuccess(false)}
-                className="text-[10px] font-extrabold px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white border-[1.5px] border-black rounded-lg shadow-[2px_2px_0px_0px_#000] h-auto"
-              >
-                Mengerti / Isi Lagi
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Notifikasi Gagal */}
-        {error && (
-          <div className="rounded-[18px] border-[2.5px] border-black bg-red-100 p-4 text-xs text-red-900 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] animate-in shake duration-200">
-            <p className="font-extrabold uppercase text-[10px] text-red-800 mb-1">Terjadi Kesalahan</p>
-            <p className="font-medium">{error}</p>
-          </div>
-        )}
-
-        {/* Form Card */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_#047857] overflow-hidden">
-            <CardHeader className="pb-3 border-b-[2.5px] border-black bg-emerald-50/50">
-              <CardTitle className="text-base font-black uppercase tracking-tight text-emerald-800">Form Konfirmasi Donasi</CardTitle>
-              <CardDescription className="text-xs text-neutral-700 font-medium">Bantu transparansi kas pembangunan dengan mengirimkan bukti transfer Anda.</CardDescription>
-            </CardHeader>
+          {/* KOLOM KANAN (md:col-span-7) - FORMULIR KONFIRMASI */}
+          <div className="md:col-span-7 space-y-4">
             
-            <CardContent className="space-y-4 pt-4">
-              
-              {/* Field: Nama Donatur */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
-                  <span className="text-emerald-600">◆</span> Nama Donatur / Pendonasi
-                </label>
-                <Input
-                  type="text"
-                  placeholder="Masukkan nama lengkap Anda..."
-                  value={donorName}
-                  onChange={(e) => setDonorName(e.target.value)}
-                  disabled={isAnonymous || isSubmitting}
-                  className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
-                  required={!isAnonymous}
-                />
-
-                {/* Checkbox Hamba Allah */}
-                <div className="flex items-center gap-2 pt-1">
-                  <input
-                    type="checkbox"
-                    id="isAnonymous"
-                    checked={isAnonymous}
-                    onChange={(e) => {
-                      const checked = e.target.checked
-                      setIsAnonymous(checked)
-                      if (checked) {
-                        setDonorName("Hamba Allah")
-                        setDonorAddress("")
-                      } else if (donorName === "Hamba Allah") {
-                        setDonorName("")
-                      }
-                    }}
-                    disabled={isSubmitting}
-                    className="h-4.5 w-4.5 rounded-[4px] border-[2px] border-black text-emerald-600 focus:ring-0 focus:outline-none accent-black bg-white cursor-pointer"
-                  />
-                  <label htmlFor="isAnonymous" className="text-xs text-neutral-700 select-none cursor-pointer font-bold">
-                    Sembunyikan Nama (Gunakan &quot;Hamba Allah&quot;)
-                  </label>
+            {/* Banner Syiar */}
+            <div className="w-full border-[2.5px] border-black rounded-[18px] bg-gradient-to-br from-emerald-800 to-emerald-950 p-4 text-white shadow-[4px_4px_0px_0px_#ca8a04]">
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="p-1 bg-amber-400 border border-black rounded-md text-emerald-950">
+                  <Heart className="h-4 w-4 fill-amber-950" />
                 </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-300">Amalan Jariyah</span>
               </div>
+              <h2 className="text-sm font-extrabold leading-tight">
+                Pencatatan Konfirmasi Donasi
+              </h2>
+              <p className="text-[10px] text-emerald-100/90 font-medium mt-1">
+                Silakan lengkapi formulir di bawah ini untuk melaporkan donasi transfer bank atau scan QRIS Anda agar divalidasi oleh panitia.
+              </p>
+            </div>
 
-              {/* Field: Alamat Donatur (Kondisional) */}
-              {!isAnonymous && (
-                <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
-                  <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
-                    <span className="text-emerald-600">◆</span> Alamat Donatur
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="Contoh : Dusun I Meranjat II..."
-                    value={donorAddress}
-                    onChange={(e) => setDonorAddress(e.target.value)}
-                    disabled={isSubmitting}
-                    className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
-                  />
+            {/* Notifikasi Sukses */}
+            {success && (
+              <div className="flex flex-col gap-2 rounded-[18px] border-[2.5px] border-black bg-amber-50 p-4 text-xs font-bold shadow-[4px_4px_0px_0px_#047857] animate-in zoom-in-95 duration-200">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold border-[1.5px] border-black text-[11px]">✓</div>
+                  <span className="text-emerald-900 text-sm font-black uppercase">Konfirmasi Terkirim!</span>
                 </div>
-              )}
-
-              {/* Field: Nominal Donasi */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
-                  <span className="text-emerald-600">◆</span> Jumlah Nominal Donasi
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-sm text-neutral-500 font-black">Rp</span>
-                  <Input
-                    type="text"
-                    placeholder="0"
-                    value={amountInput}
-                    onChange={handleAmountChange}
-                    disabled={isSubmitting}
-                    className="pl-9 pr-3 py-5 font-black text-base border-[2.5px] border-black rounded-[12px] bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                    required
-                  />
-                </div>
-                {amount > 0 ? (
-                  <p className="text-[10px] text-emerald-800 font-bold italic bg-emerald-50/70 border border-emerald-200 rounded-md px-2.5 py-1 animate-in fade-in duration-200">
-                    Terbilang: {formatTerbilang(amount)}
-                  </p>
-                ) : (
-                  <p className="text-[10px] text-muted-foreground font-medium pl-1">
-                    Tuliskan jumlah dana yang telah Anda transfer.
-                  </p>
-                )}
-              </div>
-
-              {/* Field: Tanggal Transfer */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
-                  <span className="text-emerald-600">◆</span> Tanggal Transfer
-                </label>
-                <div className="relative">
-                  <Input
-                    type="date"
-                    value={transferDate}
-                    onChange={(e) => setTransferDate(e.target.value)}
-                    disabled={isSubmitting}
-                    className="w-full font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Field: Media Pembayaran Dropdown */}
-              <div className="space-y-1.5" ref={dropdownRef}>
-                <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
-                  <span className="text-emerald-600">◆</span> Saluran / Media Pembayaran
-                </label>
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => !isSubmitting && setIsDropdownOpen(!isDropdownOpen)}
-                    disabled={isSubmitting}
-                    className="flex h-11 w-full items-center justify-between rounded-[12px] border-[2.5px] border-black bg-white px-3 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed text-left text-foreground"
+                <p className="text-neutral-700 font-medium pl-8 text-[11px]">
+                  Alhamdulillah, konfirmasi donasi Anda telah kami terima dengan status <strong className="text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">PENDING</strong>. 
+                  Mohon tunggu beberapa saat hingga panitia selesai memeriksa mutasi rekening & melakukan verifikasi.
+                </p>
+                <div className="pl-8 pt-1">
+                  <Button 
+                    onClick={() => setSuccess(false)}
+                    className="text-[10px] font-extrabold px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white border-[1.5px] border-black rounded-lg shadow-[2px_2px_0px_0px_#000] h-auto"
                   >
-                    <div className="flex items-center gap-2">
-                      {paymentChannel ? (
-                        <>
-                          <div className="flex shrink-0">
-                            {paymentChannels.find(p => p.value === paymentChannel)?.logo}
-                          </div>
-                          <span>
-                            {paymentChannels.find(p => p.value === paymentChannel)?.label}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-muted-foreground font-medium">-- Pilih Saluran Transfer --</span>
+                    Mengerti / Isi Lagi
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Notifikasi Gagal */}
+            {error && (
+              <div className="rounded-[18px] border-[2.5px] border-black bg-red-100 p-4 text-xs text-red-900 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] animate-in shake duration-200">
+                <p className="font-extrabold uppercase text-[10px] text-red-800 mb-1">Terjadi Kesalahan</p>
+                <p className="font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Form Card */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_#047857] overflow-hidden">
+                <CardHeader className="pb-3 border-b-[2.5px] border-black bg-emerald-50/50">
+                  <CardTitle className="text-base font-black uppercase tracking-tight text-emerald-800">Form Konfirmasi Donasi</CardTitle>
+                  <CardDescription className="text-xs text-neutral-700 font-medium">Bantu transparansi kas pembangunan dengan mengirimkan bukti transfer Anda.</CardDescription>
+                </CardHeader>
+                
+                <CardContent className="space-y-4 pt-4">
+                  
+                  {/* Field: Nama Donatur */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                      <span className="text-emerald-600">◆</span> Nama Donatur / Pendonasi
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="Masukkan nama lengkap Anda..."
+                      value={donorName}
+                      onChange={(e) => setDonorName(e.target.value)}
+                      disabled={isAnonymous || isSubmitting}
+                      className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                      required={!isAnonymous}
+                    />
+
+                    {/* Checkbox Hamba Allah */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <input
+                        type="checkbox"
+                        id="isAnonymous"
+                        checked={isAnonymous}
+                        onChange={(e) => {
+                          const checked = e.target.checked
+                          setIsAnonymous(checked)
+                          if (checked) {
+                            setDonorName("Hamba Allah")
+                            setDonorAddress("")
+                          } else if (donorName === "Hamba Allah") {
+                            setDonorName("")
+                          }
+                        }}
+                        disabled={isSubmitting}
+                        className="h-4.5 w-4.5 rounded-[4px] border-[2px] border-black text-emerald-600 focus:ring-0 focus:outline-none accent-black bg-white cursor-pointer"
+                      />
+                      <label htmlFor="isAnonymous" className="text-xs text-neutral-700 select-none cursor-pointer font-bold">
+                        Sembunyikan Nama (Gunakan &quot;Hamba Allah&quot;)
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Field: Alamat Donatur (Kondisional) */}
+                  {!isAnonymous && (
+                    <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
+                      <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                        <span className="text-emerald-600">◆</span> Alamat Donatur
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Contoh : Dusun I Meranjat II..."
+                        value={donorAddress}
+                        onChange={(e) => setDonorAddress(e.target.value)}
+                        disabled={isSubmitting}
+                        className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                      />
+                    </div>
+                  )}
+
+                  {/* Field: Nominal Donasi */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                      <span className="text-emerald-600">◆</span> Jumlah Nominal Donasi
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-2.5 text-sm text-neutral-500 font-black">Rp</span>
+                      <Input
+                        type="text"
+                        placeholder="0"
+                        value={amountInput}
+                        onChange={handleAmountChange}
+                        disabled={isSubmitting}
+                        className="pl-9 pr-3 py-5 font-black text-base border-[2.5px] border-black rounded-[12px] bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        required
+                      />
+                    </div>
+                    {amount > 0 ? (
+                      <p className="text-[10px] text-emerald-800 font-bold italic bg-emerald-50/70 border border-emerald-200 rounded-md px-2.5 py-1 animate-in fade-in duration-200">
+                        Terbilang: {formatTerbilang(amount)}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-muted-foreground font-medium pl-1">
+                        Tuliskan jumlah dana yang telah Anda transfer.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Field: Tanggal Transfer */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                      <span className="text-emerald-600">◆</span> Tanggal Transfer
+                    </label>
+                    <div className="relative">
+                      <Input
+                        type="date"
+                        value={transferDate}
+                        onChange={(e) => setTransferDate(e.target.value)}
+                        disabled={isSubmitting}
+                        className="w-full font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Field: Media Pembayaran Dropdown */}
+                  <div className="space-y-1.5" ref={dropdownRef}>
+                    <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                      <span className="text-emerald-600">◆</span> Saluran / Media Pembayaran
+                    </label>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => !isSubmitting && setIsDropdownOpen(!isDropdownOpen)}
+                        disabled={isSubmitting}
+                        className="flex h-11 w-full items-center justify-between rounded-[12px] border-[2.5px] border-black bg-white px-3 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed text-left text-foreground cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          {paymentChannel ? (
+                            <>
+                              <div className="flex shrink-0">
+                                {paymentChannels.find(p => p.value === paymentChannel)?.logo}
+                              </div>
+                              <span>
+                                {paymentChannels.find(p => p.value === paymentChannel)?.label}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-muted-foreground font-medium">-- Pilih Saluran Transfer --</span>
+                          )}
+                        </div>
+                        <svg 
+                          className={cn("h-4 w-4 transition-transform text-muted-foreground", isDropdownOpen && "rotate-180")} 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          viewBox="0 0 20 20" 
+                          fill="currentColor"
+                        >
+                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+
+                      {isDropdownOpen && (
+                        <div className="absolute z-50 left-0 right-0 mt-2 bg-white border-[2.5px] border-black rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] overflow-hidden max-h-64 overflow-y-auto animate-in slide-in-from-top-1 duration-150">
+                          {paymentChannels.map((channel) => (
+                            <button
+                              key={channel.value}
+                              type="button"
+                              onClick={() => {
+                                setPaymentChannel(channel.value)
+                                setIsDropdownOpen(false)
+                              }}
+                              className={cn(
+                                "w-full text-left px-3 py-2.5 text-xs font-bold border-b-[1.5px] border-black last:border-b-0 transition-colors flex items-center justify-between cursor-pointer",
+                                paymentChannel === channel.value 
+                                  ? "bg-emerald-50 text-emerald-800" 
+                                  : "hover:bg-neutral-50 text-neutral-800"
+                              )}
+                            >
+                              <span>{channel.label}</span>
+                              <div className="scale-90 origin-right shrink-0">
+                                {channel.logo}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
                       )}
                     </div>
-                    <svg 
-                      className={cn("h-4 w-4 transition-transform text-muted-foreground", isDropdownOpen && "rotate-180")} 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      viewBox="0 0 20 20" 
-                      fill="currentColor"
+                  </div>
+
+                  <hr className="border-t-[2px] border-black" />
+
+                  {/* Field: Upload Bukti Transfer */}
+                  <div className="space-y-3 rounded-[16px] border-[2px] border-dashed border-black bg-[#fdfdfd] p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)]">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-black text-neutral-700 uppercase tracking-wider">Unggah Bukti Kirim</label>
+                      <div className="flex gap-1.5">
+                        <span className="text-[8px] font-bold border border-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
+                          Wajib Gambar
+                        </span>
+                        <span className="text-[8px] font-bold border border-black bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
+                          Mendukung {">"}1 Foto
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Dropzone */}
+                    <div 
+                      onClick={() => !isSubmitting && fileInputRef.current?.click()}
+                      className={cn(
+                        "flex flex-col items-center justify-center rounded-[12px] border-[2px] border-dashed border-neutral-400 bg-[#f7f5f0] p-5 text-center cursor-pointer transition-colors hover:bg-neutral-100",
+                        isSubmitting && "opacity-50 cursor-not-allowed"
+                      )}
                     >
-                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-
-                  {isDropdownOpen && (
-                    <div className="absolute z-50 left-0 right-0 mt-2 bg-white border-[2.5px] border-black rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] overflow-hidden max-h-64 overflow-y-auto animate-in slide-in-from-top-1 duration-150">
-                      {paymentChannels.map((channel) => (
-                        <button
-                          key={channel.value}
-                          type="button"
-                          onClick={() => {
-                            setPaymentChannel(channel.value)
-                            setIsDropdownOpen(false)
-                          }}
-                          className={cn(
-                            "w-full text-left px-3 py-2.5 text-xs font-bold border-b-[1.5px] border-black last:border-b-0 transition-colors flex items-center justify-between",
-                            paymentChannel === channel.value 
-                              ? "bg-emerald-50 text-emerald-800" 
-                              : "hover:bg-neutral-50 text-neutral-800"
-                          )}
-                        >
-                          <span>{channel.label}</span>
-                          <div className="scale-90 origin-right shrink-0">
-                            {channel.logo}
-                          </div>
-                        </button>
-                      ))}
+                      <Input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        multiple
+                        accept="image/*"
+                        disabled={isSubmitting}
+                      />
+                      <div className="h-10 w-10 bg-amber-300 border-[2.5px] border-black rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center mb-2">
+                        <Upload className="h-5 w-5 text-black font-bold" />
+                      </div>
+                      <p className="text-xs font-black text-neutral-800">Klik untuk pilih berkas bukti transfer</p>
+                      <p className="text-[9px] text-muted-foreground mt-0.5">Unggah berkas screenshot m-banking, struk ATM, atau notifikasi transfer.</p>
                     </div>
-                  )}
-                </div>
-              </div>
 
-              <hr className="border-t-[2px] border-black" />
-
-              {/* Field: Upload Bukti Transfer */}
-              <div className="space-y-3 rounded-[16px] border-[2px] border-dashed border-black bg-[#fdfdfd] p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)]">
-                <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-black text-neutral-700 uppercase tracking-wider">Unggah Bukti Kirim</label>
-                  <div className="flex gap-1.5">
-                    <span className="text-[8px] font-bold border border-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
-                      Wajib Gambar
-                    </span>
-                    <span className="text-[8px] font-bold border border-black bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
-                      Mendukung {">"}1 Foto
-                    </span>
-                  </div>
-                </div>
-
-                {/* Dropzone */}
-                <div 
-                  onClick={() => !isSubmitting && fileInputRef.current?.click()}
-                  className={cn(
-                    "flex flex-col items-center justify-center rounded-[12px] border-[2px] border-dashed border-neutral-400 bg-[#f7f5f0] p-5 text-center cursor-pointer transition-colors hover:bg-neutral-100",
-                    isSubmitting && "opacity-50 cursor-not-allowed"
-                  )}
-                >
-                  <Input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                    multiple
-                    accept="image/*"
-                    disabled={isSubmitting}
-                  />
-                  <div className="h-10 w-10 bg-amber-300 border-[2.5px] border-black rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center mb-2">
-                    <Upload className="h-5 w-5 text-black font-bold" />
-                  </div>
-                  <p className="text-xs font-black text-neutral-800">Klik untuk pilih berkas bukti transfer</p>
-                  <p className="text-[9px] text-muted-foreground mt-0.5">Unggah berkas screenshot m-banking, struk ATM, atau notifikasi transfer.</p>
-                </div>
-
-                {/* File Preview */}
-                {selectedFiles.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-[9px] font-black text-neutral-700 uppercase tracking-wider">Berkas Terpilih ({selectedFiles.length}):</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {selectedFiles.map((fileObj, idx) => (
-                        <div key={idx} className="relative group rounded-[10px] border-[2px] border-black bg-white p-1 h-16 w-full flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={fileObj.preview}
-                            alt={`Bukti ${idx + 1}`}
-                            className="object-cover h-full w-full rounded-[6px]"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => removeFile(idx)}
-                            className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 border-[1.5px] border-black hover:bg-red-600 shadow-sm transition-all"
-                            title="Hapus Bukti"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
+                    {/* File Preview */}
+                    {selectedFiles.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-[9px] font-black text-neutral-700 uppercase tracking-wider">Berkas Terpilih ({selectedFiles.length}):</p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {selectedFiles.map((fileObj, idx) => (
+                            <div key={idx} className="relative group rounded-[10px] border-[2px] border-black bg-white p-1 h-16 w-full flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={fileObj.preview}
+                                alt={`Bukti ${idx + 1}`}
+                                className="object-cover h-full w-full rounded-[6px]"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeFile(idx)}
+                                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 border-[1.5px] border-black hover:bg-red-600 shadow-sm transition-all cursor-pointer"
+                                title="Hapus Bukti"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-            </CardContent>
+                </CardContent>
 
-            <CardFooter className="pt-2 pb-4 border-t-[2.5px] border-black bg-emerald-50/10 px-6">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-emerald-600 hover:bg-emerald-700 text-white rounded-[12px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>Mengirim Konfirmasi...</>
-                ) : (
-                  <>
-                    <Heart className="h-4 w-4 fill-white shrink-0 animate-pulse" />
-                    Kirim Konfirmasi Donasi
-                  </>
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        </form>
-
-        {/* Catatan Transparansi / Informasi Rekening */}
-        <Card className="bg-[#fffbeb] border-[2.5px] border-black rounded-[18px] p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex gap-2.5">
-            <span className="text-xl shrink-0">ℹ️</span>
-            <div className="space-y-1">
-              <h4 className="text-xs font-black uppercase tracking-wider text-amber-900">Rekening Resmi Pembangunan</h4>
-              <p className="text-[10px] text-neutral-800 leading-normal font-bold">
-                Bagi yang belum melakukan transfer, dapat disalurkan melalui:
-              </p>
-              <ul className="text-[10px] text-neutral-700 space-y-1 mt-1 pl-3.5 list-disc font-medium">
-                <li>Bank SumSel Babel Syariah: <strong>829-09-00017</strong> a.n. Infaq Pembangunan Masjid Al-Ikhlas</li>
-                <li>QRIS Masjid Al-Ikhlas: Tersedia di mading masjid / scan selebaran resmi</li>
-              </ul>
-            </div>
+                <CardFooter className="pt-2 pb-4 border-t-[2.5px] border-black bg-emerald-50/10 px-6">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-emerald-600 hover:bg-emerald-700 text-white rounded-[12px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>Mengirim Konfirmasi...</>
+                    ) : (
+                      <>
+                        <Heart className="h-4 w-4 fill-white shrink-0 animate-pulse" />
+                        Kirim Konfirmasi Donasi
+                      </>
+                    )}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </form>
           </div>
-        </Card>
+          
+        </div>
 
       </main>
     </div>
