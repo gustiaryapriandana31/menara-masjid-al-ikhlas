@@ -11,6 +11,38 @@ import Link from "next/link"
 
 export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(loginAction, null)
+  const [deferredPrompt, setDeferredPrompt] = React.useState<any>(null)
+  const [isInstallable, setIsInstallable] = React.useState(false)
+
+  React.useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      setIsInstallable(true)
+    }
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+
+    // Check if already in standalone mode
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setIsInstallable(false)
+    }
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+    }
+  }, [])
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return
+    deferredPrompt.prompt()
+    const { outcome } = await deferredPrompt.userChoice
+    if (outcome === "accepted") {
+      console.log("Petugas menyetujui pemasangan aplikasi kas")
+    }
+    setDeferredPrompt(null)
+    setIsInstallable(false)
+  }
 
   return (
     <main className="min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col items-center justify-center p-4 md:p-6 font-sans">
@@ -39,6 +71,20 @@ export default function LoginPage() {
             <h2 className="text-sm font-black uppercase tracking-tight text-neutral-700">Masuk Akun</h2>
             <p className="text-[10px] text-muted-foreground font-medium">Masukkan username & password untuk mengelola kas</p>
           </div>
+
+          {isInstallable && (
+            <button
+              type="button"
+              onClick={handleInstallClick}
+              className="w-full py-3 px-4 text-xs font-black uppercase border-[2.5px] border-black bg-amber-300 hover:bg-amber-400 text-black rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.jpg" alt="Logo" className="h-4.5 w-4.5 rounded-full border border-black object-cover" />
+              Pasang Aplikasi HP
+            </button>
+          )}
+
+          {isInstallable && <hr className="border-t-[2px] border-black" />}
 
           <hr className="border-t-[2px] border-black" />
 

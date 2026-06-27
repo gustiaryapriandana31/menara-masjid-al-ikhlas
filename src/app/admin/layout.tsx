@@ -1,6 +1,5 @@
 import { BottomNavbar } from "@/components/shared/bottom-navbar"
 import { Sidebar } from "@/components/shared/sidebar"
-import AdminInstallButton from "@/components/shared/admin-install-button"
 
 export default function AdminLayout({
   children,
@@ -33,10 +32,7 @@ export default function AdminLayout({
         </main>
       </div>
 
-      {/* Mobile PWA Install Floating Button */}
-      <div className="md:hidden fixed bottom-24 left-4 right-4 z-40 max-w-md mx-auto">
-        <AdminInstallButton className="bg-amber-300 text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-[2.5px] border-black text-center" />
-      </div>
+
 
       {/* Bottom Navbar - Mobile only */}
       <div className="md:hidden">
