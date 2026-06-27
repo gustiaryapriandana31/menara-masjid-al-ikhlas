@@ -92,7 +92,7 @@ export default function LaporanClient({
               Rp {formatRupiah(currentBalance)}
             </div>
             <p className="text-[9px] text-amber-700 font-semibold mt-1">
-              Sisa saldo riil bersih saat ini
+              Saldo Kas Pembangunan Menara Saat ini
             </p>
           </CardContent>
         </Card>
