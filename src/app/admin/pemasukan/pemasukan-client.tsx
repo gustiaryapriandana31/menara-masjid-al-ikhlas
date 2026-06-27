@@ -44,6 +44,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
   const [incomesList, setIncomesList] = React.useState<RecentIncome[]>(recentIncomes)
 
   const fileInputRef = React.useRef<HTMLInputElement>(null)
+  const cameraInputRef = React.useRef<HTMLInputElement>(null)
 
   // Format rupiah
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -385,10 +386,9 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
 
                     {/* Dropzone */}
                     <div 
-                      onClick={() => !isSubmitting && fileInputRef.current?.click()}
                       className={cn(
-                        "flex flex-col items-center justify-center rounded-[12px] border-[2px] border-dashed border-neutral-400 bg-[#f7f5f0] p-5 text-center cursor-pointer transition-colors hover:bg-neutral-100",
-                        isSubmitting && "opacity-50 cursor-not-allowed"
+                        "flex flex-col items-center justify-center rounded-[12px] border-[2px] border-dashed border-neutral-400 bg-[#f7f5f0] p-5 text-center transition-colors relative",
+                        isSubmitting && "opacity-50"
                       )}
                     >
                       <Input
@@ -400,10 +400,35 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
                         accept="image/*"
                         disabled={isSubmitting}
                       />
-                      <div className="h-10 w-10 bg-yellow-300 border-[2.5px] border-black rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center mb-2">
-                        <Upload className="h-5 w-5 text-black font-bold" />
+                      <Input
+                        type="file"
+                        ref={cameraInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        accept="image/*"
+                        capture="environment"
+                        disabled={isSubmitting}
+                      />
+                      
+                      <div className="flex flex-row gap-3 mb-3">
+                        <button
+                          type="button"
+                          onClick={() => !isSubmitting && fileInputRef.current?.click()}
+                          className="flex items-center gap-1.5 px-3 py-2 text-[10px] font-black uppercase rounded-[8px] border-[1.5px] border-black bg-white hover:bg-neutral-50 shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-[0.5px] active:translate-y-[0.5px] active:shadow-[1px_1px_0px_0px_#000] transition-all cursor-pointer"
+                        >
+                          <Upload className="h-3.5 w-3.5" />
+                          Pilih File
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => !isSubmitting && cameraInputRef.current?.click()}
+                          className="flex items-center gap-1.5 px-3 py-2 text-[10px] font-black uppercase rounded-[8px] border-[1.5px] border-black bg-amber-300 hover:bg-amber-400 shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-[0.5px] active:translate-y-[0.5px] active:shadow-[1px_1px_0px_0px_#000] transition-all cursor-pointer"
+                        >
+                          📷 Ambil Kamera
+                        </button>
                       </div>
-                      <p className="text-xs font-black text-neutral-800">Klik untuk unggah gambar</p>
+
+                      <p className="text-xs font-black text-neutral-800">Klik tombol di atas untuk memilih berkas atau mengambil foto</p>
                       <p className="text-[9px] text-neutral-500 font-semibold mt-0.5">Bisa pilih lebih dari 1 foto.</p>
                     </div>
 

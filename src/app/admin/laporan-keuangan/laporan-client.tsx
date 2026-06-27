@@ -39,8 +39,9 @@ export default function LaporanClient({
   totalExpense,
   expenseCategories,
   transferChannels,
-  monthlyTrend
-}: LaporanClientProps) {
+  monthlyTrend,
+  isAdmin = true
+}: LaporanClientProps & { isAdmin?: boolean }) {
   // Hitung agregasi tambahan
   const totalIncome = totalCash + totalTransfer
   const currentBalance = totalIncome - totalExpense
@@ -260,7 +261,13 @@ export default function LaporanClient({
             <ul className="list-disc pl-4 space-y-1">
               <li>Arahkan kursor Anda ke masing-masing batang grafik bulanan untuk melihat rincian detail kas masuk & keluar bulan tersebut.</li>
               <li>Pastikan dana simpanan (saldo kas) selalu berada di zona positif untuk menjaga kestabilan upah tukang dan pembelian material menara.</li>
-              <li>Untuk rincian detil setiap item transaksi, silakan merujuk ke menu **Rincian Dana** di panel navigasi Anda.</li>
+              <li>
+                {isAdmin ? (
+                  "Untuk rincian detil setiap item transaksi, silakan merujuk ke menu Rincian Dana di panel navigasi Anda."
+                ) : (
+                  "Setiap donasi online yang masuk memerlukan validasi dari bendahara pembangunan sebelum tercatat secara riil di grafik keuangan ini."
+                )}
+              </li>
             </ul>
           </div>
         </Card>
