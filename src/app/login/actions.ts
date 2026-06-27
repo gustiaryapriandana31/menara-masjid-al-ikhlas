@@ -4,7 +4,8 @@ import db from '@/lib/db'
 import { z } from 'zod'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { verifyPassword, signSession, SESSION_EXPIRY_MS, SessionPayload } from '@/lib/auth'
+import { signSession, SESSION_EXPIRY_MS, SessionPayload } from '@/lib/auth'
+import { verifyPassword } from '@/lib/auth-crypto'
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username wajib diisi"),

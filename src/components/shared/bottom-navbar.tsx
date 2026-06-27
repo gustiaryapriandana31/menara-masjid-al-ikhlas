@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { PlusCircle, MinusCircle, Home } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -11,18 +11,25 @@ export function BottomNavbar() {
 
   const navItems = [
     {
+      title: "Laporan Keuangan",
+      url: "/admin/laporan-keuangan",
+      icon: Home,
+      activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
+      activeText: "text-neutral-800 font-bold",
+    },
+    {
+      title: "Rincian Dana",
+      url: "/admin/rincian-dana",
+      icon: FileText,
+      activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
+      activeText: "text-neutral-800 font-bold",
+    },
+    {
       title: "Pemasukan",
       url: "/admin/pemasukan",
       icon: PlusCircle,
       activeBg: "bg-blue-100 text-blue-600 border-blue-500",
       activeText: "text-blue-600 font-bold",
-    },
-    {
-      title: "Beranda",
-      url: "/",
-      icon: Home,
-      activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
-      activeText: "text-neutral-800 font-bold",
     },
     {
       title: "Pengeluaran",

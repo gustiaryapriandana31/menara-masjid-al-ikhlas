@@ -1,23 +1,4 @@
-import { pbkdf2Sync, randomBytes } from 'crypto';
 import { cookies } from 'next/headers';
-
-// Password Hashing (PBKDF2 SHA-512)
-export function hashPassword(password: string): string {
-  const salt = randomBytes(16).toString('hex');
-  const hash = pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
-  return `${salt}:${hash}`;
-}
-
-export function verifyPassword(password: string, storedHash: string): boolean {
-  try {
-    const [salt, hash] = storedHash.split(':');
-    if (!salt || !hash) return false;
-    const hashedInput = pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
-    return hashedInput === hash;
-  } catch (error) {
-    return false;
-  }
-}
 
 // Session Management (Web Crypto HMAC-SHA256)
 // This works in both Node.js server actions and Edge middleware.

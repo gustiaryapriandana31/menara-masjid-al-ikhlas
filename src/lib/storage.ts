@@ -23,7 +23,7 @@ export async function uploadReceipt(file: File): Promise<string> {
     })
 
   if (error) {
-    throw new Error(`Failed to upload image to Supabase Storage: ${error.message}`)
+    throw new Error(`Gagal mengunggah gambar ke database: ${error.message}`)
   }
 
   return data.path
@@ -41,7 +41,7 @@ export async function getSignedReceiptUrl(path: string, expiresIn = 900): Promis
     .createSignedUrl(path, expiresIn)
 
   if (error) {
-    throw new Error(`Failed to generate secure URL: ${error.message}`)
+    throw new Error(`Gagal menghasilkan link gambar: ${error.message}`)
   }
 
   return data.signedUrl
