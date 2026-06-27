@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { PlusCircle, MinusCircle, Home, FileText, LogOut, ShieldAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logoutAction } from "@/app/login/actions"
+import AdminInstallButton from "./admin-install-button"
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -84,8 +85,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Logout Footer */}
-      <div className="pt-6 border-t-[1.5px] border-black">
+      {/* PWA Install & Logout Footer */}
+      <div className="pt-6 border-t-[1.5px] border-black space-y-3">
+        <AdminInstallButton />
         <form action={logoutAction}>
           <button
             type="submit"
