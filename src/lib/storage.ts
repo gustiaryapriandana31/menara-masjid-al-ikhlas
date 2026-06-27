@@ -32,10 +32,10 @@ export async function uploadReceipt(file: File): Promise<string> {
 /**
  * Generates a temporary signed URL for a private file in the 'receipts' bucket.
  * @param path The internal path of the file in the bucket.
- * @param expiresIn Seconds until the URL expires (default 900 = 15 minutes).
+ * @param expiresIn Seconds until the URL expires (default 180 = 3 minutes).
  * @returns The secure signed URL.
  */
-export async function getSignedReceiptUrl(path: string, expiresIn = 900): Promise<string> {
+export async function getSignedReceiptUrl(path: string, expiresIn = 180): Promise<string> {
   const { data, error } = await supabase.storage
     .from('receipts')
     .createSignedUrl(path, expiresIn)
