@@ -16,7 +16,8 @@ export default function AdminLayout({
         {/* Top Header Bar Brutalist - Mobile only */}
         <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-6 md:hidden">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🕌</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover" />
             <span className="text-sm font-black tracking-tight uppercase">Panel Panitia Masjid</span>
           </div>
           <div className="flex items-center gap-2 border-[1.5px] border-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-[1px_1px_0px_0px_#000]">

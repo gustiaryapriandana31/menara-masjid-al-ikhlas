@@ -50,8 +50,9 @@ export default function LoginPage() {
         
         {/* Logo and Title Section */}
         <div className="text-center space-y-3">
-          <Link href="/" className="inline-flex h-16 w-16 items-center justify-center rounded-[20px] border-[3px] border-black bg-blue-50 shadow-[3px_3px_0px_0px_#2563eb] active:scale-95 transition-all hover:bg-blue-100">
-            <span className="text-3xl">🕌</span>
+          <Link href="/" className="inline-flex h-16 w-16 items-center justify-center rounded-[20px] border-[3px] border-black bg-blue-50 shadow-[3px_3px_0px_0px_#2563eb] active:scale-95 transition-all hover:bg-blue-100 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.jpg" alt="Logo" className="object-cover w-full h-full" />
           </Link>
           <div className="space-y-1">
             <h1 className="text-xl font-black uppercase tracking-tight text-neutral-800 leading-tight">

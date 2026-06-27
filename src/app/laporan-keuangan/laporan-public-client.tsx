@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { BarChart2, FileText, ArrowLeft, Heart, Info, Globe, Building } from "lucide-react"
+import { BarChart2, FileText, ArrowLeft, Heart, Info, Globe, Building, Phone } from "lucide-react"
 import Link from "next/link"
 import LaporanClient from "@/app/admin/laporan-keuangan/laporan-client"
 import RincianDanaClient from "@/app/admin/rincian-dana/rincian-dana-client"
@@ -61,8 +61,9 @@ export default function LaporanPublicClient({
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Kembali ke Beranda</span>
         </Link>
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🕌</span>
+        <div className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover" />
           <span className="text-xs md:text-sm font-black tracking-tight uppercase">Menara Al-Ikhlas</span>
         </div>
       </header>
@@ -72,7 +73,7 @@ export default function LaporanPublicClient({
         
         {/* Banner Transparansi Publik */}
         <div className="w-full border-[2.5px] border-black rounded-[22px] bg-gradient-to-br from-emerald-800 to-emerald-950 p-6 text-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
-          <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 text-[120px] opacity-10 select-none">🕌</div>
+          <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 text-[120px] opacity-10 select-none"></div>
           <div className="flex items-center gap-2 mb-2">
             <span className="bg-amber-400 text-emerald-950 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-black shadow-[1.5px_1.5px_0px_0px_#000]">
               Transparansi Keuangan
@@ -142,8 +143,9 @@ export default function LaporanPublicClient({
           
           {/* Col 1: Branding & Description */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🕌</span>
+            <div className="flex items-center gap-2.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.jpg" alt="Logo" className="h-8 w-8 rounded-full border-[1.5px] border-black object-cover" />
               <span className="text-base font-black tracking-tight uppercase text-neutral-800">Masjid Al-Ikhlas</span>
             </div>
             <p className="text-[11px] text-neutral-600 font-medium leading-relaxed">
@@ -163,6 +165,26 @@ export default function LaporanPublicClient({
                 <Info className="h-4 w-4 shrink-0 text-emerald-700" />
                 <span>NMID: ID1021065841954</span>
               </p>
+              <a 
+                href="https://wa.me/6281377884175" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2 hover:text-emerald-850 hover:underline transition-all"
+              >
+                <Phone className="h-4 w-4 shrink-0 text-emerald-700" />
+                <span>WA: 0813-7788-4175</span>
+              </a>
+              <a 
+                href="https://web.facebook.com/masjid.alikhlas.338" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2 hover:text-emerald-850 hover:underline transition-all"
+              >
+                <svg className="h-4 w-4 shrink-0 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
+                <span>FB: Masjid Al-Ikhlas</span>
+              </a>
             </div>
           </div>
 

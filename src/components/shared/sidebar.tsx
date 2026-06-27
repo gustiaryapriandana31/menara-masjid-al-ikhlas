@@ -51,8 +51,9 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col w-64 shrink-0 border-r-[2.5px] border-black bg-white min-h-screen p-6 sticky top-0">
       {/* Brand Header */}
-      <div className="flex items-center gap-2 mb-8">
-        <span className="text-2xl">🕌</span>
+      <div className="flex items-center gap-2.5 mb-8">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.jpg" alt="Logo" className="h-9 w-9 rounded-full border-[1.5px] border-black object-cover" />
         <div className="flex flex-col">
           <span className="text-sm font-black uppercase tracking-tight leading-tight">Panel Panitia</span>
           <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-widest leading-none">Menara Al-Ikhlas</span>

@@ -297,8 +297,9 @@ export default function KonfirmasiDonasiPage() {
           <ArrowLeft className="h-3 w-3" />
           <span>Kembali</span>
         </Link>
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🕌</span>
+        <div className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover" />
           <span className="text-sm font-black tracking-tight uppercase">Menara Al-Ikhlas</span>
         </div>
       </header>
@@ -312,7 +313,7 @@ export default function KonfirmasiDonasiPage() {
           <div className="md:col-span-5 space-y-4">
             <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
               <CardHeader className="pb-3 border-b-[2.5px] border-black bg-amber-50/50">
-                <CardTitle className="text-xs font-black uppercase tracking-tight text-amber-900">🕌 Pindai QRIS / Transfer</CardTitle>
+                <CardTitle className="text-xs font-black uppercase tracking-tight text-amber-900">✨ Pindai QRIS / Transfer</CardTitle>
                 <CardDescription className="text-[10px] text-neutral-700 font-medium">Salurkan infaq/donasi terbaik Anda melalui saluran resmi di bawah ini.</CardDescription>
               </CardHeader>
               <CardContent className="pt-4 space-y-4">

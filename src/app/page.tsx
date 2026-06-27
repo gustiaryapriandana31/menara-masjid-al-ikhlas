@@ -31,26 +31,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col font-sans">
       
-      {/* 1. PUBLIC HEADER / HERO AREA */}
-      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-4 md:px-8 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
-        <div className="flex items-center gap-2">
-          <div className="h-9 w-9 bg-emerald-100 border-[1.5px] border-black rounded-[8px] flex items-center justify-center shadow-[1px_1px_0px_0px_#000]">
-            <span className="text-xl">🕌</span>
-          </div>
-          <span className="text-sm font-black tracking-tight uppercase">Menara Al-Ikhlas</span>
-        </div>
-        <nav className="flex items-center gap-4 text-xs font-black uppercase">
-          <Link href="/laporan-keuangan" className="text-emerald-800 hover:text-emerald-950 hover:underline">
-            Laporan
-          </Link>
-          <Link href="/donasi" className="border-[2px] border-black bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-full shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-[0.5px] active:translate-y-[0.5px] active:shadow-[1px_1px_0px_0px_#000] transition-all">
-            Donasi Sekarang
-          </Link>
-        </nav>
-      </header>
-
       {/* 2. HERO SECTION */}
-      <section className="p-4 md:p-8 w-full max-w-5xl mx-auto space-y-8 pt-8 md:pt-12">
+      <section className="p-4 md:p-8 w-full max-w-5xl mx-auto space-y-8 pt-8 md:pt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Hero Copy (col-span-7) */}
           <div className="lg:col-span-7 space-y-5 text-left">
@@ -60,9 +42,21 @@ export default function Home() {
             <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-neutral-800 leading-[1.1]">
               Ukir Pahala Abadi Melalui Pembangunan Menara
             </h1>
+            
+            {/* Hadits Box */}
+            <div className="bg-emerald-50/50 border-[2px] border-black rounded-[18px] p-4.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] space-y-2.5 max-w-xl">
+              <p className="text-right text-base md:text-lg font-serif text-emerald-800 leading-normal tracking-wide font-black" dir="rtl">
+                مَنْ بَنَى مَسْجِدًا لِلَّهِ بَنَى اللهُ لَهُ فِي الْجَنَّةِ مِثْلَهُ
+              </p>
+              <p className="text-[11px] text-neutral-700 font-bold leading-relaxed">
+                &ldquo;Siapa yang membangun masjid karena Allah, maka Allah akan membangun baginya semisal itu di surga.&rdquo;
+              </p>
+              <p className="text-[9px] text-emerald-800 font-black uppercase tracking-widest">
+                — HR. Bukhari no. 450 dan Muslim no. 533
+              </p>
+            </div>
+
             <p className="text-xs md:text-sm text-neutral-600 font-bold leading-relaxed max-w-xl">
-              &ldquo;Siapa yang membangun masjid karena Allah walaupun hanya selubang tempat bertelur burung... maka Allah akan bangunkan baginya rumah di surga.&rdquo; (HR. Ibnu Majah)
-              <br />
               Mari investasikan tabungan akhirat Anda dalam menyukseskan pembangunan fisik Menara Masjid Al-Ikhlas sebagai lambang kejayaan dakwah Islam.
             </p>
             
@@ -202,8 +196,9 @@ export default function Home() {
           
           {/* Footer Col 1 */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🕌</span>
+            <div className="flex items-center gap-2.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.jpg" alt="Logo" className="h-8 w-8 rounded-full border-[1.5px] border-black object-cover" />
               <span className="text-base font-black tracking-tight uppercase text-neutral-800">Masjid Al-Ikhlas</span>
             </div>
             <p className="text-[11px] text-neutral-600 font-medium leading-relaxed">
@@ -219,10 +214,26 @@ export default function Home() {
                 <MapPin className="h-4 w-4 shrink-0 text-emerald-700" />
                 <span>Masjid Al-Ikhlas, Dusun I Meranjat II, Kecamatan Indralaya Selatan, Kabupaten Ogan Ilir, Sumatera Selatan.</span>
               </p>
-              <p className="flex items-center gap-2">
+              <a 
+                href="https://wa.me/6281377884175" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2 hover:text-emerald-850 hover:underline transition-all"
+              >
                 <Phone className="h-4 w-4 shrink-0 text-emerald-700" />
-                <span>+62 821-xxxx-xxxx</span>
-              </p>
+                <span>WA: 0813-7788-4175</span>
+              </a>
+              <a 
+                href="https://web.facebook.com/masjid.alikhlas.338" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2 hover:text-emerald-850 hover:underline transition-all"
+              >
+                <svg className="h-4 w-4 shrink-0 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
+                <span>FB: Masjid Al-Ikhlas</span>
+              </a>
             </div>
           </div>
 
