@@ -119,7 +119,7 @@ export async function createDonationConfirmation(prevState: unknown, formData: F
     console.error("Error creating donation confirmation:", err)
     return {
       success: false,
-      error: err instanceof Error ? err.message : "Gagal menyimpan konfirmasi donasi ke database."
+      error: "Gagal menyimpan konfirmasi donasi. Silakan coba beberapa saat lagi."
     }
   }
 }

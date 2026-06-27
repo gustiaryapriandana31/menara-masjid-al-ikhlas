@@ -118,7 +118,7 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
     console.error("Error creating income transaction:", err)
     return {
       success: false,
-      error: err instanceof Error ? err.message : "Gagal menyimpan data pemasukan ke database."
+      error: "Gagal menyimpan data pemasukan ke database. Silakan coba beberapa saat lagi."
     }
   }
 }
@@ -143,7 +143,7 @@ export async function getSignedUrls(paths: string[]) {
     console.error("Error generating signed URLs:", err)
     return {
       success: false,
-      error: err instanceof Error ? err.message : "Gagal mendapatkan tautan gambar aman."
+      error: "Gagal memuat gambar bukti terima. Silakan muat ulang halaman."
     }
   }
 }

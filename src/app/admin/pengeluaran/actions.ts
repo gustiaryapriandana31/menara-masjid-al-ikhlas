@@ -107,7 +107,7 @@ export async function createPengeluaran(prevState: unknown, formData: FormData) 
     console.error("Error creating outcome transaction:", err)
     return {
       success: false,
-      error: err instanceof Error ? err.message : "Gagal menyimpan data pengeluaran ke database."
+      error: "Gagal menyimpan data pengeluaran ke database. Silakan coba beberapa saat lagi."
     }
   }
 }

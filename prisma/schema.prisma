@@ -84,8 +84,9 @@ model DonationConfirmation {
 // Model User (Untuk Login Panitia / Admin)
 model User {
   id        String   @id @default(uuid())
-  email     String   @unique
+  username  String   @unique
+  password  String
   name      String
-  role      String   @default("COMMITTEE") // "ADMIN", "COMMITTEE"
+  role      String   @default("ADMIN") // role nya admin aja
   createdAt DateTime @default(now())
 }
