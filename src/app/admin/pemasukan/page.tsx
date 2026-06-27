@@ -1,6 +1,8 @@
 import db from '@/lib/db'
 import PemasukanClient from './pemasukan-client'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Catat Pemasukan - Panel Panitia',
   description: 'Catat manual penerimaan dana secara luring (Cash) ke kas pembangunan Menara.'

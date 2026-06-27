@@ -1,6 +1,8 @@
 import db from '@/lib/db'
 import RincianDanaClient from './rincian-dana-client'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Rincian Dana - Panel Panitia',
   description: 'Rincian transaksi pemasukan dan pengeluaran kas pembangunan Menara Masjid Al-Ikhlas.'
