@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, Heart, FileText, Upload, X, ArrowLeft, Building2 } from "lucide-react"
+import { Calendar, Heart, FileText, Upload, X, ArrowLeft, Building2, Copy, Check } from "lucide-react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -127,6 +127,26 @@ export default function KonfirmasiDonasiPage() {
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
   const dropdownRef = React.useRef<HTMLDivElement>(null)
+
+  // Smooth scroll ke area formulir
+  const scrollToForm = () => {
+    const element = document.getElementById("form-konfirmasi")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
+  // Copy to clipboard handler
+  const [isCopied, setIsCopied] = React.useState(false)
+  const handleCopyRekening = async () => {
+    try {
+      await navigator.clipboard.writeText("8290900017")
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error("Gagal menyalin rekening: ", err)
+    }
+  }
 
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -305,23 +325,57 @@ export default function KonfirmasiDonasiPage() {
                 
                 {/* Rekening Info */}
                 <div className="space-y-3 bg-[#fffbeb] border-[2px] border-black p-4 rounded-[16px] shadow-[2.5px_2.5px_0px_0px_#ca8a04] text-[10px] font-bold text-neutral-800">
-                  <h4 className="text-xs font-black uppercase tracking-wider text-amber-900 flex items-center gap-1">
-                    📌 Rekening Pembangunan
+                  <h4 className="text-xs font-black uppercase tracking-wider text-amber-950 flex items-center gap-1.5 border-b border-amber-200 pb-1.5">
+                    📌 Rekening Resmi
                   </h4>
-                  <p className="leading-relaxed font-semibold">
-                    Silakan lakukan transfer bank langsung ke rekening resmi pembangunan menara Masjid Al-Ikhlas:
-                  </p>
-                  <div className="border-l-[3px] border-amber-500 pl-3 space-y-1 my-2">
-                    <span className="text-neutral-500 block">BANK SUMSEL BABEL SYARIAH</span>
-                    <span className="text-neutral-900 text-sm font-black tracking-wider block">829-09-00017</span>
-                    <span className="text-[9px] text-neutral-600 block leading-tight">a.n. Infaq Pembangunan Masjid Al-Ikhlas</span>
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-black text-amber-800 uppercase block">Bank Sumsel Babel Syariah</span>
+                    
+                    {/* Copyable Rekening Box */}
+                    <div className="flex items-center gap-1.5 bg-white border-[1.5px] border-black rounded-[10px] p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] overflow-hidden">
+                      <span className="flex-1 text-sm font-black text-neutral-950 pl-2.5 tracking-wider select-all">
+                        829-09-00017
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleCopyRekening}
+                        className={cn(
+                          "px-2.5 py-1.5 text-[9px] font-black uppercase rounded-[6px] border border-black transition-all flex items-center gap-1 shrink-0 cursor-pointer",
+                          isCopied 
+                            ? "bg-emerald-500 text-white shadow-none translate-x-[1px] translate-y-[1px]" 
+                            : "bg-amber-300 hover:bg-amber-405 text-neutral-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                        )}
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="h-3 w-3 shrink-0" />
+                            <span>Tersalin</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3 shrink-0" />
+                            <span>Salin</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <span className="text-[9px] text-neutral-500 block leading-tight font-medium pl-1 text-center">
+                      a.n. Infaq Pembangunan Masjid Al-Ikhlas
+                    </span>
                   </div>
-                  <p className="text-[9px] text-amber-800 italic font-bold">
-                    *Simpan bukti transfer Anda untuk diunggah pada formulir konfirmasi di sebelah kanan.
-                  </p>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Smooth Scroll Button */}
+            <Button
+              type="button"
+              onClick={scrollToForm}
+              className="w-full text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-amber-400 hover:bg-amber-500 text-black rounded-[12px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-4.5 flex items-center justify-center gap-2"
+            >
+              ✍️ Konfirmasi Donasi (Isi Form)
+            </Button>
           </div>
 
           {/* KOLOM KANAN (md:col-span-7) - FORMULIR KONFIRMASI */}
@@ -374,7 +428,7 @@ export default function KonfirmasiDonasiPage() {
             )}
 
             {/* Form Card */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form id="form-konfirmasi" onSubmit={handleSubmit} className="space-y-4 scroll-mt-20">
               <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_#047857] overflow-hidden">
                 <CardHeader className="pb-3 border-b-[2.5px] border-black bg-emerald-50/50">
                   <CardTitle className="text-base font-black uppercase tracking-tight text-emerald-800">Form Konfirmasi Donasi</CardTitle>
