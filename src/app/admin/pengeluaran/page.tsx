@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
+import { createPengeluaran } from "./actions"
 
 // Definisikan kategori pengeluaran berdasarkan Enum Prisma
 const expenseCategories = [
@@ -25,6 +26,7 @@ export default function TambahPengeluaranPage() {
     return today.toISOString().split("T")[0]
   })
   const [category, setCategory] = React.useState("")
+  const [buyer, setBuyer] = React.useState("")
   const [description, setDescription] = React.useState("")
   const [selectedFiles, setSelectedFiles] = React.useState<{ file: File; preview: string }[]>([])
   const [error, setError] = React.useState<string | null>(null)
@@ -65,11 +67,28 @@ export default function TambahPengeluaranPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files)
-      const newFiles = filesArray.map(file => ({
-        file,
-        preview: URL.createObjectURL(file)
-      }))
-      setSelectedFiles(prev => [...prev, ...newFiles])
+      const validFiles: { file: File; preview: string }[] = []
+
+      for (const file of filesArray) {
+        // Client-side validation: Max 10MB
+        if (file.size > 10 * 1024 * 1024) {
+          setError(`Berkas "${file.name}" terlalu besar. Ukuran maksimal adalah 10MB.`)
+          return
+        }
+
+        // Client-side validation: Image files only
+        if (!file.type.startsWith("image/")) {
+          setError(`Berkas "${file.name}" harus berupa file gambar (JPG/PNG/WebP).`)
+          return
+        }
+
+        validFiles.push({
+          file,
+          preview: URL.createObjectURL(file)
+        })
+      }
+
+      setSelectedFiles(prev => [...prev, ...validFiles])
       setError(null)
     }
   }
@@ -107,6 +126,10 @@ export default function TambahPengeluaranPage() {
       setError("Silakan pilih kategori pengeluaran.")
       return
     }
+    if (!buyer.trim()) {
+      setError("Nama penanggung jawab belanja harus diisi.")
+      return
+    }
     if (!description.trim()) {
       setError("Keterangan belanja harus diisi.")
       return
@@ -115,27 +138,45 @@ export default function TambahPengeluaranPage() {
     setIsSubmitting(true)
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      console.log({
-        amount,
-        date: new Date(date),
-        category,
-        description,
-        filesCount: selectedFiles.length
+      // Siapkan FormData untuk dikirim ke Server Action
+      const formData = new FormData()
+      formData.append("amount", amount.toString())
+      formData.append("date", date)
+      formData.append("category", category)
+      formData.append("buyer", buyer.trim())
+      formData.append("description", description.trim())
+
+      // Masukkan file-file biner ke FormData
+      selectedFiles.forEach((fileObj) => {
+        formData.append("files", fileObj.file)
       })
 
+      // Panggil Server Action
+      const result = await createPengeluaran(null, formData)
+
+      if (!result.success) {
+        setError(result.error || "Gagal menyimpan data pengeluaran.")
+        return
+      }
+
+      // Sukses
       setSuccess(true)
       setAmountInput("")
       setAmount(0)
-      setDescription("")
       setCategory("")
+      setBuyer("")
+      setDescription("")
+      
+      // Bersihkan preview file
       selectedFiles.forEach(item => URL.revokeObjectURL(item.preview))
       setSelectedFiles([])
       
+      // Scroll ke atas agar notifikasi sukses terlihat
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+
       setTimeout(() => setSuccess(false), 4000)
     } catch (err) {
-      setError("Gagal menyimpan data pengeluaran.")
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan sistem saat menyimpan data.")
     } finally {
       setIsSubmitting(false)
     }
@@ -160,7 +201,7 @@ export default function TambahPengeluaranPage() {
         {success && (
           <div className="flex items-center gap-2 rounded-[14px] border-[2.5px] border-black bg-emerald-100 p-3.5 text-xs text-emerald-900 font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold border-[1.5px] border-black text-[10px]">✓</div>
-            <span>Pengeluaran berhasil dicatat secara lokal ke database!</span>
+            <span>Pengeluaran berhasil dicatat</span>
           </div>
         )}
 
@@ -174,7 +215,7 @@ export default function TambahPengeluaranPage() {
         <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_#dc2626] overflow-hidden">
           <CardHeader className="pb-3 border-b-[2.5px] border-black bg-red-50/50">
             <CardTitle className="text-base font-black uppercase tracking-tight text-red-800">Detail Pengeluaran</CardTitle>
-            <CardDescription className="text-xs text-neutral-700 font-medium">Catat pengeluaran kas belanja material, operasional, & upah luring.</CardDescription>
+            <CardDescription className="text-xs text-neutral-700 font-medium">Catat Pengeluaran Kas Belanja Keperluan Pembangunan Menara Masjid Al-Ikhlas.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-4">
             
@@ -201,7 +242,7 @@ export default function TambahPengeluaranPage() {
                 </p>
               ) : (
                 <p className="text-[10px] text-muted-foreground font-medium pl-1">
-                  Masukkan angka tanpa bingung, sistem dibuat cepat dibaca.
+                  Nominal terbilang akan muncul disini.
                 </p>
               )}
             </div>
@@ -217,6 +258,22 @@ export default function TambahPengeluaranPage() {
                 onChange={(e) => setDate(e.target.value)}
                 disabled={isSubmitting}
                 className="w-full font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-red-600 focus-visible:shadow-[2px_2px_0px_0px_#dc2626] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                required
+              />
+            </div>
+
+            {/* Input Penanggung Jawab Belanja */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                <span className="text-red-600">◆</span> Penanggung Jawab Belanja
+              </label>
+              <Input
+                type="text"
+                placeholder="Contoh : Bapak Candra, Bapak Agus"
+                value={buyer}
+                onChange={(e) => setBuyer(e.target.value)}
+                disabled={isSubmitting}
+                className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-red-600 focus-visible:shadow-[2px_2px_0px_0px_#dc2626] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
                 required
               />
             </div>
@@ -280,7 +337,7 @@ export default function TambahPengeluaranPage() {
               </label>
               <Input
                 type="text"
-                placeholder="cth: Pembelian semen 50 sak dan pasir 1 truk..."
+                placeholder="Contoh : Pembelian semen 50 sak dan pasir 1 truk..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isSubmitting}
@@ -298,9 +355,6 @@ export default function TambahPengeluaranPage() {
                 <div className="flex gap-1.5">
                   <span className="text-[9px] font-bold border border-black bg-white px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
                     Disarankan
-                  </span>
-                  <span className="text-[9px] font-bold border border-black bg-pink-100 text-pink-900 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
-                    Wajib rapi
                   </span>
                 </div>
               </div>
@@ -327,7 +381,7 @@ export default function TambahPengeluaranPage() {
                   <Upload className="h-5 w-5 text-black font-bold" />
                 </div>
                 <p className="text-xs font-black text-neutral-800">Klik untuk unggah gambar kuitansi</p>
-                <p className="text-[9px] text-muted-foreground mt-0.5">Bisa unggah lebih dari 1 foto, preview terasa ringan dan jelas.</p>
+                <p className="text-[9px] text-muted-foreground mt-0.5">Bisa unggah lebih dari 1 foto.</p>
               </div>
 
               {/* Preview Berkas terpilih */}
@@ -360,21 +414,21 @@ export default function TambahPengeluaranPage() {
 
           </CardContent>
           
-          <CardFooter className="pt-2 pb-4 border-t-[2.5px] border-black bg-red-50/20 grid grid-cols-2 gap-3">
-            <Button
+          <CardFooter className="pt-2 pb-4 border-t-[2.5px] border-black bg-red-50/20">
+            {/* <Button
               type="button"
               variant="outline"
               disabled={isSubmitting}
               className="text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-white text-black rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 hover:bg-neutral-50"
             >
               Simpan draft
-            </Button>
+            </Button> */}
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-[#ff4a4a] hover:bg-red-600 text-white rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5"
+              className="text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-[#ff4a4a] hover:bg-red-600 text-white rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 w-full"
             >
-              {isSubmitting ? "Menyimpan..." : "Simpan transaksi"}
+              {isSubmitting ? "Menyimpan..." : "Catat Pengeluaran"}
             </Button>
           </CardFooter>
         </Card>

@@ -9,10 +9,10 @@ datasource db {
   provider = "postgresql"
 }
 
-// Enum untuk Tipe Transaksi
-enum TransactionType {
-  INCOME
-  EXPENSE
+// Enum untuk Tipe Pemasukan
+enum IncomeType {
+  CASH
+  TRANSFER
 }
 
 // Enum untuk Status Donasi Online
@@ -30,15 +30,16 @@ enum ExpenseCategory {
   OTHER
 }
 
-// Model Transaksi Utama (Menentukan Saldo Kas Riil)
-model Transaction {
+// Model Pemasukan Kas
+model Income {
   id                    String                @id @default(uuid())
-  type                  TransactionType
+  donorName             String                // Nama Donatur (bisa Hamba Allah)
+  donorAddress          String?               // Alamat Donatur
   amount                Decimal               @db.Decimal(12, 2)
-  date                  DateTime
-  description           String
-  category              ExpenseCategory?      // Hanya terisi jika type == EXPENSE
-  receiptUrls           String[]              // Foto kuitansi / nota pengeluaran
+  date                  DateTime              // Tanggal Terima
+  description           String?               // Catatan / Keterangan
+  type                  IncomeType            // CASH atau TRANSFER
+  receiptUrls           String[]              // Bukti foto
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
   
@@ -47,10 +48,24 @@ model Transaction {
   donationConfirmation   DonationConfirmation? @relation(fields: [donationConfirmationId], references: [id])
 }
 
+// Model Pengeluaran Kas
+model Outcome {
+  id                    String                @id @default(uuid())
+  buyer                 String                // Siapa yang belanja
+  amount                Decimal               @db.Decimal(12, 2)
+  date                  DateTime              // Tanggal Pengeluaran
+  description           String                // Keterangan Kebutuhan
+  category              ExpenseCategory       // Kategori Pengeluaran
+  receiptUrls           String[]              // Foto kuitansi / nota pengeluaran
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+}
+
 // Model Konfirmasi Donasi Online oleh Donatur
 model DonationConfirmation {
   id              String         @id @default(uuid())
   donorName       String         // Bisa "Hamba Allah"
+  donorAddress    String?
   isAnonymous     Boolean        @default(false)
   amount          Decimal        @db.Decimal(12, 2)
   transferDate    DateTime
@@ -62,8 +77,8 @@ model DonationConfirmation {
   validatedBy     String?        // ID Panitia yang melakukan validasi
   createdAt       DateTime       @default(now())
   
-  // Relasi balik ke Transaksi Utama jika di-approve
-  transaction     Transaction?
+  // Relasi balik ke Pemasukan jika di-approve
+  income          Income?
 }
 
 // Model User (Untuk Login Panitia / Admin)

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
+import { createDonationConfirmation } from "./actions"
 
 // Define custom logos for payment channels
 const paymentChannels = [
@@ -106,6 +107,7 @@ const paymentChannels = [
 export default function KonfirmasiDonasiPage() {
   // State Form
   const [donorName, setDonorName] = React.useState("")
+  const [donorAddress, setDonorAddress] = React.useState("")
   const [isAnonymous, setIsAnonymous] = React.useState(false)
   const [amountInput, setAmountInput] = React.useState("")
   const [amount, setAmount] = React.useState<number>(0)
@@ -136,15 +138,6 @@ export default function KonfirmasiDonasiPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
-  // Auto set name to "Hamba Allah" if anonymous checked
-  React.useEffect(() => {
-    if (isAnonymous) {
-      setDonorName("Hamba Allah")
-    } else if (donorName === "Hamba Allah") {
-      setDonorName("")
-    }
-  }, [isAnonymous])
-
   // Handle amount formatting
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/[^0-9]/g, "")
@@ -161,15 +154,30 @@ export default function KonfirmasiDonasiPage() {
     setAmountInput(formatted)
   }
 
-  // Handle file select
+  // Handle file select with 10MB limit
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files)
-      const newFiles = filesArray.map(file => ({
-        file,
-        preview: URL.createObjectURL(file)
-      }))
-      setSelectedFiles(prev => [...prev, ...newFiles])
+      const validFiles: { file: File; preview: string }[] = []
+
+      for (const file of filesArray) {
+        if (file.size > 10 * 1024 * 1024) {
+          setError(`Berkas "${file.name}" terlalu besar. Ukuran maksimal adalah 10MB.`)
+          return
+        }
+
+        if (!file.type.startsWith("image/")) {
+          setError(`Berkas "${file.name}" harus berupa file gambar (JPG/PNG/WebP).`)
+          return
+        }
+
+        validFiles.push({
+          file,
+          preview: URL.createObjectURL(file)
+        })
+      }
+
+      setSelectedFiles(prev => [...prev, ...validFiles])
       setError(null)
     }
   }
@@ -220,23 +228,30 @@ export default function KonfirmasiDonasiPage() {
     setIsSubmitting(true)
 
     try {
-      // Simulate API/Storage delay
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      console.log("Submitting donation confirmation:", {
-        donorName,
-        isAnonymous,
-        amount,
-        transferDate: new Date(transferDate),
-        paymentChannel,
-        status: "PENDING", // Default status
-        filesCount: selectedFiles.length,
+      const formData = new FormData()
+      formData.append("donorName", donorName.trim())
+      formData.append("donorAddress", donorAddress.trim())
+      formData.append("isAnonymous", isAnonymous.toString())
+      formData.append("amount", amount.toString())
+      formData.append("transferDate", transferDate)
+      formData.append("paymentChannel", paymentChannel)
+
+      selectedFiles.forEach((fileObj) => {
+        formData.append("files", fileObj.file)
       })
+
+      const result = await createDonationConfirmation(null, formData)
+
+      if (!result.success) {
+        setError(result.error || "Gagal menyimpan konfirmasi donasi.")
+        return
+      }
 
       setSuccess(true)
       
       // Reset form
       setDonorName("")
+      setDonorAddress("")
       setIsAnonymous(false)
       setAmountInput("")
       setAmount(0)
@@ -244,8 +259,9 @@ export default function KonfirmasiDonasiPage() {
       selectedFiles.forEach(item => URL.revokeObjectURL(item.preview))
       setSelectedFiles([])
       
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
-      setError("Gagal mengirim konfirmasi donasi. Coba beberapa saat lagi.")
+      setError(err instanceof Error ? err.message : "Gagal mengirim konfirmasi donasi. Coba beberapa saat lagi.")
     } finally {
       setIsSubmitting(false)
     }
@@ -338,7 +354,7 @@ export default function KonfirmasiDonasiPage() {
                   onChange={(e) => setDonorName(e.target.value)}
                   disabled={isAnonymous || isSubmitting}
                   className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
-                  required
+                  required={!isAnonymous}
                 />
 
                 {/* Checkbox Hamba Allah */}
@@ -347,15 +363,41 @@ export default function KonfirmasiDonasiPage() {
                     type="checkbox"
                     id="isAnonymous"
                     checked={isAnonymous}
-                    onChange={(e) => setIsAnonymous(e.target.checked)}
+                    onChange={(e) => {
+                      const checked = e.target.checked
+                      setIsAnonymous(checked)
+                      if (checked) {
+                        setDonorName("Hamba Allah")
+                        setDonorAddress("")
+                      } else if (donorName === "Hamba Allah") {
+                        setDonorName("")
+                      }
+                    }}
                     disabled={isSubmitting}
                     className="h-4.5 w-4.5 rounded-[4px] border-[2px] border-black text-emerald-600 focus:ring-0 focus:outline-none accent-black bg-white cursor-pointer"
                   />
-                  <label htmlFor="isAnonymous" className="text-xs text-neutral-700 select-none cursor-pointer font-bold flex items-center gap-1">
-                    Sembunyikan nama donatur (Tercatat sebagai <span className="text-emerald-700 font-black italic bg-emerald-50 px-1 rounded border border-emerald-200">Hamba Allah</span>)
+                  <label htmlFor="isAnonymous" className="text-xs text-neutral-700 select-none cursor-pointer font-bold">
+                    Sembunyikan Nama (Gunakan &quot;Hamba Allah&quot;)
                   </label>
                 </div>
               </div>
+
+              {/* Field: Alamat Donatur (Kondisional) */}
+              {!isAnonymous && (
+                <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
+                  <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                    <span className="text-emerald-600">◆</span> Alamat Donatur
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Contoh : Dusun I Meranjat II..."
+                    value={donorAddress}
+                    onChange={(e) => setDonorAddress(e.target.value)}
+                    disabled={isSubmitting}
+                    className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                  />
+                </div>
+              )}
 
               {/* Field: Nominal Donasi */}
               <div className="space-y-1.5">

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
+import { createPemasukan } from "./actions"
 
 export default function TambahPemasukanPage() {
   // State Form
@@ -16,6 +17,8 @@ export default function TambahPemasukanPage() {
     const today = new Date()
     return today.toISOString().split("T")[0]
   })
+  const [donorName, setDonorName] = React.useState("")
+  const [donorAddress, setDonorAddress] = React.useState("")
   const [description, setDescription] = React.useState("")
   const [isAnonymous, setIsAnonymous] = React.useState(false)
   const [addReceipt, setAddReceipt] = React.useState(false)
@@ -42,24 +45,33 @@ export default function TambahPemasukanPage() {
     setAmountInput(formatted)
   }
 
-  // Handle ketika "Hamba Allah" dicentang
-  React.useEffect(() => {
-    if (isAnonymous) {
-      setDescription("Hamba Allah")
-    } else if (description === "Hamba Allah") {
-      setDescription("")
-    }
-  }, [isAnonymous])
 
   // Handle pemilihan file
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files)
-      const newFiles = filesArray.map(file => ({
-        file,
-        preview: URL.createObjectURL(file)
-      }))
-      setSelectedFiles(prev => [...prev, ...newFiles])
+      const validFiles: { file: File; preview: string }[] = []
+
+      for (const file of filesArray) {
+        // Client-side validation: Max 10MB
+        if (file.size > 10 * 1024 * 1024) {
+          setError(`Berkas "${file.name}" terlalu besar. Ukuran maksimal adalah 10MB.`)
+          return
+        }
+
+        // Client-side validation: Image files only
+        if (!file.type.startsWith("image/")) {
+          setError(`Berkas "${file.name}" harus berupa file gambar (JPG/PNG/WebP).`)
+          return
+        }
+
+        validFiles.push({
+          file,
+          preview: URL.createObjectURL(file)
+        })
+      }
+
+      setSelectedFiles(prev => [...prev, ...validFiles])
       setError(null)
     }
   }
@@ -79,12 +91,12 @@ export default function TambahPemasukanPage() {
     }
   }, [])
 
-  // Handle submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setSuccess(false)
 
+    // Validasi dasar di sisi Frontend
     if (amount <= 0) {
       setError("Nominal pemasukan harus lebih dari Rp 0.")
       return
@@ -93,8 +105,8 @@ export default function TambahPemasukanPage() {
       setError("Tanggal penerimaan harus diisi.")
       return
     }
-    if (!description.trim()) {
-      setError("Keterangan atau Nama Donatur harus diisi.")
+    if (!isAnonymous && !donorName.trim()) {
+      setError("Nama Donatur harus diisi.")
       return
     }
     if (addReceipt && selectedFiles.length === 0) {
@@ -105,29 +117,49 @@ export default function TambahPemasukanPage() {
     setIsSubmitting(true)
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      console.log({
-        amount,
-        date: new Date(date),
-        description,
-        isAnonymous,
-        addReceipt,
-        filesCount: selectedFiles.length
+      // Siapkan FormData untuk dikirim ke Server Action
+      const formData = new FormData()
+      formData.append("amount", amount.toString())
+      formData.append("date", date)
+      formData.append("donorName", isAnonymous ? "Hamba Allah" : donorName.trim())
+      formData.append("donorAddress", isAnonymous ? "" : donorAddress.trim())
+      formData.append("description", description.trim())
+      formData.append("isAnonymous", isAnonymous ? "true" : "false")
+      formData.append("addReceipt", addReceipt ? "true" : "false")
+
+      // Masukkan file-file biner ke FormData
+      selectedFiles.forEach((fileObj) => {
+        formData.append("files", fileObj.file)
       })
 
+      // Panggil Server Action
+      const result = await createPemasukan(null, formData)
+
+      if (!result.success) {
+        setError(result.error || "Gagal menyimpan data pemasukan.")
+        return
+      }
+
+      // Sukses
       setSuccess(true)
       setAmountInput("")
       setAmount(0)
+      setDonorName("")
+      setDonorAddress("")
       setDescription("")
       setIsAnonymous(false)
       setAddReceipt(false)
+      
+      // Bersihkan preview file
       selectedFiles.forEach(item => URL.revokeObjectURL(item.preview))
       setSelectedFiles([])
       
+      // Scroll ke atas agar notifikasi sukses terlihat
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+
       setTimeout(() => setSuccess(false), 4000)
     } catch (err) {
-      setError("Gagal menyimpan data pemasukan.")
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan sistem saat menyimpan data.")
     } finally {
       setIsSubmitting(false)
     }
@@ -153,7 +185,7 @@ export default function TambahPemasukanPage() {
         {success && (
           <div className="flex items-center gap-2 rounded-[14px] border-[2.5px] border-black bg-emerald-100 p-3.5 text-xs text-emerald-900 font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold border-[1.5px] border-black text-[10px]">✓</div>
-            <span>Pemasukan berhasil dicatat ke database Supabase!</span>
+            <span>Pemasukkan berhasil dicatat</span>
           </div>
         )}
 
@@ -167,7 +199,7 @@ export default function TambahPemasukanPage() {
         <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_#2563eb] overflow-hidden">
           <CardHeader className="pb-3 border-b-[2.5px] border-black bg-blue-50/50">
             <CardTitle className="text-base font-black uppercase tracking-tight text-blue-800">Detail Pemasukan</CardTitle>
-            <CardDescription className="text-xs text-neutral-700 font-medium">Catat dana luring/tunai masuk dari para donatur.</CardDescription>
+            <CardDescription className="text-xs text-neutral-700 font-medium">Catat Pemasukan Kas Untuk Keperluan Pembangunan Menara Masjid Al-Ikhlas.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-4">
             
@@ -194,7 +226,7 @@ export default function TambahPemasukanPage() {
                 </p>
               ) : (
                 <p className="text-[10px] text-muted-foreground font-medium pl-1">
-                  Masukkan angka tanpa bingung, sistem dibuat cepat dibaca.
+                  Nominal terbilang akan muncul disini.
                 </p>
               )}
             </div>
@@ -214,19 +246,19 @@ export default function TambahPemasukanPage() {
               />
             </div>
 
-            {/* Input Nama Donatur / Keterangan */}
+            {/* Input Nama Donatur */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
-                <span className="text-blue-600">◆</span> Nama Donatur / Keterangan
+                <span className="text-blue-600">◆</span> Nama Donatur
               </label>
               <Input
                 type="text"
-                placeholder="cth: Bpk. Slamet, Bpk. Haji Ahmad"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Contoh : Bpk. Faisal, Bpk. Lukman"
+                value={donorName}
+                onChange={(e) => setDonorName(e.target.value)}
                 disabled={isAnonymous || isSubmitting}
                 className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-blue-600 focus-visible:shadow-[2px_2px_0px_0px_#2563eb] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
-                required
+                required={!isAnonymous}
               />
 
               {/* Checkbox Anonim / Hamba Allah */}
@@ -235,14 +267,55 @@ export default function TambahPemasukanPage() {
                   type="checkbox"
                   id="isAnonymous"
                   checked={isAnonymous}
-                  onChange={(e) => setIsAnonymous(e.target.checked)}
+                  onChange={(e) => {
+                    const checked = e.target.checked
+                    setIsAnonymous(checked)
+                    if (checked) {
+                      setDonorName("Hamba Allah")
+                      setDonorAddress("")
+                    } else if (donorName === "Hamba Allah") {
+                      setDonorName("")
+                    }
+                  }}
                   disabled={isSubmitting}
                   className="h-4.5 w-4.5 rounded-[4px] border-[2px] border-black text-blue-600 focus:ring-0 focus:outline-none accent-black bg-white cursor-pointer"
                 />
                 <label htmlFor="isAnonymous" className="text-xs text-neutral-700 select-none cursor-pointer font-bold">
-                  Sembunyikan Nama (Gunakan "Hamba Allah")
+                  Sembunyikan Nama (Gunakan &quot;Hamba Allah&quot;)
                 </label>
               </div>
+            </div>
+
+            {/* Input Alamat Donatur (Kondisional jika tidak anonim) */}
+            {!isAnonymous && (
+              <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
+                <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                  <span className="text-blue-600">◆</span> Alamat Donatur
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Contoh : Dusun I Meranjat II..."
+                  value={donorAddress}
+                  onChange={(e) => setDonorAddress(e.target.value)}
+                  disabled={isSubmitting}
+                  className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-blue-600 focus-visible:shadow-[2px_2px_0px_0px_#2563eb] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                />
+              </div>
+            )}
+
+            {/* Input Keterangan / Catatan */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                <span className="text-blue-600">◆</span> Keterangan / Catatan
+              </label>
+              <Input
+                type="text"
+                placeholder="Contoh : Untuk beli semen 50 sak, pasir, dll."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                disabled={isSubmitting}
+                className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-blue-600 focus-visible:shadow-[2px_2px_0px_0px_#2563eb] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+              />
             </div>
 
             <hr className="border-t-[2.5px] border-black" />
@@ -269,10 +342,7 @@ export default function TambahPemasukanPage() {
                   <span className="text-[11px] font-black text-neutral-700 uppercase tracking-wider">Dokumen pendukung</span>
                   <div className="flex gap-1.5">
                     <span className="text-[9px] font-bold border border-black bg-white px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
-                      Disarankan
-                    </span>
-                    <span className="text-[9px] font-bold border border-black bg-pink-100 text-pink-900 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
-                      Wajib rapi
+                      Jika Ada
                     </span>
                   </div>
                 </div>
@@ -299,7 +369,7 @@ export default function TambahPemasukanPage() {
                     <Upload className="h-5 w-5 text-black font-bold" />
                   </div>
                   <p className="text-xs font-black text-neutral-800">Klik untuk unggah gambar kuitansi</p>
-                  <p className="text-[9px] text-neutral-500 font-semibold mt-0.5">Bisa pilih lebih dari 1 foto, preview terasa ringan dan jelas.</p>
+                  <p className="text-[9px] text-neutral-500 font-semibold mt-0.5">Bisa pilih lebih dari 1 foto.</p>
                 </div>
 
                 {/* Preview Berkas terpilih */}
@@ -333,21 +403,21 @@ export default function TambahPemasukanPage() {
 
           </CardContent>
           
-          <CardFooter className="pt-2 pb-4 border-t-[2.5px] border-black bg-blue-50/20 grid grid-cols-2 gap-3">
-            <Button
+          <CardFooter className="pt-2 pb-4 border-t-[2.5px] border-black bg-blue-50/20">
+            {/* <Button
               type="button"
               variant="outline"
               disabled={isSubmitting}
               className="text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-white text-black rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 hover:bg-neutral-50"
             >
               Simpan draft
-            </Button>
+            </Button> */}
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-blue-600 text-white rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 hover:bg-blue-700"
+              className="text-xs font-black uppercase tracking-wider border-[2.5px] border-black bg-blue-600 text-white rounded-[12px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all py-5 hover:bg-blue-700 w-full"
             >
-              {isSubmitting ? "Menyimpan..." : "Simpan transaksi"}
+              {isSubmitting ? "Menyimpan..." : "Catat Pemasukan"}
             </Button>
           </CardFooter>
         </Card>
