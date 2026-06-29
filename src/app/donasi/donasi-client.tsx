@@ -12,6 +12,7 @@ import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createDonationConfirmation } from "./actions"
 import { AlertModal } from "@/components/shared/alert-modal"
 import { supabase } from "@/lib/supabase"
+import Footer from "@/components/shared/footer"
 
 
 // Helper component for bank logo image
@@ -331,7 +332,7 @@ export default function KonfirmasiDonasiPage() {
         title={alertModal.title}
       />
 
-      <div className="relative min-h-screen bg-[#faf8f5] text-neutral-900 pb-20 font-sans">
+      <div className="relative min-h-screen bg-[#faf8f5] text-neutral-900 font-sans flex flex-col">
       
       {/* Premium Header */}
       <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-4 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
@@ -347,7 +348,7 @@ export default function KonfirmasiDonasiPage() {
       </header>
 
       {/* Main Content Area */}
-      <main className="p-4 md:p-8 w-full max-w-4xl lg:max-w-5xl mx-auto animate-in fade-in duration-300 pb-24">
+      <main className="p-4 md:p-8 w-full max-w-4xl lg:max-w-5xl mx-auto animate-in fade-in duration-300 flex-grow pb-12">
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
           
@@ -812,6 +813,7 @@ export default function KonfirmasiDonasiPage() {
         </div>
 
       </main>
+      <Footer />
     </div>
     </>
   )
