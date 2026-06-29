@@ -6,6 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { formatRupiah } from "@/lib/format"
 import { ProgressBar, PieChart, DonutChart, BarChart } from "@/components/dashboard/dashboard-charts"
 
+interface Donor {
+  no: number
+  donorName: string
+  donorAddress: string
+  donorPhone: string
+}
+
 interface LaporanClientProps {
   totalCash: number
   totalTransfer: number
@@ -31,6 +38,7 @@ interface LaporanClientProps {
     income: number
     expense: number
   }[]
+  donors?: Donor[]
 }
 
 export default function LaporanClient({
@@ -40,6 +48,7 @@ export default function LaporanClient({
   expenseCategories,
   transferChannels,
   monthlyTrend,
+  donors = [],
   isAdmin = true
 }: LaporanClientProps & { isAdmin?: boolean }) {
   // Hitung agregasi tambahan
@@ -273,6 +282,70 @@ export default function LaporanClient({
         </Card>
 
       </div>
+
+      {/* =============================================================
+          4. TABEL DAFTAR DONATUR MASJID (NEOBRUTALIST TABEL)
+          ============================================================= */}
+      <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+        <CardHeader className="pb-3 border-b-[2.5px] border-black bg-neutral-50/50">
+          <CardTitle className="text-xs font-black uppercase tracking-tight text-neutral-800">
+            🕌 Daftar Donatur Masjid Al-Ikhlas
+          </CardTitle>
+          <CardDescription className="text-[10px] text-neutral-500 font-medium">
+            Kumpulan seluruh nama donatur beserta nomor kontak aktif (diperoleh dari input manual & donasi online).
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-0 overflow-x-auto">
+          {donors.length === 0 ? (
+            <div className="p-8 text-center text-xs font-bold text-neutral-400 italic">
+              Belum ada data donatur yang tersimpan.
+            </div>
+          ) : (
+            <table className="w-full text-left text-xs font-bold text-neutral-800 min-w-[500px]">
+              <thead className="bg-[#faf8f5] border-b-[2px] border-black text-[10px] uppercase text-neutral-500 tracking-wider">
+                <tr>
+                  <th className="px-4 py-3 border-r-[1.5px] border-black text-center w-12">No</th>
+                  <th className="px-4 py-3 border-r-[1.5px] border-black">Nama Donatur</th>
+                  <th className="px-4 py-3 border-r-[1.5px] border-black">Alamat</th>
+                  <th className="px-4 py-3 border-r-[1.5px] border-black text-center w-36">No. Telepon / WA</th>
+                  <th className="px-4 py-3 text-center w-28">Hubungi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y-[1.5px] divide-black">
+                {donors.map((item, idx) => {
+                  const cleanedPhone = item.donorPhone 
+                    ? `62${item.donorPhone.replace(/^0/, "").replace(/[^0-9]/g, "")}` 
+                    : "";
+                  return (
+                    <tr key={idx} className="hover:bg-neutral-50/50 transition-colors">
+                      <td className="px-4 py-3 border-r-[1.5px] border-black text-center tabular-nums">{idx + 1}</td>
+                      <td className="px-4 py-3 border-r-[1.5px] border-black uppercase text-[11px] font-black">{item.donorName}</td>
+                      <td className="px-4 py-3 border-r-[1.5px] border-black text-neutral-600 font-medium">{item.donorAddress || "-"}</td>
+                      <td className="px-4 py-3 border-r-[1.5px] border-black text-center text-neutral-700 font-medium tabular-nums">
+                        {item.donorPhone || "-"}
+                      </td>
+                      <td className="px-4 py-2.5 text-center">
+                        {cleanedPhone ? (
+                          <a
+                            href={`https://web.whatsapp.com/send?phone=${cleanedPhone}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 hover:bg-emerald-200 border-[1.5px] border-black rounded-[8px] shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-px active:translate-y-px active:shadow-none transition-all cursor-pointer"
+                          >
+                            <span>WhatsApp</span>
+                          </a>
+                        ) : (
+                          <span className="text-[10px] text-neutral-400 font-medium italic">Tidak ada WA</span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          )}
+        </CardContent>
+      </Card>
 
     </div>
   )

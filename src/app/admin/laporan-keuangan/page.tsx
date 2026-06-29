@@ -130,6 +130,70 @@ export default async function LaporanKeuanganPage() {
     }
   })
 
+  // 6. Ambil data donatur dari Income (pemasukan manual) dan DonationConfirmation (donasi online)
+  const [incomeDonors, confirmationDonors] = await Promise.all([
+    db.income.findMany({
+      select: {
+        donorName: true,
+        donorAddress: true,
+        donorPhone: true
+      }
+    }),
+    db.donationConfirmation.findMany({
+      select: {
+        donorName: true,
+        donorAddress: true,
+        donorPhone: true,
+        isAnonymous: true
+      }
+    })
+  ])
+
+  // Gabungkan dan filter unik
+  const donorMap = new Map<string, { donorName: string; donorAddress: string; donorPhone: string }>()
+
+  // Proses donatur dari income
+  incomeDonors.forEach(item => {
+    const key = `${item.donorName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
+    if (!donorMap.has(key)) {
+      donorMap.set(key, {
+        donorName: item.donorName,
+        donorAddress: item.donorAddress || "",
+        donorPhone: item.donorPhone || ""
+      })
+    } else {
+      const existing = donorMap.get(key)!
+      if (!existing.donorAddress && item.donorAddress) {
+        existing.donorAddress = item.donorAddress
+      }
+    }
+  })
+
+  // Proses donatur dari konfirmasi online
+  confirmationDonors.forEach(item => {
+    const finalName = item.isAnonymous ? "Hamba Allah" : item.donorName
+    const key = `${finalName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
+    if (!donorMap.has(key)) {
+      donorMap.set(key, {
+        donorName: finalName,
+        donorAddress: item.donorAddress || "",
+        donorPhone: item.donorPhone || ""
+      })
+    } else {
+      const existing = donorMap.get(key)!
+      if (!existing.donorAddress && item.donorAddress) {
+        existing.donorAddress = item.donorAddress
+      }
+    }
+  })
+
+  const donors = Array.from(donorMap.values()).map((d, index) => ({
+    no: index + 1,
+    donorName: d.donorName,
+    donorAddress: d.donorAddress,
+    donorPhone: d.donorPhone
+  }))
+
   // ==========================================
   // PENGIRIMAN DATA KE KOMPONEN CLIENT (VIEW)
   // ==========================================
@@ -141,6 +205,7 @@ export default async function LaporanKeuanganPage() {
       expenseCategories={expenseCategories}
       transferChannels={transferChannels}
       monthlyTrend={monthlyTrend}
+      donors={donors}
     />
   )
 }
