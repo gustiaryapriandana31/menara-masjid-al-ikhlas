@@ -20,8 +20,14 @@ export function OrganizationJsonLd() {
     knowsAbout: [
       'Pembangunan Menara Masjid',
       'Donasi Masjid',
+      'Donasi Menara Masjid',
       'Transparansi Keuangan Masjid',
       'Wakaf Jariyah',
+      'Masjid Al-Ikhlas Meranjat II',
+      'Meranjat 2',
+      'Meranjat II',
+      'DKM Al-Ikhlas',
+      'Ngopi Besan',
     ],
     address: {
       '@type': 'PostalAddress',
