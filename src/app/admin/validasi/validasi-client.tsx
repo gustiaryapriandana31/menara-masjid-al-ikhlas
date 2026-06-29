@@ -1,10 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Check, X, Eye, ShieldAlert, Calendar, CreditCard, User, MapPin, Loader2, HeartHandshake } from "lucide-react"
+import { Check, X, Eye, ShieldAlert, Calendar, CreditCard, User, MapPin, Loader2, HeartHandshake, Phone } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { formatRupiah } from "@/lib/format"
+import { useRouter } from "next/navigation"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
 import { approveDonationAction, rejectDonationAction } from "./actions"
 
@@ -12,21 +13,28 @@ interface SerializedConfirmation {
   id: string
   donorName: string
   donorAddress: string
+  donorPhone: string
   isAnonymous: boolean
   amount: number
   transferDate: string
   paymentChannel: string
   proofUrls: string[]
   status: string
+  rejectionReason: string
+  validatedAt: string
   createdAt: string
 }
 
 interface ValidasiClientProps {
   initialConfirmations: SerializedConfirmation[]
+  historyConfirmations: SerializedConfirmation[]
 }
 
-export default function ValidasiClient({ initialConfirmations }: ValidasiClientProps) {
+export default function ValidasiClient({ initialConfirmations, historyConfirmations }: ValidasiClientProps) {
+  const router = useRouter()
   const [confirmations, setConfirmations] = React.useState(initialConfirmations)
+  // Tidak pakai useState agar tabel histori langsung update saat router.refresh() dipanggil
+  const history = historyConfirmations
   
   // State Modal & Detail
   const [selectedItem, setSelectedItem] = React.useState<SerializedConfirmation | null>(null)
@@ -86,9 +94,10 @@ export default function ValidasiClient({ initialConfirmations }: ValidasiClientP
     try {
       const res = await approveDonationAction(selectedItem.id)
       if (res.success) {
-        // Hapus item yang berhasil divalidasi dari list lokal
+        // Hapus item dari pending list lokal, lalu refresh server data untuk tabel histori
         setConfirmations(prev => prev.filter(c => c.id !== selectedItem.id))
         setSelectedItem(null)
+        router.refresh()
       } else {
         setErrorMsg(res.error || "Gagal menyetujui donasi.")
       }
@@ -119,6 +128,7 @@ export default function ValidasiClient({ initialConfirmations }: ValidasiClientP
       if (res.success) {
         setConfirmations(prev => prev.filter(c => c.id !== selectedItem.id))
         setSelectedItem(null)
+        router.refresh()
       } else {
         setErrorMsg(res.error || "Gagal menolak donasi.")
       }
@@ -167,8 +177,8 @@ export default function ValidasiClient({ initialConfirmations }: ValidasiClientP
               >
                 <CardHeader className="pb-2.5 border-b-[2.5px] border-black bg-neutral-50/50">
                   <div className="flex justify-between items-start">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500 bg-neutral-200 border border-neutral-400 px-2 py-0.5 rounded-full">
-                      Pending Approval
+                    <span className="text-[9px] font-black uppercase tracking-widest text-amber-800 bg-amber-100 border border-amber-400 px-2 py-0.5 rounded-full">
+                      ⏳ MENUNGGU PENGECEKAN
                     </span>
                     <span className="text-[9px] text-neutral-400 font-bold tabular-nums">
                       {item.createdAt.slice(0, 10)}
@@ -216,6 +226,138 @@ export default function ValidasiClient({ initialConfirmations }: ValidasiClientP
           </div>
         )}
 
+      </div>
+
+      {/* ===============================================================
+          HISTORI DONASI (DITERIMA & DITOLAK)
+          =============================================================== */}
+      <div className="space-y-4 pt-6 border-t-[2.5px] border-black border-dashed">
+        <div className="flex items-center gap-3">
+          <div className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border-[2px] border-black bg-neutral-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <HeartHandshake className="h-4 w-4 text-neutral-700" />
+          </div>
+          <div>
+            <h2 className="text-xs font-black uppercase tracking-tight text-neutral-800">Histori Validasi Donasi</h2>
+            <p className="text-[10px] text-muted-foreground font-medium">Rekap donasi online yang telah divalidasi (diterima maupun ditolak). Hubungi donatur jika diperlukan klarifikasi.</p>
+          </div>
+        </div>
+
+        {history.length === 0 ? (
+          <Card className="p-6 text-center border-[2px] border-dashed border-neutral-300 bg-neutral-50 rounded-[16px]">
+            <p className="text-[11px] text-neutral-400 font-bold">Belum ada histori validasi donasi.</p>
+          </Card>
+        ) : (
+          <div className="overflow-x-auto border-[2.5px] border-black rounded-[16px] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+            <table className="w-full text-[11px] border-collapse min-w-[720px]">
+              <thead>
+                <tr className="bg-neutral-900 text-white">
+                  <th className="px-3 py-2.5 text-left font-black uppercase tracking-wider rounded-tl-[13px] w-8">No</th>
+                  <th className="px-3 py-2.5 text-left font-black uppercase tracking-wider">Nama Donatur</th>
+                  <th className="px-3 py-2.5 text-right font-black uppercase tracking-wider">Nominal</th>
+                  <th className="px-3 py-2.5 text-left font-black uppercase tracking-wider">Saluran</th>
+                  <th className="px-3 py-2.5 text-left font-black uppercase tracking-wider">Tgl Transfer</th>
+                  <th className="px-3 py-2.5 text-center font-black uppercase tracking-wider">Status</th>
+                  <th className="px-3 py-2.5 text-left font-black uppercase tracking-wider">Keterangan / Alasan</th>
+                  <th className="px-3 py-2.5 text-left font-black uppercase tracking-wider">Tgl Validasi</th>
+                  <th className="px-3 py-2.5 text-center font-black uppercase tracking-wider rounded-tr-[13px]">WA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {history.map((item, idx) => {
+                  const isApproved = item.status === "APPROVED"
+                  const rowBg = isApproved
+                    ? idx % 2 === 0 ? "bg-emerald-50/40" : "bg-white"
+                    : idx % 2 === 0 ? "bg-red-50/30" : "bg-white"
+                  const waNumber = item.donorPhone
+                    ? `62${item.donorPhone.replace(/^0/, "").replace(/\s/g, "")}`
+                    : null
+                  return (
+                    <tr
+                      key={item.id}
+                      className={`${rowBg} border-t border-neutral-200 hover:brightness-95 transition-all`}
+                    >
+                      {/* No */}
+                      <td className="px-3 py-2.5 font-black text-neutral-400 tabular-nums">{idx + 1}</td>
+
+                      {/* Nama Donatur */}
+                      <td className="px-3 py-2.5">
+                        <p className="font-black text-neutral-900">
+                          {item.isAnonymous ? "Hamba Allah" : item.donorName}
+                        </p>
+                        {item.donorAddress && (
+                          <p className="text-[9px] text-neutral-400 font-medium flex items-center gap-0.5 mt-0.5">
+                            <MapPin className="h-2.5 w-2.5 shrink-0" />{item.donorAddress}
+                          </p>
+                        )}
+                      </td>
+
+                      {/* Nominal */}
+                      <td className="px-3 py-2.5 text-right font-black tabular-nums whitespace-nowrap">
+                        <span className={isApproved ? "text-emerald-700" : "text-red-700"}>
+                          Rp {formatRupiah(item.amount)}
+                        </span>
+                      </td>
+
+                      {/* Saluran */}
+                      <td className="px-3 py-2.5 font-semibold text-neutral-600 whitespace-nowrap">
+                        {getChannelLabel(item.paymentChannel)}
+                      </td>
+
+                      {/* Tgl Transfer */}
+                      <td className="px-3 py-2.5 font-semibold text-neutral-600 tabular-nums whitespace-nowrap">
+                        {item.transferDate}
+                      </td>
+
+                      {/* Status */}
+                      <td className="px-3 py-2.5 text-center">
+                        {isApproved ? (
+                          <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-400">
+                            <Check className="h-3 w-3" /> Diterima
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-400">
+                            <X className="h-3 w-3" /> Ditolak
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Keterangan / Alasan */}
+                      <td className="px-3 py-2.5 text-neutral-500 font-medium max-w-[160px]">
+                        {item.rejectionReason ? (
+                          <span className="text-red-700 font-semibold">{item.rejectionReason}</span>
+                        ) : (
+                          <span className="text-neutral-300">—</span>
+                        )}
+                      </td>
+
+                      {/* Tgl Validasi */}
+                      <td className="px-3 py-2.5 font-semibold text-neutral-500 tabular-nums whitespace-nowrap">
+                        {item.validatedAt || <span className="text-neutral-300">—</span>}
+                      </td>
+
+                      {/* WA */}
+                      <td className="px-3 py-2.5 text-center">
+                        {waNumber ? (
+                          <a
+                            href={`https://web.whatsapp.com/send?phone=${waNumber}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center h-7 w-7 rounded-[8px] border-[2px] border-black bg-emerald-100 hover:bg-emerald-200 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                            title={item.donorPhone}
+                          >
+                            <Phone className="h-3 w-3 text-emerald-700" />
+                          </a>
+                        ) : (
+                          <span className="text-neutral-300 text-[9px] font-bold">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* =============================================================
@@ -283,12 +425,35 @@ export default function ValidasiClient({ initialConfirmations }: ValidasiClientP
                   </span>
                 </div>
 
-                {selectedItem.donorAddress && (
-                  <div className="col-span-2 space-y-0.5 pt-1 border-t border-neutral-200">
-                    <span className="text-neutral-400 block text-[9px] uppercase">Alamat</span>
-                    <span className="text-neutral-900 flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5 text-neutral-400" /> {selectedItem.donorAddress}
-                    </span>
+                {(selectedItem.donorAddress || selectedItem.donorPhone) && (
+                  <div className="col-span-2 pt-1 border-t border-neutral-200">
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Alamat */}
+                      <div className="space-y-0.5">
+                        <span className="text-neutral-400 block text-[9px] uppercase">Alamat</span>
+                        <span className="text-neutral-900 flex items-center gap-1.5 text-xs font-semibold">
+                          <MapPin className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                          {selectedItem.donorAddress || <span className="text-neutral-300 font-normal">—</span>}
+                        </span>
+                      </div>
+
+                      {/* No. Telepon / WA */}
+                      <div className="space-y-0.5">
+                        <span className="text-neutral-400 block text-[9px] uppercase">No. Telepon / WA</span>
+                        {selectedItem.donorPhone ? (
+                          <a
+                            href={`https://wa.me/62${selectedItem.donorPhone.replace(/^0/, "").replace(/\s/g, "")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-emerald-700 font-black flex items-center gap-1.5 hover:underline text-xs"
+                          >
+                            📞 {selectedItem.donorPhone}
+                          </a>
+                        ) : (
+                          <span className="text-neutral-300 text-xs font-normal">—</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
 

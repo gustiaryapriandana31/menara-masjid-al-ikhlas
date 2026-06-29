@@ -39,6 +39,7 @@ export async function approveDonationAction(id: string) {
         data: {
           donorName: confirmation.donorName,
           donorAddress: confirmation.donorAddress,
+          donorPhone: confirmation.donorPhone,
           amount: confirmation.amount,
           date: confirmation.transferDate,
           description: `Donasi Online via ${confirmation.paymentChannel}`,
