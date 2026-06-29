@@ -1,11 +1,31 @@
 import db from '@/lib/db'
 import LaporanPublicClient from './laporan-public-client'
+import { LaporanPageJsonLd } from '@/components/shared/json-ld'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Laporan Keuangan & Transparansi - Menara Al-Ikhlas',
-  description: 'Informasi transparansi saldo kas, grafik bulanan, dan log rincian transaksi pembangunan Menara Masjid Al-Ikhlas.'
+  title: 'Laporan Keuangan & Transparansi – Menara Masjid Al-Ikhlas',
+  description:
+    'Laporan keuangan transparan pembangunan Menara Masjid Al-Ikhlas. Lihat total saldo kas, riwayat donasi, grafik bulanan, dan alokasi pengeluaran secara real-time.',
+  keywords: [
+    'laporan keuangan masjid',
+    'transparansi dana masjid al ikhlas',
+    'saldo kas masjid',
+    'riwayat donasi masjid al ikhlas',
+    'laporan donasi masjid',
+    'keuangan pembangunan menara masjid',
+  ],
+  alternates: {
+    canonical: 'https://menara-masjid-al-ikhlas.vercel.app/laporan-keuangan',
+  },
+  openGraph: {
+    title: 'Laporan Keuangan & Transparansi – Menara Masjid Al-Ikhlas',
+    description:
+      'Pantau saldo kas, riwayat donasi, dan pengeluaran pembangunan Menara Masjid Al-Ikhlas secara transparan.',
+    url: 'https://menara-masjid-al-ikhlas.vercel.app/laporan-keuangan',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
+  },
 }
 
 export default async function PublicLaporanPage() {
@@ -121,13 +141,16 @@ export default async function PublicLaporanPage() {
   })
 
   return (
-    <LaporanPublicClient
-      totalCash={totalCash}
-      totalTransfer={totalTransfer}
-      totalExpense={totalExpense}
-      expenseCategories={expenseCategories}
-      transferChannels={transferChannels}
-      monthlyTrend={monthlyTrend}
-    />
+    <>
+      <LaporanPageJsonLd />
+      <LaporanPublicClient
+        totalCash={totalCash}
+        totalTransfer={totalTransfer}
+        totalExpense={totalExpense}
+        expenseCategories={expenseCategories}
+        transferChannels={transferChannels}
+        monthlyTrend={monthlyTrend}
+      />
+    </>
   )
 }

@@ -2,16 +2,43 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Heart, ArrowRight, BarChart2, ShieldCheck, DollarSign, Calendar, Users, Building, Mail, Phone, MapPin, Shield, Award, Megaphone, Eye, Camera, HardHat, CheckCircle2, UserCheck, Briefcase } from "lucide-react";
+import { HomePageJsonLd, OrganizationJsonLd } from "@/components/shared/json-ld";
 
 export const metadata: Metadata = {
-  title: "Pembangunan Menara Masjid Al-Ikhlas",
-  description: "Sistem Pencatatan & Transparansi Keuangan Pembangunan Menara Masjid Al-Ikhlas",
+  title: "Menara Masjid Al-Ikhlas – Donasi Pembangunan & Transparansi Keuangan",
+  description:
+    "Donasikan untuk pembangunan Menara Masjid Al-Ikhlas. Wakaf jariyah terpercaya dengan laporan keuangan transparan, konfirmasi donasi online via transfer bank & QRIS. Bersama kita wujudkan Menara Al-Ikhlas.",
+  keywords: [
+    "donasi menara masjid al ikhlas",
+    "wakaf menara masjid",
+    "donasi masjid al ikhlas",
+    "sedekah jariyah masjid",
+    "donasi pembangunan masjid",
+    "menara masjid al ikhlas",
+    "masjid al ikhlas",
+    "konfirmasi donasi masjid",
+    "laporan keuangan masjid",
+    "donasi QRIS masjid",
+  ],
+  alternates: {
+    canonical: "https://menara-masjid-al-ikhlas.vercel.app",
+  },
+  openGraph: {
+    title: "Donasi Pembangunan Menara Masjid Al-Ikhlas",
+    description:
+      "Wujudkan pahala jariyah Anda. Donasi pembangunan Menara Masjid Al-Ikhlas – transparan, amanah, real-time.",
+    url: "https://menara-masjid-al-ikhlas.vercel.app",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export default function Home() {
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col font-sans">
+    <>
+      <HomePageJsonLd />
+      <OrganizationJsonLd />
+      <main className="min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col font-sans">
       
       {/* 2. HERO SECTION */}
       <section className="p-4 md:p-8 w-full max-w-5xl mx-auto space-y-8 pt-8 md:pt-16">
@@ -547,5 +574,6 @@ export default function Home() {
       </footer>
 
     </main>
+    </>
   );
 }
