@@ -5,9 +5,11 @@ import { PlusCircle, MinusCircle, Home, FileText, ShieldAlert } from "lucide-rea
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useNotifications } from "./notification-provider"
 
 export function BottomNavbar() {
   const pathname = usePathname()
+  const { pendingCount } = useNotifications()
 
   const navItems = [
     {
@@ -62,13 +64,20 @@ export function BottomNavbar() {
             >
               <div
                 className={cn(
-                  "flex h-8 w-11 items-center justify-center rounded-[10px] border-[1.5px] border-transparent transition-all",
+                  "relative flex h-8 w-11 items-center justify-center rounded-[10px] border-[1.5px] border-transparent transition-all",
                   isActive 
                     ? cn("border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]", item.activeBg) 
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Icon className="h-4 w-4" />
+                
+                {/* Mobile badge count for validation pending */}
+                {item.url === "/admin/validasi" && pendingCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full border border-black bg-red-500 px-1 text-[8px] font-black text-white shadow-[0.5px_0.5px_0px_0px_rgba(0,0,0,1)]">
+                    {pendingCount}
+                  </span>
+                )}
               </div>
               <span className={cn("text-[8px] uppercase tracking-wider font-semibold text-center whitespace-nowrap", isActive ? item.activeText : "text-muted-foreground")}>
                 {item.title}
