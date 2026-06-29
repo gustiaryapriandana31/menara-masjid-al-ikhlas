@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
+import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createDonationConfirmation } from "./actions"
 
 // Helper component for bank logo image
@@ -66,6 +67,7 @@ const paymentChannels = [
 ]
 
 export default function KonfirmasiDonasiPage() {
+  const { triggerAnimation } = useMoneyAnimation()
   // State Form
   const [donorName, setDonorName] = React.useState("")
   const [donorAddress, setDonorAddress] = React.useState("")
@@ -237,8 +239,9 @@ export default function KonfirmasiDonasiPage() {
         return
       }
 
-      setSuccess(true)
-      
+      // Trigger money animation
+      triggerAnimation("income", amount, isAnonymous ? "Hamba Allah" : donorName.trim())
+
       // Reset form
       setDonorName("")
       setDonorAddress("")
@@ -251,7 +254,11 @@ export default function KonfirmasiDonasiPage() {
       selectedFiles.forEach(item => URL.revokeObjectURL(item.preview))
       setSelectedFiles([])
       
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      // Delay success banner until animation closes
+      setTimeout(() => {
+        setSuccess(true)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 3000)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal mengirim konfirmasi donasi. Coba beberapa saat lagi.")
     } finally {

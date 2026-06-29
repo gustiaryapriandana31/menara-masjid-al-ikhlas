@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.json"
 };
 
+import { MoneyAnimationProvider } from "@/components/shared/money-animation-provider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,7 +38,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegister />
-        {children}
+        <MoneyAnimationProvider>
+          {children}
+        </MoneyAnimationProvider>
       </body>
     </html>
   );
