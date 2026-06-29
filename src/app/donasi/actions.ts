@@ -11,6 +11,7 @@ const createDonationConfirmationSchema = z.object({
     .min(3, "Nama donatur minimal 3 karakter")
     .max(255, "Nama donatur terlalu panjang"),
   donorAddress: z.string().max(255, "Alamat donatur terlalu panjang").optional(),
+  donorPhone: z.string().max(20, "Nomor telepon tidak valid").optional(),
   isAnonymous: z.boolean().default(false),
   amount: z.number().positive("Nominal donasi harus lebih dari Rp 0"),
   transferDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
@@ -27,6 +28,7 @@ export async function createDonationConfirmation(prevState: unknown, formData: F
     // 1. Extract values from FormData
     const rawDonorName = formData.get('donorName')
     const rawDonorAddress = formData.get('donorAddress')
+    const rawDonorPhone = formData.get('donorPhone')
     const rawIsAnonymous = formData.get('isAnonymous') === 'true'
     const rawAmount = formData.get('amount')
     const rawTransferDate = formData.get('transferDate')
@@ -37,6 +39,7 @@ export async function createDonationConfirmation(prevState: unknown, formData: F
     const validatedFields = createDonationConfirmationSchema.safeParse({
       donorName: rawDonorName?.toString(),
       donorAddress: rawDonorAddress?.toString() || undefined,
+      donorPhone: rawDonorPhone?.toString() || undefined,
       isAnonymous: rawIsAnonymous,
       amount: rawAmount ? parseInt(rawAmount.toString(), 10) : 0,
       transferDate: rawTransferDate?.toString(),
@@ -99,6 +102,7 @@ export async function createDonationConfirmation(prevState: unknown, formData: F
       data: {
         donorName: data.donorName,
         donorAddress: data.donorAddress || null,
+        donorPhone: data.donorPhone || null,
         isAnonymous: data.isAnonymous,
         amount: data.amount,
         transferDate: new Date(data.transferDate),

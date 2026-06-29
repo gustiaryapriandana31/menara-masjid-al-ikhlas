@@ -35,6 +35,7 @@ model Income {
   id                    String                @id @default(uuid())
   donorName             String                // Nama Donatur (bisa Hamba Allah)
   donorAddress          String?               // Alamat Donatur
+  donorPhone            String?               // No. Telepon / WA Donatur
   amount                Decimal               @db.Decimal(12, 2)
   date                  DateTime              // Tanggal Terima
   description           String?               // Catatan / Keterangan
@@ -66,6 +67,7 @@ model DonationConfirmation {
   id              String         @id @default(uuid())
   donorName       String         // Bisa "Hamba Allah"
   donorAddress    String?
+  donorPhone      String?        // No. Telepon/WA donatur (untuk dihubungi panitia)
   isAnonymous     Boolean        @default(false)
   amount          Decimal        @db.Decimal(12, 2)
   transferDate    DateTime

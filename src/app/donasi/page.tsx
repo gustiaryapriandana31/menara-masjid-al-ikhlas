@@ -10,87 +10,48 @@ import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
 import { createDonationConfirmation } from "./actions"
 
-// Define custom logos for payment channels
+// Helper component for bank logo image
+const BankLogoImg = ({ src, alt }: { src: string; alt: string }) => (
+  // eslint-disable-next-line @next/next/no-img-element
+  <img src={src} alt={alt} className="h-6 w-auto object-contain" />
+)
+
+// Define payment channels with real logo images
 const paymentChannels = [
   {
     value: "SUMSEL_BABEL_SYARIAH",
     label: "Bank SumSel Babel Syariah",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#003884" />
-        <circle cx="20" cy="20" r="10" fill="#E21F26" />
-        <circle cx="24" cy="20" r="7" fill="#F9A01B" />
-        <text x="42" y="25" fill="white" fontFamily="sans-serif" fontSize="10" fontWeight="black">BSB Syariah</text>
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/sumsel_babel.png" alt="Bank Sumsel Babel Syariah" />
   },
   {
     value: "BSI",
     label: "Bank Syariah Indonesia (BSI)",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#005A5B" />
-        <circle cx="20" cy="20" r="10" fill="#EAAA00" />
-        <path d="M20 14C16.6863 14 14 16.6863 14 20C14 23.3137 16.6863 26 20 26C23.3137 26 26 23.3137 26 20C26 16.6863 23.3137 14 20 14ZM20 23.5C18.067 23.5 16.5 21.933 16.5 20C16.5 18.067 18.067 16.5 20 16.5C21.933 16.5 23.5 18.067 23.5 20C23.5 21.933 21.933 23.5 20 23.5Z" fill="white" />
-        <text x="40" y="25" fill="white" fontFamily="sans-serif" fontSize="13" fontWeight="bold">BSI</text>
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/bsi.png" alt="BSI" />
   },
   {
     value: "MANDIRI",
     label: "Bank Mandiri",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#1C3F94" />
-        <path d="M12 28C14 23 20 16 28 16C36 16 38 20 42 22C46 24 50 20 52 18" stroke="#FEE100" strokeWidth="3" strokeLinecap="round" />
-        <text x="50" y="26" fill="white" fontFamily="sans-serif" fontSize="12" fontWeight="bold">mandırı</text>
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/mandiri.png" alt="Bank Mandiri" />
   },
   {
     value: "BCA",
     label: "Bank BCA",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#0060AF" />
-        <text x="12" y="27" fill="white" fontFamily="sans-serif" fontSize="18" fontWeight="black" letterSpacing="1">BCA</text>
-        <path d="M72 15L78 20L72 25" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/bca.png" alt="Bank BCA" />
   },
   {
     value: "BRI",
     label: "Bank BRI",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#00529C" />
-        <text x="12" y="26" fill="white" fontFamily="sans-serif" fontSize="18" fontWeight="black">BRI</text>
-        <path d="M60 12V28" stroke="#F58220" strokeWidth="4" strokeLinecap="round" />
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/bri.png" alt="Bank BRI" />
   },
   {
     value: "BNI",
     label: "Bank BNI",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#E55300" />
-        <text x="12" y="26" fill="white" fontFamily="sans-serif" fontSize="18" fontWeight="black">BNI</text>
-        <circle cx="90" cy="20" r="8" fill="#00A3A6" />
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/bni.png" alt="Bank BNI" />
   },
   {
     value: "QRIS",
     label: "QRIS (GPN Scan)",
-    logo: (
-      <svg className="h-5 w-auto" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="40" rx="8" fill="#F4F4F4" stroke="#D1D5DB" strokeWidth="1" />
-        <text x="12" y="24" fill="#005A9C" fontFamily="sans-serif" fontSize="14" fontWeight="black">QR</text>
-        <text x="36" y="24" fill="#EE2A24" fontFamily="sans-serif" fontSize="14" fontWeight="black">IS</text>
-        <rect x="12" y="27" width="96" height="4" rx="2" fill="#005A9C" />
-      </svg>
-    )
+    logo: <BankLogoImg src="/logos/qris.png" alt="QRIS" />
   },
   {
     value: "OTHER",
@@ -108,6 +69,7 @@ export default function KonfirmasiDonasiPage() {
   // State Form
   const [donorName, setDonorName] = React.useState("")
   const [donorAddress, setDonorAddress] = React.useState("")
+  const [donorPhone, setDonorPhone] = React.useState("")
   const [isAnonymous, setIsAnonymous] = React.useState(false)
   const [amountInput, setAmountInput] = React.useState("")
   const [amount, setAmount] = React.useState<number>(0)
@@ -116,6 +78,7 @@ export default function KonfirmasiDonasiPage() {
     return today.toISOString().split("T")[0]
   })
   const [paymentChannel, setPaymentChannel] = React.useState("")
+  const [customPaymentChannel, setCustomPaymentChannel] = React.useState("")
   const [selectedFiles, setSelectedFiles] = React.useState<{ file: File; preview: string }[]>([])
   
   // Submit state
@@ -241,6 +204,10 @@ export default function KonfirmasiDonasiPage() {
       setError("Silakan pilih media pembayaran.")
       return
     }
+    if (paymentChannel === "OTHER" && !customPaymentChannel.trim()) {
+      setError("Silakan isi nama saluran transfer yang Anda gunakan.")
+      return
+    }
     if (selectedFiles.length === 0) {
       setError("Silakan unggah minimal satu foto bukti transfer/pengiriman.")
       return
@@ -252,10 +219,12 @@ export default function KonfirmasiDonasiPage() {
       const formData = new FormData()
       formData.append("donorName", donorName.trim())
       formData.append("donorAddress", donorAddress.trim())
+      formData.append("donorPhone", donorPhone.trim())
       formData.append("isAnonymous", isAnonymous.toString())
       formData.append("amount", amount.toString())
       formData.append("transferDate", transferDate)
-      formData.append("paymentChannel", paymentChannel)
+      // Jika OTHER, kirim custom text; jika tidak, kirim nilai channel yang dipilih
+      formData.append("paymentChannel", paymentChannel === "OTHER" ? customPaymentChannel.trim() : paymentChannel)
 
       selectedFiles.forEach((fileObj) => {
         formData.append("files", fileObj.file)
@@ -273,10 +242,12 @@ export default function KonfirmasiDonasiPage() {
       // Reset form
       setDonorName("")
       setDonorAddress("")
+      setDonorPhone("")
       setIsAnonymous(false)
       setAmountInput("")
       setAmount(0)
       setPaymentChannel("")
+      setCustomPaymentChannel("")
       selectedFiles.forEach(item => URL.revokeObjectURL(item.preview))
       setSelectedFiles([])
       
@@ -317,13 +288,31 @@ export default function KonfirmasiDonasiPage() {
                 <CardDescription className="text-[10px] text-neutral-700 font-medium">Salurkan infaq/donasi terbaik Anda melalui saluran resmi di bawah ini.</CardDescription>
               </CardHeader>
               <CardContent className="pt-4 space-y-4">
+
+                {/* QRIS Option Label */}
+                <div className="flex items-center gap-2">
+                  <span className="shrink-0 text-[8px] font-black uppercase bg-sky-500 text-white border border-black px-2 py-0.5 rounded-full shadow-[1.5px_1.5px_0px_0px_#000]">Opsi QRIS</span>
+                  <span className="text-[10px] text-neutral-600 font-semibold leading-tight">Scan kode QR di bawah jika ingin donasi via GPN/QRIS</span>
+                </div>
+
                 {/* QRIS Image */}
                 <div className="relative group rounded-[16px] border-[2.5px] border-black bg-white p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden max-w-[220px] mx-auto transition-transform hover:scale-102">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/qris-masjid.png" alt="QRIS Masjid Al-Ikhlas" className="object-contain w-full h-auto rounded-[10px]" />
                 </div>
-                
-                <hr className="border-t-[2px] border-black" />
+
+                {/* Divider with label */}
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 border-t-[2px] border-black" />
+                  <span className="text-[9px] font-black uppercase text-neutral-500">atau</span>
+                  <div className="flex-1 border-t-[2px] border-black" />
+                </div>
+
+                {/* Rekening Option Label */}
+                <div className="flex items-center gap-2">
+                  <span className="shrink-0 text-[8px] font-black uppercase bg-amber-400 text-neutral-900 border border-black px-2 py-0.5 rounded-full shadow-[1.5px_1.5px_0px_0px_#000]">Opsi Transfer</span>
+                  <span className="text-[10px] text-neutral-600 font-semibold leading-tight">Transfer ke no. rekening di bawah jika ingin via bank</span>
+                </div>
                 
                 {/* Rekening Info */}
                 <div className="space-y-3 bg-[#fffbeb] border-[2px] border-black p-4 rounded-[16px] shadow-[2.5px_2.5px_0px_0px_#ca8a04] text-[10px] font-bold text-neutral-800">
@@ -404,18 +393,17 @@ export default function KonfirmasiDonasiPage() {
               <div className="flex flex-col gap-2 rounded-[18px] border-[2.5px] border-black bg-amber-50 p-4 text-xs font-bold shadow-[4px_4px_0px_0px_#047857] animate-in zoom-in-95 duration-200">
                 <div className="flex items-center gap-2">
                   <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold border-[1.5px] border-black text-[11px]">✓</div>
-                  <span className="text-emerald-900 text-sm font-black uppercase">Konfirmasi Terkirim!</span>
+                  <span className="text-emerald-900 text-sm font-black uppercase">Syukron Jazakallah Khair Bapak/Ibu Donatur</span>
                 </div>
                 <p className="text-neutral-700 font-medium pl-8 text-[11px]">
-                  Alhamdulillah, konfirmasi donasi Anda telah kami terima dengan status <strong className="text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">PENDING</strong>. 
-                  Mohon tunggu beberapa saat hingga panitia selesai memeriksa mutasi rekening & melakukan verifikasi.
+                  Alhamdulillah, konfirmasi donasi yang Anda berikan sudah kami terima, panitia akan melakukan pengecekan terhadap donasi tersebut. Semoga Allah melipatgandakan rezeki Bapak/Ibu Saudara Sekalian.
                 </p>
                 <div className="pl-8 pt-1">
                   <Button 
                     onClick={() => setSuccess(false)}
                     className="text-[10px] font-extrabold px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white border-[1.5px] border-black rounded-lg shadow-[2px_2px_0px_0px_#000] h-auto"
                   >
-                    Mengerti / Isi Lagi
+                    Aamiin yaa Rabbal&apos;aalamiin
                   </Button>
                 </div>
               </div>
@@ -495,6 +483,25 @@ export default function KonfirmasiDonasiPage() {
                       />
                     </div>
                   )}
+
+                  {/* Field: Nomor Telepon / WA */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                      <span className="text-emerald-600">◆</span> No. Telepon / WhatsApp
+                    </label>
+                    <Input
+                      type="tel"
+                      placeholder="Contoh: 0812 3456 7890"
+                      value={donorPhone}
+                      onChange={(e) => setDonorPhone(e.target.value)}
+                      disabled={isSubmitting}
+                      className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                    />
+                    <p className="text-[10px] text-neutral-500 font-medium pl-1 flex items-start gap-1">
+                      <span className="shrink-0">📞</span>
+                      <span>Digunakan panitia apabila perlu menghubungi Anda terkait konfirmasi donasi ini. (Mohon berkenan diisi)</span>
+                    </p>
+                  </div>
 
                   {/* Field: Nominal Donasi */}
                   <div className="space-y-1.5">
@@ -605,6 +612,28 @@ export default function KonfirmasiDonasiPage() {
                     </div>
                   </div>
 
+                  {/* Input custom saluran jika pilih Lainnya */}
+                  {paymentChannel === "OTHER" && (
+                    <div className="space-y-1.5 animate-in slide-in-from-top-2 duration-200">
+                      <label className="text-xs font-black text-neutral-800 flex items-center gap-1.5 uppercase tracking-wide">
+                        <span className="text-emerald-600">◆</span> Nama Saluran Transfer
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Contoh: BPD Sumsel, Tunai, Virtual Account, dll..."
+                        value={customPaymentChannel}
+                        onChange={(e) => setCustomPaymentChannel(e.target.value)}
+                        disabled={isSubmitting}
+                        className="font-bold border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-emerald-600 focus-visible:shadow-[2px_2px_0px_0px_#047857] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                        autoFocus
+                        required
+                      />
+                      <p className="text-[10px] text-muted-foreground font-medium pl-1">
+                        Tuliskan nama bank atau metode pembayaran yang Anda gunakan.
+                      </p>
+                    </div>
+                  )}
+
                   <hr className="border-t-[2px] border-black" />
 
                   {/* Field: Upload Bukti Transfer */}
@@ -612,9 +641,6 @@ export default function KonfirmasiDonasiPage() {
                     <div className="flex items-center justify-between">
                       <label className="text-[10px] font-black text-neutral-700 uppercase tracking-wider">Unggah Bukti Kirim</label>
                       <div className="flex gap-1.5">
-                        <span className="text-[8px] font-bold border border-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
-                          Wajib Gambar
-                        </span>
                         <span className="text-[8px] font-bold border border-black bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full shadow-[1px_1px_0px_0px_#000]">
                           Mendukung {">"}1 Foto
                         </span>
