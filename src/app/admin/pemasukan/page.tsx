@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Catat Pemasukan - Panel Panitia',
-  description: 'Catat manual penerimaan dana secara luring (Cash) ke kas pembangunan Menara.'
+  description: 'Catat manual penerimaan dana secara Tunai (cash) ke kas pembangunan Menara.'
 }
 
 export default async function PemasukanPage() {

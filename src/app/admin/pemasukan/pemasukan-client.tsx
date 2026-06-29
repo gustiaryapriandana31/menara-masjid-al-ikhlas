@@ -32,6 +32,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
   })
   const [donorName, setDonorName] = React.useState("")
   const [donorAddress, setDonorAddress] = React.useState("")
+  const [donorPhone, setDonorPhone] = React.useState("")
   const [description, setDescription] = React.useState("")
   const [isAnonymous, setIsAnonymous] = React.useState(false)
   const [addReceipt, setAddReceipt] = React.useState(false)
@@ -139,6 +140,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
       formData.append("date", date)
       formData.append("donorName", isAnonymous ? "Hamba Allah" : donorName.trim())
       formData.append("donorAddress", isAnonymous ? "" : donorAddress.trim())
+      formData.append("donorPhone", isAnonymous ? "" : donorPhone.trim())
       formData.append("description", description.trim())
       formData.append("isAnonymous", isAnonymous ? "true" : "false")
       formData.append("addReceipt", addReceipt ? "true" : "false")
@@ -173,6 +175,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
       setAmount(0)
       setDonorName("")
       setDonorAddress("")
+      setDonorPhone("")
       setDescription("")
       setIsAnonymous(false)
       setAddReceipt(false)
@@ -208,7 +211,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
         </div>
         <div>
           <h1 className="text-sm font-black uppercase tracking-tight text-neutral-800">Catat Pemasukan Kas</h1>
-          <p className="text-[10px] text-muted-foreground font-medium">Input manual penerimaan dana secara luring (Cash)</p>
+          <p className="text-[10px] text-muted-foreground font-medium">Input manual penerimaan dana secara Tunai (cash)</p>
         </div>
       </div>
 
@@ -323,21 +326,39 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
                   </div>
                 </div>
 
-                {/* Input Alamat Donatur (Kondisional jika tidak anonim) */}
                 {!isAnonymous && (
-                  <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
-                    <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
-                      <span className="text-blue-600">◆</span> Alamat Donatur
-                    </label>
-                    <Input
-                      type="text"
-                      placeholder="Contoh : Dusun I Meranjat II..."
-                      value={donorAddress}
-                      onChange={(e) => setDonorAddress(e.target.value)}
-                      disabled={isSubmitting}
-                      className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-blue-600 focus-visible:shadow-[2px_2px_0px_0px_#2563eb] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
-                    />
-                  </div>
+                  <>
+                    <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
+                      <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                        <span className="text-blue-600">◆</span> Alamat Donatur
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Contoh : Dusun I Meranjat II..."
+                        value={donorAddress}
+                        onChange={(e) => setDonorAddress(e.target.value)}
+                        disabled={isSubmitting}
+                        className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-blue-600 focus-visible:shadow-[2px_2px_0px_0px_#2563eb] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
+                      <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                        <span className="text-blue-600">◆</span> No. Telepon / WhatsApp
+                      </label>
+                      <Input
+                        type="tel"
+                        placeholder="Contoh: 0812 3456 7890"
+                        value={donorPhone}
+                        onChange={(e) => setDonorPhone(e.target.value)}
+                        disabled={isSubmitting}
+                        className="font-medium border-[2.5px] border-black rounded-[12px] h-10 px-3 bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:border-blue-600 focus-visible:shadow-[2px_2px_0px_0px_#2563eb] transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm"
+                      />
+                      <p className="text-[9px] text-neutral-500 font-medium pl-1">
+                        Baiknya Diisi. Digunakan apabila panitia perlu menghubungi donatur.
+                      </p>
+                    </div>
+                  </>
                 )}
 
                 {/* Input Keterangan / Catatan */}

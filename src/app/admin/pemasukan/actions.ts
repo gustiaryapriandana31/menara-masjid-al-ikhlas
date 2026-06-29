@@ -14,6 +14,7 @@ const createPemasukanSchema = z.object({
     .min(3, "Nama Donatur minimal 3 karakter")
     .max(255, "Nama Donatur terlalu panjang (maksimal 255 karakter)"),
   donorAddress: z.string().max(500, "Alamat terlalu panjang (maksimal 500 karakter)").optional().nullable().or(z.literal('')),
+  donorPhone: z.string().max(20, "Nomor telepon tidak valid").optional().nullable().or(z.literal('')),
   description: z.string().max(500, "Keterangan terlalu panjang (maksimal 500 karakter)").optional().nullable().or(z.literal('')),
   isAnonymous: z.boolean().default(false)
 })
@@ -28,6 +29,7 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
     const rawDate = formData.get('date')
     const rawDonorName = formData.get('donorName')
     const rawDonorAddress = formData.get('donorAddress')
+    const rawDonorPhone = formData.get('donorPhone')
     const rawDescription = formData.get('description')
     const rawIsAnonymous = formData.get('isAnonymous') === 'true'
     const files = formData.getAll('files') as File[]
@@ -38,6 +40,7 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
       date: rawDate?.toString(),
       donorName: rawIsAnonymous ? "Hamba Allah" : rawDonorName?.toString(),
       donorAddress: rawIsAnonymous ? null : rawDonorAddress?.toString() || null,
+      donorPhone: rawIsAnonymous ? null : rawDonorPhone?.toString() || null,
       description: rawDescription?.toString() || null,
       isAnonymous: rawIsAnonymous
     })
@@ -99,6 +102,7 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
       data: {
         donorName: data.isAnonymous ? "Hamba Allah" : data.donorName,
         donorAddress: data.isAnonymous ? null : data.donorAddress,
+        donorPhone: data.isAnonymous ? null : data.donorPhone || null,
         amount: data.amount,
         date: new Date(data.date),
         description: data.description,
