@@ -154,16 +154,18 @@ export default async function LaporanKeuanganPage() {
 
   // Proses donatur dari income
   incomeDonors.forEach(item => {
-    const key = `${item.donorName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
+    const isHambaAllah = item.donorName.trim().toLowerCase() === "hamba allah"
+    const key = isHambaAllah ? "hamba_allah" : `${item.donorName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
+    
     if (!donorMap.has(key)) {
       donorMap.set(key, {
-        donorName: item.donorName,
-        donorAddress: item.donorAddress || "",
-        donorPhone: item.donorPhone || ""
+        donorName: isHambaAllah ? "Hamba Allah" : item.donorName,
+        donorAddress: isHambaAllah ? "" : (item.donorAddress || ""),
+        donorPhone: isHambaAllah ? "" : (item.donorPhone || "")
       })
     } else {
       const existing = donorMap.get(key)!
-      if (!existing.donorAddress && item.donorAddress) {
+      if (!isHambaAllah && !existing.donorAddress && item.donorAddress) {
         existing.donorAddress = item.donorAddress
       }
     }
@@ -172,16 +174,18 @@ export default async function LaporanKeuanganPage() {
   // Proses donatur dari konfirmasi online
   confirmationDonors.forEach(item => {
     const finalName = item.isAnonymous ? "Hamba Allah" : item.donorName
-    const key = `${finalName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
+    const isHambaAllah = finalName.trim().toLowerCase() === "hamba allah"
+    const key = isHambaAllah ? "hamba_allah" : `${finalName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
+    
     if (!donorMap.has(key)) {
       donorMap.set(key, {
-        donorName: finalName,
-        donorAddress: item.donorAddress || "",
-        donorPhone: item.donorPhone || ""
+        donorName: isHambaAllah ? "Hamba Allah" : finalName,
+        donorAddress: isHambaAllah ? "" : (item.donorAddress || ""),
+        donorPhone: isHambaAllah ? "" : (item.donorPhone || "")
       })
     } else {
       const existing = donorMap.get(key)!
-      if (!existing.donorAddress && item.donorAddress) {
+      if (!isHambaAllah && !existing.donorAddress && item.donorAddress) {
         existing.donorAddress = item.donorAddress
       }
     }
