@@ -37,3 +37,25 @@ self.addEventListener('fetch', (e) => {
     })
   );
 });
+
+// Handle notification click events (redirect and focus tab to /admin/validasi)
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // Find if there is an open admin window/tab
+      for (const client of clientList) {
+        if (client.url.includes('/admin') && 'focus' in client) {
+          if ('navigate' in client) {
+            client.navigate('/admin/validasi');
+          }
+          return client.focus();
+        }
+      }
+      // If no window is open, open a new tab
+      if (clients.openWindow) {
+        return clients.openWindow('/admin/validasi');
+      }
+    })
+  );
+});
