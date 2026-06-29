@@ -55,7 +55,7 @@ export default function LaporanPublicClient({
         <div className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover" />
-          <span className="text-xs md:text-sm font-black tracking-tight uppercase">Menara Al-Ikhlas</span>
+          <span className="text-xs md:text-sm font-black tracking-tight uppercase">Menara Masjid Al-Ikhlas</span>
         </div>
       </header>
 
@@ -74,7 +74,7 @@ export default function LaporanPublicClient({
             Laporan Keterbukaan Publik & Audit Kas
           </h1>
           <p className="text-[10px] md:text-xs text-emerald-100/90 font-medium max-w-2xl mt-1.5 leading-relaxed">
-            Selamat datang di portal transparansi pembangunan Menara Masjid Al-Ikhlas. Semua sumbangan donatur (luring/daring) serta realisasi belanja material dilaporkan secara jujur, akurat, dan dapat diaudit secara terbuka.
+            Selamat datang di portal transparansi pembangunan Menara Masjid Al-Ikhlas. Semua sumbangan donatur (tunai/transfer) serta realisasi belanja material dilaporkan secara jujur, akurat, dan dapat diaudit secara terbuka.
           </p>
         </div>
 

@@ -28,7 +28,8 @@ export default async function RincianDanaPage() {
     date: item.date.toISOString(),
     description: item.description || '',
     type: item.type,
-    receiptUrls: item.receiptUrls || []
+    receiptUrls: item.receiptUrls || [],
+    donationConfirmationId: item.donationConfirmationId
   }))
 
   const serializedOutcomes = outcomes.map(item => ({
