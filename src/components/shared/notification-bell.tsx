@@ -57,7 +57,7 @@ export function NotificationBell() {
 
       {/* Popover Dropdown */}
       {isOpen && (
-        <div className="fixed md:absolute top-16 md:top-auto right-4 md:left-0 md:right-auto left-4 mx-auto md:mx-0 w-auto md:w-80 max-w-[340px] md:max-w-none border-[2.5px] border-black bg-white rounded-[16px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="fixed md:absolute top-16 md:top-auto right-4 md:left-0 md:right-auto left-4 mx-auto md:mx-0 w-auto md:w-80 max-w-[340px] md:max-w-none border-[2.5px] border-black bg-white rounded-[16px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150 z-50">
           
           {/* Header */}
           <div className="flex h-11 items-center justify-between border-b-[2px] border-black bg-[#faf8f5] px-3.5">

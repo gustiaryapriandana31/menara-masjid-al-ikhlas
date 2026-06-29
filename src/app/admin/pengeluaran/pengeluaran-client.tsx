@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
+import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createPengeluaran } from "./actions"
 
 // Definisikan kategori pengeluaran berdasarkan Enum Prisma
@@ -31,6 +32,7 @@ interface PengeluaranClientProps {
 }
 
 export default function PengeluaranClient({ recentOutcomes }: PengeluaranClientProps) {
+  const { triggerAnimation } = useMoneyAnimation()
   // State Form
   const [amountInput, setAmountInput] = React.useState("")
   const [amount, setAmount] = React.useState<number>(0)
@@ -186,6 +188,9 @@ export default function PengeluaranClient({ recentOutcomes }: PengeluaranClientP
         description: description.trim()
       }
       setOutcomesList(prev => [newOutcome, ...prev].slice(0, 5))
+
+      // Trigger outcome whoosh animation
+      triggerAnimation("outcome", amount, description.trim())
 
       // Sukses
       setSuccess(true)

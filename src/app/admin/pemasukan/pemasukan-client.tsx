@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
+import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createPemasukan } from "./actions"
 
 interface RecentIncome {
@@ -23,6 +24,7 @@ interface PemasukanClientProps {
 }
 
 export default function PemasukanClient({ recentIncomes }: PemasukanClientProps) {
+  const { triggerAnimation } = useMoneyAnimation()
   // State Form
   const [amountInput, setAmountInput] = React.useState("")
   const [amount, setAmount] = React.useState<number>(0)
@@ -168,6 +170,9 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
         description: description.trim()
       }
       setIncomesList(prev => [newIncome, ...prev].slice(0, 5))
+
+      // Trigger coin animation
+      triggerAnimation("income", amount, isAnonymous ? "Hamba Allah" : donorName.trim())
 
       // Sukses
       setSuccess(true)

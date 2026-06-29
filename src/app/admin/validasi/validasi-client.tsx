@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { formatRupiah } from "@/lib/format"
 import { useRouter } from "next/navigation"
+import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
 import { approveDonationAction, rejectDonationAction } from "./actions"
 
@@ -32,6 +33,7 @@ interface ValidasiClientProps {
 
 export default function ValidasiClient({ initialConfirmations, historyConfirmations }: ValidasiClientProps) {
   const router = useRouter()
+  const { triggerAnimation } = useMoneyAnimation()
   const [confirmations, setConfirmations] = React.useState(initialConfirmations)
   // Tidak pakai useState agar tabel histori langsung update saat router.refresh() dipanggil
   const history = historyConfirmations
@@ -94,6 +96,9 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
     try {
       const res = await approveDonationAction(selectedItem.id)
       if (res.success) {
+        // Trigger coin animation
+        triggerAnimation("income", selectedItem.amount, selectedItem.donorName)
+        
         // Hapus item dari pending list lokal, lalu refresh server data untuk tabel histori
         setConfirmations(prev => prev.filter(c => c.id !== selectedItem.id))
         setSelectedItem(null)
