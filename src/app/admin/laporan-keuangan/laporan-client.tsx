@@ -360,95 +360,97 @@ export default function LaporanClient({
       {/* =============================================================
           4. TABEL DAFTAR DONATUR MASJID (NEOBRUTALIST TABEL)
           ============================================================= */}
-      <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-        <CardHeader className="pb-3 border-b-[2.5px] border-black bg-neutral-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div>
-            <CardTitle className="text-xs font-black uppercase tracking-tight text-neutral-800 flex items-center gap-2">
-              🕌 Daftar Donatur Masjid Al-Ikhlas
-            </CardTitle>
-            <CardDescription className="text-[10px] text-neutral-500 font-medium">
-              Kumpulan seluruh nama donatur beserta nomor kontak aktif (diperoleh dari input manual & donasi online).
-            </CardDescription>
-          </div>
-          {donors.length > 0 && (
-            <button
-              onClick={handleDownloadDonorsPDF}
-              className="flex items-center justify-center gap-1.5 border-[2px] border-black bg-blue-100 text-blue-900 hover:bg-blue-200 text-[10px] font-black uppercase px-3.5 py-2 rounded-[10px] shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer self-start sm:self-auto"
-            >
-              <FileText className="h-3.5 w-3.5 shrink-0" />
-              Unduh Daftar PDF
-            </button>
-          )}
-        </CardHeader>
-        <CardContent className="p-0 overflow-x-auto">
-          {donors.length === 0 ? (
-            <div className="p-8 text-center text-xs font-bold text-neutral-400 italic">
-              Belum ada data donatur yang tersimpan.
+      {isAdmin && (
+        <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+          <CardHeader className="pb-3 border-b-[2.5px] border-black bg-neutral-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <CardTitle className="text-xs font-black uppercase tracking-tight text-neutral-800 flex items-center gap-2">
+                🕌 Daftar Donatur Masjid Al-Ikhlas
+              </CardTitle>
+              <CardDescription className="text-[10px] text-neutral-500 font-medium">
+                Kumpulan seluruh nama donatur beserta nomor kontak aktif (diperoleh dari input manual & donasi online).
+              </CardDescription>
             </div>
-          ) : (
-            <table className="w-full border-collapse text-left">
-              <thead>
-                <tr className="border-b-[2px] border-black bg-emerald-50/50">
-                  <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[6%] text-center border-r border-emerald-200 last:border-r-0">No</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[30%] border-r border-emerald-200 last:border-r-0">Nama Donatur</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[42%] border-r border-emerald-200 last:border-r-0">Alamat</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[14%] text-center border-r border-emerald-200 last:border-r-0">No. Telepon / WA</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[8%] text-center last:border-r-0">Hubungi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y-[1.5px] divide-neutral-200">
-                {donors.map((item, idx) => {
-                  const cleanedPhone = item.donorPhone 
-                    ? `62${item.donorPhone.replace(/^0/, "").replace(/[^0-9]/g, "")}` 
-                    : "";
-                  return (
-                    <tr key={idx} className="hover:bg-neutral-50/70 border-b border-neutral-200 transition-colors last:border-b-0">
-                      {/* No */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
-                        {idx + 1}
-                      </td>
-                      {/* Nama Donatur */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="font-black text-neutral-800 text-[11px] uppercase tracking-tight">
-                          {item.donorName}
-                        </div>
-                      </td>
-                      {/* Alamat */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="text-[10px] text-neutral-700 font-medium leading-relaxed">
-                          {item.donorAddress || "-"}
-                        </div>
-                      </td>
-                      {/* No. Telepon / WA */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] text-neutral-700 font-medium tabular-nums">
-                        {item.donorPhone || <span className="text-neutral-300 font-normal">—</span>}
-                      </td>
-                      {/* Hubungi */}
-                      <td className="p-3 text-center">
-                        {cleanedPhone ? (
-                          <a
-                            href={`https://web.whatsapp.com/send?phone=${cleanedPhone}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-emerald-100 hover:bg-emerald-200 text-emerald-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
-                            title="Hubungi WhatsApp"
-                          >
-                            <svg className="h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                          </a>
-                        ) : (
-                          <span className="text-[9px] text-neutral-400 font-medium italic">Tidak ada WA</span>
-                        )}
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          )}
-        </CardContent>
-      </Card>
+            {donors.length > 0 && (
+              <button
+                onClick={handleDownloadDonorsPDF}
+                className="flex items-center justify-center gap-1.5 border-[2px] border-black bg-blue-100 text-blue-900 hover:bg-blue-200 text-[10px] font-black uppercase px-3.5 py-2 rounded-[10px] shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer self-start sm:self-auto"
+              >
+                <FileText className="h-3.5 w-3.5 shrink-0" />
+                Unduh Data Donatur
+              </button>
+            )}
+          </CardHeader>
+          <CardContent className="p-0 overflow-x-auto">
+            {donors.length === 0 ? (
+              <div className="p-8 text-center text-xs font-bold text-neutral-400 italic">
+                Belum ada data donatur yang tersimpan.
+              </div>
+            ) : (
+              <table className="w-full border-collapse text-left">
+                <thead>
+                  <tr className="border-b-[2px] border-black bg-emerald-50/50">
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[6%] text-center border-r border-emerald-200 last:border-r-0">No</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[30%] border-r border-emerald-200 last:border-r-0">Nama Donatur</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[42%] border-r border-emerald-200 last:border-r-0">Alamat</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[14%] text-center border-r border-emerald-200 last:border-r-0">No. Telepon / WA</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[8%] text-center last:border-r-0">Hubungi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y-[1.5px] divide-neutral-200">
+                  {donors.map((item, idx) => {
+                    const cleanedPhone = item.donorPhone 
+                      ? `62${item.donorPhone.replace(/^0/, "").replace(/[^0-9]/g, "")}` 
+                      : "";
+                    return (
+                      <tr key={idx} className="hover:bg-neutral-50/70 border-b border-neutral-200 transition-colors last:border-b-0">
+                        {/* No */}
+                        <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
+                          {idx + 1}
+                        </td>
+                        {/* Nama Donatur */}
+                        <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                          <div className="font-black text-neutral-800 text-[11px] uppercase tracking-tight">
+                            {item.donorName}
+                          </div>
+                        </td>
+                        {/* Alamat */}
+                        <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                          <div className="text-[10px] text-neutral-700 font-medium leading-relaxed">
+                            {item.donorAddress || "-"}
+                          </div>
+                        </td>
+                        {/* No. Telepon / WA */}
+                        <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] text-neutral-700 font-medium tabular-nums">
+                          {item.donorPhone || <span className="text-neutral-300 font-normal">—</span>}
+                        </td>
+                        {/* Hubungi */}
+                        <td className="p-3 text-center">
+                          {cleanedPhone ? (
+                            <a
+                              href={`https://web.whatsapp.com/send?phone=${cleanedPhone}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-emerald-100 hover:bg-emerald-200 text-emerald-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                              title="Hubungi WhatsApp"
+                            >
+                              <svg className="h-3.5 w-3.5 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                              </svg>
+                            </a>
+                          ) : (
+                            <span className="text-[9px] text-neutral-400 font-medium italic">Tidak ada WA</span>
+                          )}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
     </div>
   )
