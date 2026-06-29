@@ -369,13 +369,13 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
           MODAL DETAIL & VERIFIKASI (CUSTOM NEOBRUTALIST WINDOW overlay)
           ============================================================= */}
       {selectedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-24 md:p-4 bg-neutral-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div 
-            className="bg-white border-[3px] border-black rounded-[22px] w-full max-w-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden animate-in zoom-in-95 duration-200"
+            className="bg-white border-[3px] border-black rounded-[22px] w-full max-w-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col max-h-[75vh] md:max-h-[85vh] animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b-[3px] border-black bg-blue-50/50">
+            <div className="flex items-center justify-between p-4 border-b-[3px] border-black bg-blue-50/50 shrink-0">
               <div>
                 <h3 className="text-xs font-black uppercase tracking-wider text-neutral-700">Verifikasi Donasi</h3>
                 <span className="text-[10px] text-muted-foreground font-semibold">Periksa kecocokan bukti fisik dengan input data</span>
@@ -390,7 +390,7 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
             </div>
 
             {/* Modal Body */}
-            <div className="p-5 space-y-4 max-h-[75vh] overflow-y-auto">
+            <div className="p-4 md:p-5 space-y-4 overflow-y-auto flex-1">
               
               {/* Notifikasi Error */}
               {errorMsg && (
@@ -523,7 +523,7 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
             </div>
 
             {/* Modal Footer / Aksi */}
-            <div className="p-4 border-t-[3px] border-black bg-neutral-50 flex flex-col sm:flex-row gap-3">
+            <div className="p-4 border-t-[3px] border-black bg-neutral-50 flex flex-col sm:flex-row gap-3 shrink-0">
               
               {/* Tombol Tolak */}
               <Button
