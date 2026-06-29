@@ -11,6 +11,8 @@ import { formatRupiah, formatTerbilang } from "@/lib/format"
 import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createDonationConfirmation } from "./actions"
 import { AlertModal } from "@/components/shared/alert-modal"
+import { supabase } from "@/lib/supabase"
+
 
 // Helper component for bank logo image
 const BankLogoImg = ({ src, alt }: { src: string; alt: string }) => (
@@ -208,15 +210,6 @@ export default function KonfirmasiDonasiPage() {
     }
   }, [])
 
-  // Helper: convert File to base64 string
-  const fileToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result as string)
-      reader.onerror = reject
-    })
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -251,25 +244,42 @@ export default function KonfirmasiDonasiPage() {
     setIsSubmitting(true)
 
     try {
-      const formData = new FormData()
-      formData.append("donorName", isAnonymous ? "Hamba Allah" : donorName.trim())
-      formData.append("donorAddress", donorAddress.trim())
-      formData.append("donorPhone", donorPhone.trim())
-      formData.append("isAnonymous", isAnonymous.toString())
-      formData.append("amount", amount.toString())
-      formData.append("transferDate", transferDate)
-      formData.append("paymentChannel", paymentChannel === "OTHER" ? customPaymentChannel.trim() : paymentChannel)
+      const proofUrls: string[] = []
 
-      // Convert each file to base64 and send as indexed fields
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const fileObj = selectedFiles[i]
-        const base64 = await fileToBase64(fileObj.file)
-        formData.append(`fileData_${i}`, base64)
-        formData.append(`fileType_${i}`, fileObj.file.type)
-        formData.append(`fileName_${i}`, fileObj.file.name)
+      // Upload each file directly to Supabase from the client
+      for (const fileObj of selectedFiles) {
+        const fileExt = fileObj.file.name.split('.').pop() || 'jpg'
+        const cleanFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`
+        const filePath = `pemasukan/${cleanFileName}`
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('receipts')
+          .upload(filePath, fileObj.file, {
+            contentType: fileObj.file.type,
+            cacheControl: '3600',
+            upsert: false,
+          })
+
+        if (uploadError) {
+          throw new Error(`Gagal mengunggah berkas "${fileObj.file.name}": ${uploadError.message}`)
+        }
+
+        if (uploadData) {
+          proofUrls.push(uploadData.path)
+        }
       }
 
-      const result = await createDonationConfirmation(null, formData)
+      // Call server action with the uploaded storage paths
+      const result = await createDonationConfirmation({
+        donorName: isAnonymous ? "Hamba Allah" : donorName.trim(),
+        donorAddress: donorAddress.trim() || null,
+        donorPhone: donorPhone.trim() || null,
+        isAnonymous,
+        amount,
+        transferDate,
+        paymentChannel: paymentChannel === "OTHER" ? customPaymentChannel.trim() : paymentChannel,
+        proofUrls
+      })
 
       if (!result.success) {
         showError(
@@ -308,6 +318,7 @@ export default function KonfirmasiDonasiPage() {
       setIsSubmitting(false)
     }
   }
+
 
   return (
     <>
