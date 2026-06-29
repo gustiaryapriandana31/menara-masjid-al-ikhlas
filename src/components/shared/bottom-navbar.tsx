@@ -58,7 +58,7 @@ export function BottomNavbar() {
             <Link
               key={item.title}
               href={item.url}
-              className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all active:scale-95 overflow-hidden"
+              className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all active:scale-95"
             >
               <div
                 className={cn(
@@ -70,7 +70,7 @@ export function BottomNavbar() {
               >
                 <Icon className="h-4 w-4" />
               </div>
-              <span className={cn("text-[8px] uppercase tracking-wider font-semibold text-center truncate w-full", isActive ? item.activeText : "text-muted-foreground")}>
+              <span className={cn("text-[8px] uppercase tracking-wider font-semibold text-center whitespace-nowrap", isActive ? item.activeText : "text-muted-foreground")}>
                 {item.title}
               </span>
             </Link>

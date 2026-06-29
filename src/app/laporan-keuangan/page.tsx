@@ -120,36 +120,6 @@ export default async function PublicLaporanPage() {
     }
   })
 
-  // 6. Ambil rincian data transaksi untuk log transaksi lengkap
-  const incomesList = await db.income.findMany({
-    orderBy: { date: 'desc' }
-  })
-
-  const outcomesList = await db.outcome.findMany({
-    orderBy: { date: 'desc' }
-  })
-
-  const serializedIncomes = incomesList.map(item => ({
-    id: item.id,
-    donorName: item.donorName,
-    donorAddress: item.donorAddress || '',
-    amount: Number(item.amount),
-    date: item.date.toISOString(),
-    description: item.description || '',
-    type: item.type,
-    receiptUrls: item.receiptUrls || []
-  }))
-
-  const serializedOutcomes = outcomesList.map(item => ({
-    id: item.id,
-    buyer: item.buyer,
-    amount: Number(item.amount),
-    date: item.date.toISOString(),
-    description: item.description || '',
-    category: item.category,
-    receiptUrls: item.receiptUrls || []
-  }))
-
   return (
     <LaporanPublicClient
       totalCash={totalCash}
@@ -158,8 +128,6 @@ export default async function PublicLaporanPage() {
       expenseCategories={expenseCategories}
       transferChannels={transferChannels}
       monthlyTrend={monthlyTrend}
-      incomes={serializedIncomes}
-      outcomes={serializedOutcomes}
     />
   )
 }

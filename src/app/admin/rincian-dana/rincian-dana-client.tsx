@@ -142,17 +142,359 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
     }
   }
 
+  const handleDownloadIncomePDF = async () => {
+    try {
+      const { default: jsPDF } = await import("jspdf")
+      const { default: autoTable } = await import("jspdf-autotable")
+      
+      const doc = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4"
+      })
+
+      const today = new Date()
+      const day = today.getDate()
+      const month = MONTH_NAMES[today.getMonth()]
+      const year = today.getFullYear()
+      const pageWidth = doc.internal.pageSize.getWidth()
+
+      // Kop/Header Laporan - Centered
+      doc.setFont("helvetica", "bold")
+      doc.setFontSize(14)
+      doc.text("Laporan Pemasukan Kas Pembangunan Menara Masjid Al-Ikhlas Meranjat II", pageWidth / 2, 15, { align: "center" })
+
+      // Metadata section - Semibold labels & aligned names
+      doc.setFont("helvetica", "bold")
+      doc.setFontSize(9.5)
+      doc.text("Ketua Pembangunan:", 14, 25)
+      doc.text("Sekretaris Pembangunan:", 14, 30)
+      doc.text("Bendahara Pembangunan:", 14, 35)
+      doc.text("Tanggal Cetak Laporan:", 14, 40)
+
+      doc.setFont("helvetica", "normal")
+      doc.text("Zulfikar Ali, S.H.", 60, 25)
+      doc.text("Najemi", 60, 30)
+      doc.text("Candra Gunawan, S.H.", 60, 35)
+      doc.text(`Per Tanggal ${day} ${month} ${year}`, 60, 40)
+
+      // Grouping data by Month-Year descending
+      const groups: { [key: string]: IncomeItem[] } = {}
+      filteredIncomes.forEach(item => {
+        const d = new Date(item.date)
+        const monthKey = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, "0")}`
+        if (!groups[monthKey]) {
+          groups[monthKey] = []
+        }
+        groups[monthKey].push(item)
+      })
+
+      const sortedMonthKeys = Object.keys(groups).sort().reverse()
+
+      const bodyRows: any[] = []
+      let globalIndex = 1
+      let grandTotal = 0
+
+      sortedMonthKeys.forEach(monthKey => {
+        const [yearStr, monthStr] = monthKey.split("-")
+        const y = parseInt(yearStr, 10)
+        const mIdx = parseInt(monthStr, 10)
+        const monthNameUpper = MONTH_NAMES[mIdx].toUpperCase()
+        const groupTitle = `${monthNameUpper} ${y}`
+
+        // 1. Merged month header row
+        bodyRows.push([
+          {
+            content: groupTitle,
+            colSpan: 6,
+            styles: { halign: "left", fontStyle: "bold", fillColor: [243, 244, 246], textColor: [17, 24, 39] }
+          }
+        ])
+
+        // 2. Add items
+        let monthSum = 0
+        const items = groups[monthKey].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        items.forEach(item => {
+          monthSum += item.amount
+          grandTotal += item.amount
+          bodyRows.push([
+            globalIndex++,
+            formatLocalDate(item.date),
+            item.donorName,
+            item.donorAddress || "-",
+            `Rp ${formatRupiah(item.amount)}`,
+            item.description || "-"
+          ])
+        })
+
+        // 3. Month total row
+        bodyRows.push([
+          {
+            content: `TOTAL PEMASUKAN ${groupTitle}`,
+            colSpan: 4,
+            styles: { halign: "right", fontStyle: "bold", fillColor: [249, 250, 251], textColor: [0, 0, 0] }
+          },
+          {
+            content: `Rp ${formatRupiah(monthSum)}`,
+            styles: { halign: "right", fontStyle: "bold", fillColor: [249, 250, 251], textColor: [0, 0, 0] }
+          },
+          {
+            content: "",
+            styles: { fillColor: [249, 250, 251] }
+          }
+        ])
+      })
+
+      // Generate table using jspdf-autotable
+      autoTable(doc, {
+        startY: 46,
+        head: [
+          ["No", "Tanggal", "Nama Donatur", "Alamat", "Kas Masuk", "Keterangan"]
+        ],
+        body: bodyRows,
+        foot: [
+          [
+            {
+              content: "TOTAL KAS PEMASUKAN",
+              colSpan: 4,
+              styles: { halign: "right", fontStyle: "bold", fillColor: [229, 231, 235], textColor: [0, 0, 0] }
+            },
+            {
+              content: `Rp ${formatRupiah(grandTotal)}`,
+              styles: { halign: "right", fontStyle: "bold", fillColor: [229, 231, 235], textColor: [0, 0, 0] }
+            },
+            {
+              content: "",
+              styles: { fillColor: [229, 231, 235] }
+            }
+          ]
+        ],
+        theme: "grid",
+        headStyles: {
+          fillColor: [17, 24, 39], // Slate-900 / Black
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+          halign: "center"
+        },
+        styles: {
+          font: "helvetica",
+          fontSize: 8.5,
+          cellPadding: 2.5,
+          lineColor: [209, 213, 219] // gray-300 grid borders
+        },
+        columnStyles: {
+          0: { cellWidth: 12, halign: "center" },
+          1: { cellWidth: 25, halign: "center" },
+          2: { cellWidth: 50 },
+          3: { cellWidth: 50 },
+          4: { cellWidth: 40, halign: "right" },
+          5: { cellWidth: "auto" }
+        }
+      })
+
+      doc.save(`Laporan_Pemasukan_Menara_Al_Ikhlas_${day}_${month}_${year}.pdf`)
+    } catch (err) {
+      console.error("Gagal mengekspor PDF:", err)
+      alert("Terjadi kesalahan saat membuat dokumen PDF.")
+    }
+  }
+
+  const handleDownloadOutcomePDF = async () => {
+    try {
+      const { default: jsPDF } = await import("jspdf")
+      const { default: autoTable } = await import("jspdf-autotable")
+      
+      const doc = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4"
+      })
+
+      const today = new Date()
+      const day = today.getDate()
+      const month = MONTH_NAMES[today.getMonth()]
+      const year = today.getFullYear()
+      const pageWidth = doc.internal.pageSize.getWidth()
+
+      // Kop/Header Laporan - Centered
+      doc.setFont("helvetica", "bold")
+      doc.setFontSize(14)
+      doc.text("Laporan Pengeluaran Kas Pembangunan Menara Masjid Al-Ikhlas Meranjat II", pageWidth / 2, 15, { align: "center" })
+
+      // Metadata section - Semibold labels & aligned names
+      doc.setFont("helvetica", "bold")
+      doc.setFontSize(9.5)
+      doc.text("Ketua Pembangunan:", 14, 25)
+      doc.text("Sekretaris Pembangunan:", 14, 30)
+      doc.text("Bendahara Pembangunan:", 14, 35)
+      doc.text("Tanggal Cetak Laporan:", 14, 40)
+
+      doc.setFont("helvetica", "normal")
+      doc.text("Zulfikar Ali, S.H.", 60, 25)
+      doc.text("Najemi", 60, 30)
+      doc.text("Candra Gunawan, S.H.", 60, 35)
+      doc.text(`Per Tanggal ${day} ${month} ${year}`, 60, 40)
+
+      // Grouping data by Month-Year descending
+      const groups: { [key: string]: OutcomeItem[] } = {}
+      filteredOutcomes.forEach(item => {
+        const d = new Date(item.date)
+        const monthKey = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, "0")}`
+        if (!groups[monthKey]) {
+          groups[monthKey] = []
+        }
+        groups[monthKey].push(item)
+      })
+
+      const sortedMonthKeys = Object.keys(groups).sort().reverse()
+
+      const bodyRows: any[] = []
+      let globalIndex = 1
+      let grandTotal = 0
+
+      sortedMonthKeys.forEach(monthKey => {
+        const [yearStr, monthStr] = monthKey.split("-")
+        const y = parseInt(yearStr, 10)
+        const mIdx = parseInt(monthStr, 10)
+        const monthNameUpper = MONTH_NAMES[mIdx].toUpperCase()
+        const groupTitle = `${monthNameUpper} ${y}`
+
+        // 1. Merged month header row
+        bodyRows.push([
+          {
+            content: groupTitle,
+            colSpan: 6,
+            styles: { halign: "left", fontStyle: "bold", fillColor: [243, 244, 246], textColor: [17, 24, 39] }
+          }
+        ])
+
+        // 2. Add items
+        let monthSum = 0
+        const items = groups[monthKey].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        items.forEach(item => {
+          monthSum += item.amount
+          grandTotal += item.amount
+          bodyRows.push([
+            globalIndex++,
+            formatLocalDate(item.date),
+            item.buyer,
+            translateCategory(item.category),
+            `Rp ${formatRupiah(item.amount)}`,
+            item.description || "-"
+          ])
+        })
+
+        // 3. Month total row
+        bodyRows.push([
+          {
+            content: `TOTAL PENGELUARAN ${groupTitle}`,
+            colSpan: 4,
+            styles: { halign: "right", fontStyle: "bold", fillColor: [249, 250, 251], textColor: [0, 0, 0] }
+          },
+          {
+            content: `Rp ${formatRupiah(monthSum)}`,
+            styles: { halign: "right", fontStyle: "bold", fillColor: [249, 250, 251], textColor: [0, 0, 0] }
+          },
+          {
+            content: "",
+            styles: { fillColor: [249, 250, 251] }
+          }
+        ])
+      })
+
+      // Generate table using jspdf-autotable
+      autoTable(doc, {
+        startY: 46,
+        head: [
+          ["No", "Tanggal", "Nama Pembeli", "Kategori", "Kas Keluar", "Keterangan"]
+        ],
+        body: bodyRows,
+        foot: [
+          [
+            {
+              content: "TOTAL KAS PENGELUARAN",
+              colSpan: 4,
+              styles: { halign: "right", fontStyle: "bold", fillColor: [229, 231, 235], textColor: [0, 0, 0] }
+            },
+            {
+              content: `Rp ${formatRupiah(grandTotal)}`,
+              styles: { halign: "right", fontStyle: "bold", fillColor: [229, 231, 235], textColor: [0, 0, 0] }
+            },
+            {
+              content: "",
+              styles: { fillColor: [229, 231, 235] }
+            }
+          ]
+        ],
+        theme: "grid",
+        headStyles: {
+          fillColor: [17, 24, 39], // Slate-900 / Black
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+          halign: "center"
+        },
+        styles: {
+          font: "helvetica",
+          fontSize: 8.5,
+          cellPadding: 2.5,
+          lineColor: [209, 213, 219] // gray-300 grid borders
+        },
+        columnStyles: {
+          0: { cellWidth: 12, halign: "center" },
+          1: { cellWidth: 25, halign: "center" },
+          2: { cellWidth: 50 },
+          3: { cellWidth: 50 },
+          4: { cellWidth: 40, halign: "right" },
+          5: { cellWidth: "auto" }
+        }
+      })
+
+      doc.save(`Laporan_Pengeluaran_Menara_Al_Ikhlas_${day}_${month}_${year}.pdf`)
+    } catch (err) {
+      console.error("Gagal mengekspor PDF:", err)
+      alert("Terjadi kesalahan saat membuat dokumen PDF.")
+    }
+  }
+
   return (
     <div className="space-y-6 pb-12 animate-in fade-in duration-300">
       
-      {/* Title */}
-      <div className="flex items-center gap-3">
-        <div className="inline-flex h-11 w-11 items-center justify-center rounded-[12px] border-[2px] border-black bg-neutral-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          <FileText className="h-5 w-5 text-neutral-800" />
+      {/* Title & Download Buttons Container */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-[12px] border-[2px] border-black bg-neutral-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <FileText className="h-5 w-5 text-neutral-800" />
+          </div>
+          <div>
+            <h1 className="text-sm font-black uppercase tracking-tight text-neutral-800">Rincian Dana Pembangunan</h1>
+            <p className="text-[10px] text-muted-foreground font-medium">Laporan audit transaksi riil pembangunan Menara Al-Ikhlas</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-sm font-black uppercase tracking-tight text-neutral-800">Rincian Dana Pembangunan</h1>
-          <p className="text-[10px] text-muted-foreground font-medium">Laporan audit transaksi riil pembangunan Menara Al-Ikhlas</p>
+
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-2.5">
+          <button
+            onClick={handleDownloadIncomePDF}
+            className="flex items-center gap-1.5 border-[2px] border-black bg-blue-100 text-blue-900 hover:bg-blue-200 text-xs font-black uppercase px-3.5 py-2 rounded-[10px] shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+          >
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Unduh Kas Masuk
+          </button>
+          <button
+            onClick={handleDownloadOutcomePDF}
+            className="flex items-center gap-1.5 border-[2px] border-black bg-red-100 text-red-900 hover:bg-red-200 text-xs font-black uppercase px-3.5 py-2 rounded-[10px] shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+          >
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Unduh Kas Keluar
+          </button>
         </div>
       </div>
 

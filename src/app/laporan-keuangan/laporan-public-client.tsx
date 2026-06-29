@@ -1,11 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { BarChart2, FileText, ArrowLeft, Heart, Info, Globe, Building, Phone } from "lucide-react"
+import { ArrowLeft, Info, Building, Phone } from "lucide-react"
 import Link from "next/link"
 import LaporanClient from "@/app/admin/laporan-keuangan/laporan-client"
-import RincianDanaClient from "@/app/admin/rincian-dana/rincian-dana-client"
-import { cn } from "@/lib/utils"
 
 interface LaporanPublicClientProps {
   totalCash: number
@@ -32,8 +30,6 @@ interface LaporanPublicClientProps {
     income: number
     expense: number
   }[]
-  incomes: any[]
-  outcomes: any[]
 }
 
 export default function LaporanPublicClient({
@@ -42,13 +38,8 @@ export default function LaporanPublicClient({
   totalExpense,
   expenseCategories,
   transferChannels,
-  monthlyTrend,
-  incomes,
-  outcomes
+  monthlyTrend
 }: LaporanPublicClientProps) {
-  // Tabs: 'charts' (Grafik) or 'details' (Rincian Transaksi)
-  const [activeTab, setActiveTab] = React.useState<"charts" | "details">("charts")
-
   return (
     <div className="relative min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col font-sans">
       
@@ -87,53 +78,16 @@ export default function LaporanPublicClient({
           </p>
         </div>
 
-        {/* Tab Switcher - Brutalist Style */}
-        <div className="flex border-[2.5px] border-black rounded-[18px] bg-white overflow-hidden p-1.5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <button
-            onClick={() => setActiveTab("charts")}
-            className={cn(
-              "flex-1 py-3 text-center text-xs md:text-sm font-black uppercase rounded-[12px] transition-all flex items-center justify-center gap-2 cursor-pointer",
-              activeTab === "charts"
-                ? "bg-emerald-100 text-emerald-800 border-[2.5px] border-black shadow-[2px_2px_0px_0px_#000]"
-                : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50"
-            )}
-          >
-            <BarChart2 className="h-4.5 w-4.5 shrink-0" />
-            Ringkasan & Grafik
-          </button>
-          <button
-            onClick={() => setActiveTab("details")}
-            className={cn(
-              "flex-1 py-3 text-center text-xs md:text-sm font-black uppercase rounded-[12px] transition-all flex items-center justify-center gap-2 cursor-pointer",
-              activeTab === "details"
-                ? "bg-emerald-100 text-emerald-800 border-[2.5px] border-black shadow-[2px_2px_0px_0px_#000]"
-                : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50"
-            )}
-          >
-            <FileText className="h-4.5 w-4.5 shrink-0" />
-            Rincian Transaksi
-          </button>
-        </div>
-
-        {/* Render Tab Content */}
-        <div className="border-[2.5px] border-black bg-white rounded-[22px] p-4 md:p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-          {activeTab === "charts" ? (
-            <LaporanClient
-              totalCash={totalCash}
-              totalTransfer={totalTransfer}
-              totalExpense={totalExpense}
-              expenseCategories={expenseCategories}
-              transferChannels={transferChannels}
-              monthlyTrend={monthlyTrend}
-              isAdmin={false} // Hide admin tips
-            />
-          ) : (
-            <RincianDanaClient
-              incomes={incomes}
-              outcomes={outcomes}
-            />
-          )}
-        </div>
+        {/* Render Laporan Client (Dashboard / Diagrams) directly */}
+        <LaporanClient
+          totalCash={totalCash}
+          totalTransfer={totalTransfer}
+          totalExpense={totalExpense}
+          expenseCategories={expenseCategories}
+          transferChannels={transferChannels}
+          monthlyTrend={monthlyTrend}
+          isAdmin={false} // Hide admin tips
+        />
 
       </main>
 
