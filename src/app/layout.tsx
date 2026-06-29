@@ -91,6 +91,9 @@ export const metadata: Metadata = {
     ],
     apple: "/icons/icon-192.png",
   },
+  verification: {
+    google: "sII3oERrXd3zPHTYSeJbgFFxYgbtDAJzBBBw3DbPSeg",
+  },
 };
 
 import { MoneyAnimationProvider } from "@/components/shared/money-animation-provider";
