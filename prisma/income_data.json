@@ -1,0 +1,4778 @@
+[
+  {
+    "donorName": "Hj. Ema Gun",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 400000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Agus Salim Cik",
+    "donorAddress": "Meranjat II Kp. 4",
+    "amount": 1000000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Susi Andi",
+    "donorAddress": "Meranjat II Kp. 3",
+    "amount": 250000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Kel. H. Fathurrahman",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Dwi Maulina Hotochi",
+    "donorAddress": "Palembang",
+    "amount": 1000000.0,
+    "date": "2026-11-08T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Via H. Syafik",
+    "donorAddress": "Palembang",
+    "amount": 1000000.0,
+    "date": "2026-11-08T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Ruli H. Syafik",
+    "donorAddress": "Meranjat II Kp. 4",
+    "amount": 1000000.0,
+    "date": "2026-08-13T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Sri Nurhayati",
+    "donorAddress": "Palembang",
+    "amount": 100000.0,
+    "date": "2026-08-08T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Rudi Hartono",
+    "donorAddress": "Tg. Enim",
+    "amount": 1000000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Sopian Hamid",
+    "donorAddress": "Timbangan",
+    "amount": 500000.0,
+    "date": "2026-08-17T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Dewi Yuniarti",
+    "donorAddress": "Indralaya",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Lia Utari",
+    "donorAddress": "Indralaya",
+    "amount": 400000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yanto Wati",
+    "donorAddress": "Lampung",
+    "amount": 2500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hj. Nuriah",
+    "donorAddress": "Lampung",
+    "amount": 1000000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Heri Murni",
+    "donorAddress": "Indralaya",
+    "amount": 300000.0,
+    "date": "2026-08-18T00:00:00",
+    "description": null,
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "H. Candra H. Yahya Bitik",
+    "donorAddress": "Jakarta",
+    "amount": 5000000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Wiwin",
+    "donorAddress": "Meranjat II Kp. 6",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Een",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Bujang Ika",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Suharni Harun",
+    "donorAddress": "Simpang Parit",
+    "amount": 300000.0,
+    "date": "2026-08-20T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Iklim Suryadi",
+    "donorAddress": "Lembak",
+    "amount": 500000.0,
+    "date": "2026-08-20T00:00:00",
+    "description": "Masuk ke B. Sum-Sel, yang Bulan Agustus",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Budi",
+    "donorAddress": "Pulau Semambu",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Faris",
+    "donorAddress": "Meranjat II Kp. 6",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Sopian",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Batu Raja",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ece Hamba",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Amir Nopi",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Helmi Cu",
+    "donorAddress": "Meranjat I Kp. 1",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Adif Eni",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Agus Salim",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 130000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Rika Yen",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": null,
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hj. Suhaibah",
+    "donorAddress": "Palembang",
+    "amount": 200000.0,
+    "date": "2026-08-19T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "-",
+    "amount": 50000.0,
+    "date": null,
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Jujun Eci",
+    "donorAddress": "Indralaya",
+    "amount": 250000.0,
+    "date": "2026-08-21T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Pak Nuri MBG",
+    "donorAddress": "Indralaya",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Sri Indra",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yati Ar",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Iklal Hj. Murni",
+    "donorAddress": "Perbatasan Plg",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Wan H. Ali Hj. Hana",
+    "donorAddress": "Palembang",
+    "amount": 500000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "H. Adit Hj. Mursiha",
+    "donorAddress": "Soak Plg",
+    "amount": 1000000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Kotri Juliana",
+    "donorAddress": "Sekip Plg",
+    "amount": 500000.0,
+    "date": "2026-08-26T00:00:00",
+    "description": "Masuk ke BRI dari kawannyo Pak Kades Dedy Iskandar",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Rudi H. Zainudin",
+    "donorAddress": "Tpi Indralaya",
+    "amount": 1000000.0,
+    "date": "2026-08-26T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Jakarta",
+    "amount": 150000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Via Sri Fefek",
+    "donorAddress": "Jakarta",
+    "amount": 300000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Rusnawati",
+    "donorAddress": "Muara Enim",
+    "amount": 5000000.0,
+    "date": "2026-08-27T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Zulfitri",
+    "donorAddress": "-",
+    "amount": 10000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "M. Suhendra Putra Yahya B",
+    "donorAddress": "Indralaya",
+    "amount": 500000.0,
+    "date": "2026-08-29T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Talitha Safa",
+    "donorAddress": "Indralaya",
+    "amount": 800000.0,
+    "date": "2026-08-28T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Safitri",
+    "donorAddress": "Makarti",
+    "amount": 1100000.0,
+    "date": "2026-08-28T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "H. Jend H. Ali Hj. Sito",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 5000000.0,
+    "date": "2026-08-29T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Apotik Arsyah",
+    "donorAddress": "Beti",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Palembang",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yati Acan",
+    "donorAddress": "Meranjat II Kp. 2",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Zulkifli Ali",
+    "donorAddress": "Palembang",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Suradi Kona",
+    "donorAddress": "Kayu Agung",
+    "amount": 1000000.0,
+    "date": "2026-03-09T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "H. Effendi Kitum",
+    "donorAddress": "Palembang",
+    "amount": 1000000.0,
+    "date": "2026-03-09T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Iskandar",
+    "donorAddress": "Tg. Sejaro",
+    "amount": 100000.0,
+    "date": "2026-03-09T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Muhammad Syafawi",
+    "donorAddress": "Timbangan",
+    "amount": 1000000.0,
+    "date": "2026-04-09T00:00:00",
+    "description": "Masuk ke BRI, Infaq untuk Alm H.M.Umar Helmi dan Hj. Maryani",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Herman Tas",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 1500000.0,
+    "date": "2026-04-09T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "M. Maturidi",
+    "donorAddress": "Plg Perbatasan",
+    "amount": 100000.0,
+    "date": "2026-07-09T00:00:00",
+    "description": "Masuk ke BRI, Ipar H. Ikhwan di Perbatasan",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "-",
+    "amount": 250000.0,
+    "date": "2026-07-09T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Choirul Najmi",
+    "donorAddress": "Sungai Lilin",
+    "amount": 200000.0,
+    "date": "2026-07-09T00:00:00",
+    "description": "Masuk ke BRI, Ipar Bendahara Pembangunan Menara",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Kel. Eko Bin H. Mahasan",
+    "donorAddress": "Gang Sepakat Jaya II Palembang",
+    "amount": 6000000.0,
+    "date": "2026-09-09T00:00:00",
+    "description": "Kel. M. Thohir, amplop melalui Bapak Thohirman",
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Ikhwan Hj. Mardiana",
+    "donorAddress": "Meranjat II Kp. 6",
+    "amount": 500000.0,
+    "date": "2026-09-09T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Paidah",
+    "donorAddress": "Meranjat I Kp. 8",
+    "amount": 400000.0,
+    "date": "2026-09-09T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Asir Bin M. Thayib & Hj. Cik Uma Binti Kuti Toha",
+    "donorAddress": "Meranjat I Kp. 8",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yuk Ana Amit Redi",
+    "donorAddress": "Jakabaring",
+    "amount": 1000000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Dewi Trisno",
+    "donorAddress": "Timbangan",
+    "amount": 500000.0,
+    "date": null,
+    "description": "DKM Rp 500.000",
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ninot Iskandar",
+    "donorAddress": "Meranjat I Kp. 12",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ana Pindang Meranjat",
+    "donorAddress": "Jakabaring",
+    "amount": 1000000.0,
+    "date": "2026-08-09T00:00:00",
+    "description": "Sepupu Bu Kades Susi",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Yanto Pdg. Meranjat",
+    "donorAddress": "Jakabaring",
+    "amount": 500000.0,
+    "date": "2026-11-09T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Kel. H. Marzuki",
+    "donorAddress": "7 Ulu Palembang",
+    "amount": 1000000.0,
+    "date": "2026-09-13T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Marzuki - Nomek",
+    "donorAddress": "Pulau Semambu",
+    "amount": 200000.0,
+    "date": "2026-09-15T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Dedek M. Sar Nek",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": "2026-09-15T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Lan",
+    "donorAddress": "Timbangan",
+    "amount": 300000.0,
+    "date": "2026-09-15T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Tes Rekening",
+    "donorAddress": "-",
+    "amount": 1000.0,
+    "date": "2026-07-29T00:00:00",
+    "description": "Tes rekening Bank BRI saja",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Tris Rika",
+    "donorAddress": "Indralaya",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Jhon Heri",
+    "donorAddress": "Indralaya",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Sudir Mur",
+    "donorAddress": "Tebedak",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "M. Nafis",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Matsari",
+    "donorAddress": "Meranjat II Kp. 1",
+    "amount": 600000.0,
+    "date": "2026-09-23T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Kel. Ahmad Nawawi H. Husin",
+    "donorAddress": "Meranjat II Kp. 4",
+    "amount": 10000000.0,
+    "date": "2026-09-24T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Suhaimi",
+    "donorAddress": "Palembang",
+    "amount": 500000.0,
+    "date": "2026-09-24T00:00:00",
+    "description": "Masuk ke BRI, orang Depot Kusen",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Aak Makmun",
+    "donorAddress": "Jakarta",
+    "amount": 200000.0,
+    "date": "2026-09-24T00:00:00",
+    "description": "Masuk ke BRI, Kakak Eva Makmun",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Iklim Suryadi",
+    "donorAddress": "Lembak",
+    "amount": 500000.0,
+    "date": "2026-09-24T00:00:00",
+    "description": "Masuk ke BRI, yang Bulan September",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Kasman",
+    "donorAddress": "Palembang Gandus",
+    "amount": 1000000.0,
+    "date": "2026-09-24T00:00:00",
+    "description": "yang Bulan September",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Anggota Beruma",
+    "donorAddress": "Palembang",
+    "amount": 2000000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Palembang",
+    "amount": 1000000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "U/ Alm. Asmani bin Abul & Almh. Hj. Maimunah binti HA Rachman",
+    "donorAddress": "Palembang",
+    "amount": 200000.0,
+    "date": null,
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "U/ Alm. D. Efendi Ilyas & Almh. Nurlaila binti M. Noor Arif",
+    "donorAddress": "Indralaya",
+    "amount": 250000.0,
+    "date": null,
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hj. Damayanti (Atik) Annihrir",
+    "donorAddress": "Pakjo PLG",
+    "amount": 1500000.0,
+    "date": "2026-09-27T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Defri Kori",
+    "donorAddress": "Indralaya",
+    "amount": 1000000.0,
+    "date": "2026-09-25T00:00:00",
+    "description": "Masuk ke B. Sum-Sel",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Kel. Beruma",
+    "donorAddress": "Palembang",
+    "amount": 2000000.0,
+    "date": null,
+    "description": "TF",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Heni Tholib anak alm Mat Roni",
+    "donorAddress": "-",
+    "amount": 1000000.0,
+    "date": "2026-09-28T00:00:00",
+    "description": null,
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Rifky Ardhitika",
+    "donorAddress": "Palembang",
+    "amount": 500000.0,
+    "date": "2026-01-10T00:00:00",
+    "description": null,
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Mukhtar Zamzami (Alm)",
+    "donorAddress": "Palembang",
+    "amount": 250000.0,
+    "date": "2026-01-10T00:00:00",
+    "description": "Melalui rek Rifky Ardhitika",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Jonedi",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": "2026-08-22T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Ikhwanudin",
+    "donorAddress": "Palembang",
+    "amount": 500000.0,
+    "date": "2026-08-25T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Jingga Karlina",
+    "donorAddress": "Batam",
+    "amount": 300000.0,
+    "date": "2026-08-19T00:00:00",
+    "description": "Masuk ke BRI",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "M. Hafizh Rozali",
+    "donorAddress": "Indralaya",
+    "amount": 200000.0,
+    "date": "2026-09-19T00:00:00",
+    "description": "Adik Ustadz Ramlan",
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "H. Supriadi/Hj.Semarti",
+    "donorAddress": "Indralaya",
+    "amount": 250000.0,
+    "date": "2026-09-30T00:00:00",
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Romlah H. Pudin",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Juidah Jaguk",
+    "donorAddress": "Meranjat I",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Uca Tegek",
+    "donorAddress": "Meranjat I",
+    "amount": 500000.0,
+    "date": "2026-09-08T00:00:00",
+    "description": null,
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Gun Yanti",
+    "donorAddress": "Meranjat I",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ece",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Emi Hasan",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Abu Mala",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Rodiah Yon",
+    "donorAddress": "Meranjat I",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Amrah Muslimin",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yani Rizal",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Budi Yuli",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Fuadi Meri",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Fadli Lah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Rusna",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Len Matzeh",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Rendi Diana",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Mancik Masturo",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Husin Parida",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ibu Nanik",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yul Wanto",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Depi Kiki",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Edi Irawan",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Iskandar Yausa",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Herman AK",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Eli BW",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Imron Nung",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Marsup",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ran Vera",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yus Devi",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Rian Eli",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Iin Wulan",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yul Cuai",
+    "donorAddress": "Meranjat I",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 35000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat I",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Iswan Siti",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ramlan Nur",
+    "donorAddress": "Meranjat II",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Wan",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yunus Ani",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Muslimin Nir",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yusmaleni",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Medi",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nadi Amna",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Bahtiar Tuti",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Luluk Mala",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Kati Sri",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Herman Ica",
+    "donorAddress": "Meranjat II",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Amsi",
+    "donorAddress": "Meranjat II",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yanto Ica",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Abdulah Sani",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yuyun Yusniar",
+    "donorAddress": "Meranjat II",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Neli Udin",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Fatima Juni",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Sal",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nawan Wancik",
+    "donorAddress": "Meranjat II",
+    "amount": 500000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nial Yuang",
+    "donorAddress": "Meranjat II",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Rudi Ulik",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Iswan",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Oi Fuat",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Junai Eli",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Mendi Lina",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nurmala",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Fir Uswa",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Irawan Dedek",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Teguh Ai",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Najemi",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Nilawati",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Iskandar Yuli",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Imi Emi",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Cikda Slamat",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Jamil Muksin",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Mala Gun",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nadi Yat",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Udin Mis",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Arfa Syamsu",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Sarman War",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Syarkowi",
+    "donorAddress": "Meranjat II",
+    "amount": 52000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Marbiah/Khoirah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Sarwani",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Mat Snih",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Masri Agani",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 300000.0,
+    "date": "2026-02-09T00:00:00",
+    "description": null,
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 300000.0,
+    "date": "2026-03-10T00:00:00",
+    "description": null,
+    "type": "TRANSFER"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 80000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 40000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 5000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Juki Sus",
+    "donorAddress": "Meranjat II",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nun Tika",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Iin Ani",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Candra Lena",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Lelen Yaya",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hayani",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hj. Ema Gun",
+    "donorAddress": "Meranjat II",
+    "amount": 300000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Taufik Tinun",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Lusi Wandi",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "H. Hamidi",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Naceng Ros",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nur Fadilah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yus Ketam",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat II",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Awet Mai",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Neno Taman",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Teguh Rus",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Abu Bakar PM",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "M. Saher Ros",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nurma Yasin",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Mar Jono",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Bujang Rika",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Lin Pini Bobosan",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Zakaria BSI",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Mawan Kip",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Cupan Lis",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Turya Ros",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ang Yanti",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Nukman",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Ikhsan",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Yamin Warda",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Fahrul Nasai",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Eni Bas",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hj. Lis",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Een Tuti",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Eko Nasri Yanto",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 150000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 150000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 50000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 25000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 20000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 15000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 10000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 200000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 100000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 40000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  },
+  {
+    "donorName": "Hamba Allah",
+    "donorAddress": "Meranjat Ilir",
+    "amount": 30000.0,
+    "date": null,
+    "description": null,
+    "type": "CASH"
+  }
+]
