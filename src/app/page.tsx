@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, ArrowRight, BarChart2, ShieldCheck, DollarSign, Calendar, Users, Building, Mail, Phone, MapPin, Shield, Award, Megaphone, Eye, Camera, HardHat, CheckCircle2, UserCheck, Briefcase } from "lucide-react";
 import { HomePageJsonLd, OrganizationJsonLd } from "@/components/shared/json-ld";
 import Footer from "@/components/shared/footer";
+import panitiaData from "@/data/panitia.json";
 
 export const metadata: Metadata = {
   title: "Menara Masjid Al-Ikhlas – Donasi Pembangunan & Transparansi Keuangan",
@@ -178,98 +179,93 @@ export default function Home() {
           </p>
         </div>
 
-        {/* TOP ROW: Pelindung, Penasehat, Penanggung Jawab */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        {/* ROW 1: Pelindung & Penasehat (2 Columns) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch max-w-3xl mx-auto">
           {/* Pelindung */}
-          <div className="flex flex-col h-full">
-            <div className="border-[2.5px] border-black bg-white rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col flex-grow">
-              <div className="bg-emerald-800 text-white py-2 px-4 border-b-[2.5px] border-black text-center text-xs font-black uppercase tracking-wider">
-                🛡️ Pelindung
-              </div>
-              <div className="p-5 flex-grow flex flex-col items-center justify-center text-center space-y-3">
-                <div className="h-12 w-12 rounded-full border-[2.5px] border-black bg-amber-100 flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
-                  <Shield className="h-6 w-6 text-emerald-800" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-black uppercase text-neutral-800 tracking-tight">Dedi Iskandar</h4>
-                  <p className="text-[9px] text-neutral-500 font-bold uppercase mt-0.5">Kepala Desa Meranjat II</p>
-                </div>
-              </div>
+          <div className="border-[2.5px] border-black bg-white rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-between">
+            <div className="bg-emerald-800 text-white py-2 px-4 border-b-[2.5px] border-black text-center text-xs font-black uppercase tracking-wider">
+              🛡️ Pelindung
             </div>
-            {/* Connector down to bridge */}
-            <div className="hidden lg:flex justify-center h-6">
-              <div className="h-full w-[2.5px] bg-black" />
+            <div className="p-4 flex-grow flex flex-col items-center justify-center text-center space-y-2">
+              <div className="h-10 w-10 rounded-full border-[2px] border-black bg-amber-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_0px_#000]">
+                <Shield className="h-5 w-5 text-emerald-800" />
+              </div>
+              <div>
+                <h4 className="text-xs font-black uppercase text-neutral-800 tracking-tight">Dedi Iskandar</h4>
+                <p className="text-[9px] text-neutral-500 font-bold uppercase mt-0.5">Kepala Desa Meranjat II</p>
+              </div>
             </div>
           </div>
 
           {/* Penasehat */}
-          <div className="flex flex-col h-full">
-            <div className="border-[2.5px] border-black bg-white rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col flex-grow">
-              <div className="bg-emerald-800 text-white py-2 px-4 border-b-[2.5px] border-black text-center text-xs font-black uppercase tracking-wider">
-                👥 Penasehat
-              </div>
-              <div className="p-5 flex-grow flex flex-col items-center justify-center text-center space-y-3">
-                <div className="h-12 w-12 rounded-full border-[2.5px] border-black bg-amber-100 flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
-                  <Users className="h-6 w-6 text-emerald-800" />
-                </div>
-                <ul className="text-[9px] text-neutral-700 font-bold space-y-1 text-left list-disc list-inside">
-                  <li>Imam Masjid Al-Ikhlas</li>
-                  <li>Tokoh Agama</li>
-                  <li>Tokoh Masyarakat</li>
-                </ul>
-              </div>
+          <div className="border-[2.5px] border-black bg-white rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-between">
+            <div className="bg-emerald-800 text-white py-2 px-4 border-b-[2.5px] border-black text-center text-xs font-black uppercase tracking-wider">
+              👥 Penasehat
             </div>
-            {/* Connector down to bridge */}
-            <div className="hidden lg:flex justify-center h-6">
-              <div className="h-full w-[2.5px] bg-black" />
-            </div>
-          </div>
-
-          {/* Penanggung Jawab */}
-          <div className="flex flex-col h-full">
-            <div className="border-[2.5px] border-black bg-white rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col flex-grow">
-              <div className="bg-emerald-800 text-white py-2 px-4 border-b-[2.5px] border-black text-center text-xs font-black uppercase tracking-wider">
-                📜 Penanggung Jawab
+            <div className="p-4 flex-grow flex flex-col items-center justify-center text-center space-y-2">
+              <div className="h-10 w-10 rounded-full border-[2px] border-black bg-amber-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_0px_#000]">
+                <Users className="h-5 w-5 text-emerald-800" />
               </div>
-              <div className="p-5 flex-grow flex flex-col items-center justify-center text-center space-y-3">
-                <div className="h-20 w-20 rounded-full border-[2.5px] border-black shadow-[2px_2px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/panitia/Ust Ramlan.jpeg"
-                    alt="Ustadz Ramlan Rozali"
-                    className="h-full w-full object-cover object-top"
-                  />
-                </div>
-                <div>
-                  <h4 className="text-xs font-black uppercase text-neutral-800 tracking-tight">Ust. Ramlan Rozali, S.Sos</h4>
-                  <p className="text-[9px] text-neutral-500 font-bold uppercase mt-0.5">Ketua DKM Masjid Al-Ikhlas</p>
-                </div>
-              </div>
-            </div>
-            {/* Connector down to bridge */}
-            <div className="hidden lg:flex justify-center h-6">
-              <div className="h-full w-[2.5px] bg-black" />
+              <ul className="text-[9px] text-neutral-700 font-bold space-y-0.5 text-left list-disc list-inside">
+                <li>Imam Masjid Al-Ikhlas</li>
+                <li>Tokoh Agama</li>
+                <li>Tokoh Masyarakat</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        {/* Connector Bridge 1 (Desktop only) */}
-        <div className="hidden lg:flex flex-col items-center -mt-6 mb-6 relative z-10">
-          <div className="w-[66%] h-[2.5px] bg-black" />
-          <div className="h-8 w-[2.5px] bg-black relative">
-            <div className="absolute bottom-0 left-1/2 -translate-x-[50%] translate-y-[2px] w-2.5 h-2.5 bg-black rotate-45" />
+        {/* Connector Tree 1: Pelindung & Penasehat -> Penanggung Jawab */}
+        <div className="relative max-w-3xl mx-auto h-8 -mt-[2px] -mb-[2px] flex justify-center items-center z-0">
+          {/* Desktop T-bar connector */}
+          <div className="hidden md:block absolute inset-0">
+            {/* Left drop line directly from bottom of Pelindung card (25%) */}
+            <div className="absolute top-0 left-[25%] h-4 w-[2.5px] bg-black" />
+            {/* Right drop line directly from bottom of Penasehat card (75%) */}
+            <div className="absolute top-0 right-[25%] h-4 w-[2.5px] bg-black" />
+            {/* Horizontal line connecting left and right drops */}
+            <div className="absolute top-4 left-[25%] right-[25%] h-[2.5px] bg-black" />
+            {/* Center stem down from horizontal line to Penanggung Jawab */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 bottom-0 w-[2.5px] bg-black" />
+          </div>
+
+          {/* Mobile vertical line */}
+          <div className="md:hidden flex flex-col items-center h-full">
+            <div className="h-full w-[2.5px] bg-black" />
           </div>
         </div>
 
-        {/* Mobile Connecting Line */}
-        <div className="lg:hidden flex flex-col items-center -my-3 relative z-10">
-          <div className="h-10 w-[2.5px] bg-black border-dashed relative">
-            <div className="absolute bottom-0 left-1/2 -translate-x-[50%] translate-y-[1px] w-2 h-2 bg-black rotate-45" />
+        {/* ROW 2: Penanggung Jawab (Sendirian di tengah) */}
+        <div className="max-w-md mx-auto relative z-10">
+          <div className="border-[2.5px] border-black bg-white rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+            <div className="bg-emerald-800 text-white py-2 px-4 border-b-[2.5px] border-black text-center text-xs font-black uppercase tracking-wider">
+              📜 Penanggung Jawab
+            </div>
+            <div className="p-4 flex items-center justify-center gap-4 text-left">
+              <div className="h-16 w-16 rounded-full border-[2.5px] border-black shadow-[2px_2px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/panitia/Ust Ramlan.jpeg"
+                  alt="Ustadz Ramlan Rozali"
+                  className="h-full w-full object-cover object-top"
+                />
+              </div>
+              <div>
+                <h4 className="text-xs font-black uppercase text-neutral-800 tracking-tight">Ust. Ramlan Rozali, S.Sos</h4>
+                <p className="text-[9px] text-emerald-800 font-extrabold uppercase mt-0.5">Ketua DKM Masjid Al-Ikhlas</p>
+                <p className="text-[8px] text-neutral-500 font-semibold mt-0.5">Mengawasi & Membina Seluruh Kepanitiaan</p>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Connector Tree 2: Penanggung Jawab -> Pengurus Harian */}
+        <div className="flex flex-col items-center h-7 -mt-[2px] -mb-[2px] relative z-0">
+          <div className="h-full w-[2.5px] bg-black" />
         </div>
 
         {/* MIDDLE ROW: Pengurus Harian */}
-        <div className="border-[2.5px] border-black bg-white rounded-[22px] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-5">
+        <div className="border-[2.5px] border-black bg-white rounded-[22px] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-5 relative z-10">
           <div className="text-center">
             <span className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-[1px_1px_0px_0px_#000]">
               Pengurus Harian
@@ -342,103 +338,107 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Connector Bridge 2 (Desktop only) */}
-        <div className="hidden lg:flex flex-col items-center -my-2 relative z-10">
-          <div className="h-10 w-[2.5px] bg-black relative">
-            <div className="absolute bottom-0 left-1/2 -translate-x-[50%] translate-y-[2px] w-2.5 h-2.5 bg-black rotate-45" />
-          </div>
+        {/* Connector Tree 3: Pengurus Harian -> Seksi-Seksi Kerja */}
+        <div className="flex flex-col items-center h-7 -mt-[2px] -mb-[2px] relative z-0">
+          <div className="h-full w-[2.5px] bg-black" />
         </div>
 
-        {/* Mobile Connecting Line */}
-        <div className="lg:hidden flex flex-col items-center -my-1 relative z-10">
-          <div className="h-10 w-[2.5px] bg-black border-dashed relative">
-            <div className="absolute bottom-0 left-1/2 -translate-x-[50%] translate-y-[1px] w-2 h-2 bg-black rotate-45" />
-          </div>
-        </div>
-
-        {/* SEKSI-SEKSI */}
-        <div className="border-[2.5px] border-black bg-white rounded-[22px] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-5">
+        {/* SEKSI-SEKSI KERJA */}
+        <div className="border-[2.5px] border-black bg-white rounded-[22px] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-4 relative z-10">
           <div className="text-center">
             <span className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-[1px_1px_0px_0px_#000]">
               Seksi-Seksi Kerja
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Seksi Penggalangan Dana */}
-            <div className="border-[2px] border-black bg-[#fdfdfc] rounded-[18px] p-4 flex flex-col justify-between space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 border-b border-neutral-200 pb-2">
-                  <div className="h-7 w-7 rounded-full border border-black bg-emerald-50 flex items-center justify-center shrink-0">
-                    <DollarSign className="h-4 w-4 text-emerald-800" />
-                  </div>
-                  <h4 className="text-[10px] font-black uppercase text-neutral-800 tracking-tight leading-tight">Penggalangan Dana</h4>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[8px] font-bold text-neutral-400 uppercase">Anggota</p>
-                  <p className="text-[9px] font-black text-neutral-700">Panitia 1, Panitia 2, Panitia 3</p>
-                </div>
-              </div>
-              <div className="bg-[#f7f5f0] border border-black rounded-[10px] p-2.5 text-[9px] font-semibold text-neutral-600 leading-relaxed">
-                Bertugas menggalang dan menerima donasi, menyusun proposal, dan laporan dana.
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {panitiaData.seksiSeksi.map((seksi) => {
+              const IconComponent =
+                seksi.icon === "DollarSign"
+                  ? DollarSign
+                  : seksi.icon === "Megaphone"
+                  ? Megaphone
+                  : seksi.icon === "Eye"
+                  ? Eye
+                  : Camera;
 
-            {/* Seksi Humas */}
-            <div className="border-[2px] border-black bg-[#fdfdfc] rounded-[18px] p-4 flex flex-col justify-between space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 border-b border-neutral-200 pb-2">
-                  <div className="h-7 w-7 rounded-full border border-black bg-emerald-50 flex items-center justify-center shrink-0">
-                    <Megaphone className="h-4 w-4 text-emerald-800" />
-                  </div>
-                  <h4 className="text-[10px] font-black uppercase text-neutral-800 tracking-tight leading-tight">Hubungan Masyarakat</h4>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[8px] font-bold text-neutral-400 uppercase">Anggota</p>
-                  <p className="text-[9px] font-black text-neutral-700">Panitia 1, Panitia 2, Panitia 3</p>
-                </div>
-              </div>
-              <div className="bg-[#f7f5f0] border border-black rounded-[10px] p-2.5 text-[9px] font-semibold text-neutral-600 leading-relaxed">
-                Bertugas menjalin komunikasi dengan jamaah, donatur, masyarakat, dan pihak terkait lainnya.
-              </div>
-            </div>
+              return (
+                <div
+                  key={seksi.id}
+                  className="border-[2px] border-black bg-[#fdfdfc] rounded-[16px] p-3.5 flex flex-col justify-between space-y-3 shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)]"
+                >
+                  <div className="space-y-2.5">
+                    {/* Header Seksi */}
+                    <div className="flex items-center gap-2 border-b border-neutral-300 pb-2">
+                      <div className="h-7 w-7 rounded-full border border-black bg-emerald-100 flex items-center justify-center shrink-0 shadow-[1px_1px_0px_0px_#000]">
+                        <IconComponent className="h-3.5 w-3.5 text-emerald-900" />
+                      </div>
+                      <h4 className="text-[11px] font-black uppercase text-neutral-800 tracking-tight leading-tight">
+                        {seksi.namaSeksi}
+                      </h4>
+                    </div>
 
-            {/* Seksi Pengawasan */}
-            <div className="border-[2px] border-black bg-[#fdfdfc] rounded-[18px] p-4 flex flex-col justify-between space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 border-b border-neutral-200 pb-2">
-                  <div className="h-7 w-7 rounded-full border border-black bg-emerald-50 flex items-center justify-center shrink-0">
-                    <Eye className="h-4 w-4 text-emerald-800" />
-                  </div>
-                  <h4 className="text-[10px] font-black uppercase text-neutral-800 tracking-tight leading-tight">Pengawasan Lapangan</h4>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[8px] font-bold text-neutral-400 uppercase">Anggota</p>
-                  <p className="text-[9px] font-black text-neutral-700">Panitia 1, Panitia 2, Panitia 3</p>
-                </div>
-              </div>
-              <div className="bg-[#f7f5f0] border border-black rounded-[10px] p-2.5 text-[9px] font-semibold text-neutral-600 leading-relaxed">
-                Bertugas mengawasi progres pekerjaan pemborong, kualitas pekerjaan, dan kesesuaian dengan kesepakatan.
-              </div>
-            </div>
+                    {/* Koordinator / Ketua Seksi */}
+                    <div className="space-y-1.5 bg-amber-50/90 border border-amber-300 rounded-[10px] p-2">
+                      <span className="text-[7.5px] font-black text-amber-900 uppercase tracking-wider bg-amber-200/90 px-1.5 py-0.5 rounded border border-amber-400/80 inline-block">
+                        👑 Koordinator
+                      </span>
+                      <div className="flex flex-wrap gap-1.5 pt-0.5">
+                        {seksi.koordinator.map((koor, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-1.5 bg-white border border-black rounded-full py-0.5 px-2 shadow-[1px_1px_0px_0px_#000]"
+                          >
+                            <div className="h-6 w-6 rounded-full border border-black overflow-hidden bg-emerald-50 shrink-0">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={koor.foto || "/avatar-islam.png"}
+                                alt={koor.nama}
+                                className="h-full w-full object-cover object-top"
+                              />
+                            </div>
+                            <span className="text-[9px] font-black text-neutral-800">
+                              {koor.nama}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-            {/* Seksi Dokumentasi & Publikasi */}
-            <div className="border-[2px] border-black bg-[#fdfdfc] rounded-[18px] p-4 flex flex-col justify-between space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 border-b border-neutral-200 pb-2">
-                  <div className="h-7 w-7 rounded-full border border-black bg-emerald-50 flex items-center justify-center shrink-0">
-                    <Camera className="h-4 w-4 text-emerald-800" />
+                    {/* Anggota Seksi */}
+                    <div className="space-y-1 pt-0.5">
+                      <span className="text-[7.5px] font-black text-neutral-500 uppercase tracking-wider">
+                        👥 Anggota ({seksi.anggota.length} Orang)
+                      </span>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {seksi.anggota.map((m, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-1.5 bg-white border border-neutral-200 rounded-lg p-1 shadow-xs"
+                          >
+                            <div className="h-5 w-5 rounded-full border border-neutral-800 overflow-hidden bg-neutral-100 shrink-0">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={m.foto || "/avatar-islam.png"}
+                                alt={m.nama}
+                                className="h-full w-full object-cover object-top"
+                              />
+                            </div>
+                            <span className="text-[8.5px] font-bold text-neutral-800 truncate leading-tight">
+                              {m.nama}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="text-[10px] font-black uppercase text-neutral-800 tracking-tight leading-tight">Dokumentasi & Publikasi</h4>
+
+                  {/* Deskripsi Seksi */}
+                  <div className="bg-[#f7f5f0] border border-neutral-300 rounded-[8px] p-2 text-[8.5px] font-medium text-neutral-600 leading-snug">
+                    {seksi.deskripsi}
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-[8px] font-bold text-neutral-400 uppercase">Anggota</p>
-                  <p className="text-[9px] font-black text-neutral-700">Panitia 1, Panitia 2, Panitia 3</p>
-                </div>
-              </div>
-              <div className="bg-[#f7f5f0] border border-black rounded-[10px] p-2.5 text-[9px] font-semibold text-neutral-600 leading-relaxed">
-                Bertugas mendokumentasikan kegiatan pembangunan serta menyampaikan informasi kepada masyarakat.
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
 

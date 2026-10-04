@@ -1,0 +1,286 @@
+{
+  "pelindungPenasehat": [
+    {
+      "nama": "Kades Meranjat II",
+      "jabatan": "Pelindung",
+      "seksi": "Pelindung & Penasehat",
+      "foto": "/avatar-islam.png"
+    },
+    {
+      "nama": "BPD Desa Meranjat II",
+      "jabatan": "Penasehat",
+      "seksi": "Pelindung & Penasehat",
+      "foto": "/avatar-islam.png"
+    },
+    {
+      "nama": "P2UKD Desa Meranjat II",
+      "jabatan": "Penasehat",
+      "seksi": "Pelindung & Penasehat",
+      "foto": "/avatar-islam.png"
+    },
+    {
+      "nama": "Ust. Ramlan Rozali, S.Sos",
+      "jabatan": "Ketua DKM Al-Ikhlas (Penanggung Jawab)",
+      "seksi": "Pelindung & Penasehat",
+      "foto": "/panitia/Ust Ramlan.jpeg"
+    }
+  ],
+  "pengurusInti": [
+    {
+      "nama": "Zulfikar Ali, SH",
+      "jabatan": "Ketua Pembangunan",
+      "seksi": "Pengurus Inti",
+      "foto": "/panitia/Mang Fifik.jpeg"
+    },
+    {
+      "nama": "Agus Tomi, SH",
+      "jabatan": "Wakil Ketua Pembangunan",
+      "seksi": "Pengurus Inti",
+      "foto": "/panitia/Mang Agus.jpeg"
+    },
+    {
+      "nama": "Najemi",
+      "jabatan": "Sekretaris",
+      "seksi": "Pengurus Inti",
+      "foto": "/panitia/Mang Jemi.jpeg"
+    },
+    {
+      "nama": "Candra Gunawan, SH",
+      "jabatan": "Bendahara",
+      "seksi": "Pengurus Inti",
+      "foto": "/panitia/Mang Candra.jpeg"
+    }
+  ],
+  "seksiSeksi": [
+    {
+      "id": "penggalangan-dana",
+      "namaSeksi": "Seksi Penggalangan Dana",
+      "deskripsi": "Bertugas menggalang dan menerima donasi, menyusun proposal, dan laporan dana.",
+      "icon": "DollarSign",
+      "koordinator": [
+        {
+          "nama": "Muslimin, S.Sos",
+          "jabatan": "Koordinator",
+          "foto": "/panitia/Pak Mus.jpeg"
+        },
+        {
+          "nama": "H. Medi Irawan",
+          "jabatan": "Koordinator",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Ruslan",
+          "jabatan": "Koordinator",
+          "foto": "/avatar-islam.png"
+        }
+      ],
+      "anggota": [
+        {
+          "nama": "Syamsudin",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Ahmad Ikhsan",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Dono.jpeg"
+        },
+        {
+          "nama": "H. Mukhlis",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Agussalim Matcik",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Adib Zakariya",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Dedi H.Abdullah",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Tohirman",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Tohir.jpeg"
+        },
+        {
+          "nama": "H. Syafik H.Imron",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Soni",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Soni.jpeg"
+        },
+        {
+          "nama": "H. Irlani",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        }
+      ]
+    },
+    {
+      "id": "humas",
+      "namaSeksi": "Seksi Humas (Hubungan Masyarakat)",
+      "deskripsi": "Bertugas menjalin komunikasi dengan jamaah, donatur, masyarakat, dan pihak terkait lainnya.",
+      "icon": "Megaphone",
+      "koordinator": [
+        {
+          "nama": "Fahruddin Jamil",
+          "jabatan": "Koordinator",
+          "foto": "/panitia/Pak Jamil.jpeg"
+        },
+        {
+          "nama": "Fariz Alfarizi, S.Pd",
+          "jabatan": "Koordinator",
+          "foto": "/panitia/Mang Fariz.jpeg"
+        }
+      ],
+      "anggota": [
+        {
+          "nama": "Iswan",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Ahmad Rafly Azmiansyah, SH",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Rafly.jpeg"
+        },
+        {
+          "nama": "Reno Pranike, SH",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Iskandar, S.Ag",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Mawardi Mansyur",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Taslim",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Lim.jpeg"
+        },
+        {
+          "nama": "Alfi Miftahuddin, SH",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Alfi.jpeg"
+        },
+        {
+          "nama": "Iskandar Ibrahim",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        }
+      ]
+    },
+    {
+      "id": "pengawasan-lapangan",
+      "namaSeksi": "Seksi Pengawasan Lapangan",
+      "deskripsi": "Bertugas mengawasi progres pekerjaan pemborong, kualitas pekerjaan, dan kesesuaian dengan kesepakatan.",
+      "icon": "Eye",
+      "koordinator": [
+        {
+          "nama": "Hefriadi, SP",
+          "jabatan": "Koordinator",
+          "foto": "/panitia/Mang Hef.jpeg"
+        }
+      ],
+      "anggota": [
+        {
+          "nama": "H. Bahtiar",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Hermanto, S.Sos",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Junaidi",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Najib",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "H. Asyhad",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Een Eni",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Nazaruddin",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Faisal",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        }
+      ]
+    },
+    {
+      "id": "dokumentasi-publikasi",
+      "namaSeksi": "Seksi Dokumentasi & Publikasi",
+      "deskripsi": "Bertugas mendokumentasikan kegiatan pembangunan serta menyampaikan informasi kepada masyarakat.",
+      "icon": "Camera",
+      "koordinator": [
+        {
+          "nama": "Zulfitri",
+          "jabatan": "Koordinator",
+          "foto": "/panitia/Mang Jul.jpeg"
+        },
+        {
+          "nama": "Amraini Siregar",
+          "jabatan": "Koordinator",
+          "foto": "/panitia/Mang Amir.jpeg"
+        }
+      ],
+      "anggota": [
+        {
+          "nama": "Oktariansyah",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Yusar Efendi",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        },
+        {
+          "nama": "Efri Yenedi",
+          "jabatan": "Anggota",
+          "foto": "/panitia/Mang Eef.jpeg"
+        },
+        {
+          "nama": "Rahmat Fadli",
+          "jabatan": "Anggota",
+          "foto": "/avatar-islam.png"
+        }
+      ]
+    }
+  ]
+}
