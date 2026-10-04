@@ -18,7 +18,7 @@ export async function proxy(request: NextRequest) {
           isSessionValid = true
         }
       }
-    } catch (e) {
+    } catch {
       isSessionValid = false
     }
   }
