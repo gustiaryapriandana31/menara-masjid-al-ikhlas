@@ -145,8 +145,13 @@ export default function MaterialClient({ recentMaterials }: MaterialClientProps)
       }
       setMaterialsList(prev => [newMaterial, ...prev].slice(0, 7))
 
-      // Trigger coin animation
-      triggerAnimation("income", 0, isAnonymous ? "Hamba Allah" : donorName.trim())
+      // Trigger material animation
+      triggerAnimation(
+        "material",
+        0,
+        isAnonymous ? "Hamba Allah" : donorName.trim(),
+        `${quantity.trim()} ${materialName.trim()}`
+      )
 
       // Reset form
       setSuccess(true)

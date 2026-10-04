@@ -3,10 +3,10 @@
 import * as React from "react"
 import { formatRupiah } from "@/lib/format"
 
-type AnimationType = "income" | "outcome"
+type AnimationType = "income" | "outcome" | "material"
 
 interface MoneyAnimationContextProps {
-  triggerAnimation: (type: AnimationType, amount: number, description?: string) => void
+  triggerAnimation: (type: AnimationType, amount: number, description?: string, customTitle?: string) => void
 }
 
 const MoneyAnimationContext = React.createContext<MoneyAnimationContextProps | undefined>(undefined)
@@ -24,22 +24,25 @@ export function MoneyAnimationProvider({ children }: { children: React.ReactNode
     type: AnimationType
     amount: number
     description: string
+    customTitle?: string
   } | null>(null)
 
-  const triggerAnimation = (type: AnimationType, amount: number, description = "") => {
-    setAnimation({ type, amount, description })
+  const triggerAnimation = (type: AnimationType, amount: number, description = "", customTitle?: string) => {
+    setAnimation({ type, amount, description, customTitle })
     
     // Play Web Audio Synthesizer Sounds (Resource-efficient and works 100% offline!)
     if (type === "income") {
       playCoinSound()
+    } else if (type === "material") {
+      playMaterialSound()
     } else {
       playWhooshSound()
     }
 
-    // Auto close after 3 seconds
+    // Auto close after 3.2 seconds
     setTimeout(() => {
       setAnimation(null)
-    }, 3000)
+    }, 3200)
   }
 
   // Synthesize Coin Ding-Ding Sound
@@ -80,6 +83,41 @@ export function MoneyAnimationProvider({ children }: { children: React.ReactNode
     }
   }
 
+  // Synthesize Material Thud / Construction Chime Sound
+  const playMaterialSound = () => {
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext
+      if (!AudioContext) return
+      const ctx = new AudioContext()
+
+      // Soft marimba-like double tap
+      const osc1 = ctx.createOscillator()
+      const gain1 = ctx.createGain()
+      osc1.type = "sine"
+      osc1.frequency.setValueAtTime(523.25, ctx.currentTime) // C5
+      gain1.gain.setValueAtTime(0.2, ctx.currentTime)
+      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2)
+      osc1.connect(gain1)
+      gain1.connect(ctx.destination)
+      osc1.start()
+      osc1.stop(ctx.currentTime + 0.22)
+
+      const osc2 = ctx.createOscillator()
+      const gain2 = ctx.createGain()
+      osc2.type = "sine"
+      osc2.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1) // E5
+      gain2.gain.setValueAtTime(0, ctx.currentTime)
+      gain2.gain.setValueAtTime(0.25, ctx.currentTime + 0.1)
+      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.38)
+      osc2.connect(gain2)
+      gain2.connect(ctx.destination)
+      osc2.start(ctx.currentTime + 0.1)
+      osc2.stop(ctx.currentTime + 0.4)
+    } catch (e) {
+      console.error("Gagal memutar audio material:", e)
+    }
+  }
+
   // Synthesize Paper Whoosh / Cash Out Sound
   const playWhooshSound = () => {
     try {
@@ -113,23 +151,41 @@ export function MoneyAnimationProvider({ children }: { children: React.ReactNode
       
       {/* Overlay Animasi */}
       {animation && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white border-[3px] border-black rounded-[24px] p-6 max-w-[280px] w-full text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 px-4">
+          <div className="bg-white border-[3px] border-black rounded-[24px] p-6 max-w-[300px] w-full text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden animate-in zoom-in-95 duration-200">
             
             {/* Background elements decoration */}
             <div className="absolute inset-0 pointer-events-none opacity-10">
-              <div className="absolute top-2 left-2 text-xs">🪙</div>
-              <div className="absolute top-8 right-4 text-xs">💸</div>
-              <div className="absolute bottom-4 left-6 text-xs">🪙</div>
+              {animation.type === "material" ? (
+                <>
+                  <div className="absolute top-2 left-2 text-xs">📦</div>
+                  <div className="absolute top-8 right-4 text-xs">🧱</div>
+                  <div className="absolute bottom-4 left-6 text-xs">🏗️</div>
+                </>
+              ) : (
+                <>
+                  <div className="absolute top-2 left-2 text-xs">🪙</div>
+                  <div className="absolute top-8 right-4 text-xs">💸</div>
+                  <div className="absolute bottom-4 left-6 text-xs">🪙</div>
+                </>
+              )}
             </div>
 
             {/* Animation Scene */}
             <div className="relative h-24 w-full flex items-center justify-center overflow-hidden mb-3 border-[2px] border-black rounded-[14px] bg-[#faf8f5]">
-              {/* Wallet/Kas Icon */}
-              <div className="text-4xl z-10 animate-bounce">💼</div>
+              {/* Center Main Icon */}
+              <div className="text-4xl z-10 animate-bounce">
+                {animation.type === "material" ? "📦" : "💼"}
+              </div>
 
-              {/* Floating Money Objects */}
-              {animation.type === "income" ? (
+              {/* Floating Objects */}
+              {animation.type === "material" ? (
+                <>
+                  <div className="absolute text-lg animate-coin-fall-1" style={{ top: "-20px", left: "22%" }}>🧱</div>
+                  <div className="absolute text-lg animate-coin-fall-2" style={{ top: "-20px", left: "50%", animationDelay: "0.15s" }}>📦</div>
+                  <div className="absolute text-lg animate-coin-fall-3" style={{ top: "-20px", left: "75%", animationDelay: "0.3s" }}>🪵</div>
+                </>
+              ) : animation.type === "income" ? (
                 <>
                   <div className="absolute text-lg animate-coin-fall-1" style={{ top: "-20px", left: "25%" }}>🪙</div>
                   <div className="absolute text-lg animate-coin-fall-2" style={{ top: "-20px", left: "50%", animationDelay: "0.15s" }}>🪙</div>
@@ -146,26 +202,40 @@ export function MoneyAnimationProvider({ children }: { children: React.ReactNode
 
             {/* Status Heading */}
             <h3 className={`text-[10px] font-black uppercase tracking-widest ${
-              animation.type === "income" ? "text-emerald-800" : "text-red-800"
+              animation.type === "material"
+                ? "text-amber-800"
+                : animation.type === "income"
+                ? "text-emerald-800"
+                : "text-red-800"
             }`}>
-              {animation.type === "income" ? "💵 Kas Masuk Dicatat" : "💸 Kas Keluar Dicatat"}
+              {animation.type === "material"
+                ? "📦 Material Masuk Dicatat"
+                : animation.type === "income"
+                ? "💵 Kas Masuk Dicatat"
+                : "💸 Kas Keluar Dicatat"}
             </h3>
 
-            {/* Amount */}
-            <div className={`text-xl font-black tabular-nums mt-1.5 ${
-              animation.type === "income" ? "text-emerald-700 animate-pulse" : "text-red-700"
-            }`}>
-              {animation.type === "income" ? "+" : "-"} Rp {formatRupiah(animation.amount)}
-            </div>
+            {/* Main Value / Item Title */}
+            {animation.type === "material" ? (
+              <div className="text-lg font-black text-amber-700 uppercase tracking-tight mt-1.5 animate-pulse line-clamp-2">
+                + {animation.customTitle || "Material Masuk"}
+              </div>
+            ) : (
+              <div className={`text-xl font-black tabular-nums mt-1.5 ${
+                animation.type === "income" ? "text-emerald-700 animate-pulse" : "text-red-700"
+              }`}>
+                {animation.type === "income" ? "+" : "-"} Rp {formatRupiah(animation.amount)}
+              </div>
+            )}
 
-            {/* Description (Optional) */}
+            {/* Description (Donor name) */}
             {animation.description && (
-              <p className="text-[9px] text-neutral-500 font-bold uppercase truncate mt-1">
+              <p className="text-[10px] text-neutral-600 font-bold uppercase truncate mt-1">
                 {animation.description}
               </p>
             )}
 
-            {/* CSS Keyframes injected dynamically to minimize asset footprint */}
+            {/* CSS Keyframes injected dynamically */}
             <style jsx global>{`
               @keyframes coin-fall {
                 0% { transform: translateY(-30px) rotate(0deg); opacity: 0; }
