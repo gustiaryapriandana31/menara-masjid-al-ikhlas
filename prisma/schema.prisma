@@ -92,3 +92,19 @@ model User {
   role      String   @default("ADMIN") // role nya admin aja
   createdAt DateTime @default(now())
 }
+
+// Model Donasi Material / Barang (tidak mempengaruhi saldo kas)
+model MaterialDonation {
+  id           String    @id @default(uuid())
+  donorName    String                // Nama Donatur (bisa "Hamba Allah")
+  isAnonymous  Boolean   @default(false)
+  donorAddress String?               // Alamat Donatur
+  donorPhone   String?               // No. Telepon / WA Donatur
+  materialName String                // Nama material (misal: "Semen Tiga Roda")
+  quantity     String                // Jumlah bebas: "30 sak", "1 truk pasir"
+  date         DateTime?             // Tanggal penerimaan (nullable)
+  description  String?               // Catatan tambahan
+  receiptUrls  String[]              // Foto dokumentasi / nota sumbangan
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}

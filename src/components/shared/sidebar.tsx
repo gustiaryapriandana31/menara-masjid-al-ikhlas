@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { PlusCircle, MinusCircle, Home, FileText, LogOut, ShieldAlert } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText, LogOut, ShieldAlert, Package } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logoutAction } from "@/app/login/actions"
 import { useNotifications } from "./notification-provider"
@@ -41,6 +41,13 @@ export function Sidebar() {
       icon: PlusCircle,
       activeBg: "bg-blue-100 text-blue-600 border-blue-500",
       activeText: "text-blue-600 font-bold",
+    },
+    {
+      title: "Donasi Material",
+      url: "/admin/material",
+      icon: Package,
+      activeBg: "bg-amber-100 text-amber-700 border-amber-500",
+      activeText: "text-amber-700 font-bold",
     },
     {
       title: "Pengeluaran",

@@ -29,29 +29,28 @@ export const metadata = {
 }
 
 export default async function PublicLaporanPage() {
-  // 1. Ambil jumlah nominal Pemasukan Kas Tunai (CASH)
+  // 1. Total Pemasukan Tunai
   const cashAgg = await db.income.aggregate({
     _sum: { amount: true },
     where: { type: 'CASH' }
   })
   const totalCash = Number(cashAgg._sum.amount || 0)
 
-  // 2. Ambil jumlah nominal Pemasukan Kas Transfer (TRANSFER)
+  // 2. Total Pemasukan Transfer
   const transferAgg = await db.income.aggregate({
     _sum: { amount: true },
     where: { type: 'TRANSFER' }
   })
   const totalTransfer = Number(transferAgg._sum.amount || 0)
 
-  // 2b. Kelompokkan Pemasukan Transfer berdasarkan Saluran Pembayaran (Payment Channel)
+  // 2b. Kelompokkan Transfer per Saluran Pembayaran
   const channelGroup = await db.donationConfirmation.groupBy({
     by: ['paymentChannel'],
     _sum: { amount: true },
     where: { status: 'APPROVED' }
   })
 
-  // Inisialisasi default nominal per saluran transfer
-  let transferChannels = {
+  const transferChannels = {
     SUMSEL_BABEL_SYARIAH: 0,
     BSI: 0,
     MANDIRI: 0,
@@ -69,76 +68,71 @@ export default async function PublicLaporanPage() {
     }
   })
 
-  // 3. Ambil jumlah nominal Pengeluaran Belanja (OUTCOME)
-  const outcomeAgg = await db.outcome.aggregate({
-    _sum: { amount: true }
-  })
+  // 3. Total Pengeluaran
+  const outcomeAgg = await db.outcome.aggregate({ _sum: { amount: true } })
   const totalExpense = Number(outcomeAgg._sum.amount || 0)
 
-  // 4. Ambil jumlah pengeluaran dikelompokkan berdasarkan Kategori Belanja
+  // 4. Pengeluaran per Kategori
   const categoryGroup = await db.outcome.groupBy({
     by: ['category'],
     _sum: { amount: true }
   })
 
-  let expenseCategories = {
-    MATERIAL: 0,
-    LABOR: 0,
-    OPERATIONAL: 0,
-    OTHER: 0
-  }
-
+  const expenseCategories = { MATERIAL: 0, LABOR: 0, OPERATIONAL: 0, OTHER: 0 }
   categoryGroup.forEach(group => {
     if (group.category in expenseCategories) {
       expenseCategories[group.category as keyof typeof expenseCategories] = Number(group._sum.amount || 0)
     }
   })
 
-  // 5. Ambil data bulanan sepanjang tahun berjalan untuk grafik batang
+  // 5. Data Bulanan Tahun Berjalan untuk Grafik
   const currentYear = new Date().getFullYear()
   const startOfYear = new Date(currentYear, 0, 1)
   const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59)
 
   const incomesForYear = await db.income.findMany({
-    where: {
-      date: {
-        gte: startOfYear,
-        lte: endOfYear
-      }
-    },
-    select: {
-      amount: true,
-      date: true
-    }
+    where: { date: { gte: startOfYear, lte: endOfYear } },
+    select: { amount: true, date: true }
   })
-
   const outcomesForYear = await db.outcome.findMany({
-    where: {
-      date: {
-        gte: startOfYear,
-        lte: endOfYear
-      }
-    },
-    select: {
-      amount: true,
-      date: true
-    }
+    where: { date: { gte: startOfYear, lte: endOfYear } },
+    select: { amount: true, date: true }
   })
 
   const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"]
   const monthlyTrend = MONTH_LABELS.map((label, index) => {
-    const monthIncomes = incomesForYear.filter(item => item.date?.getMonth() === index)
-    const sumIncome = monthIncomes.reduce((acc, curr) => acc + Number(curr.amount), 0)
-
-    const monthOutcomes = outcomesForYear.filter(item => item.date.getMonth() === index)
-    const sumOutcome = monthOutcomes.reduce((acc, curr) => acc + Number(curr.amount), 0)
-
-    return {
-      label,
-      income: sumIncome,
-      expense: sumOutcome
-    }
+    const sumIncome = incomesForYear
+      .filter(item => item.date?.getMonth() === index)
+      .reduce((acc, curr) => acc + Number(curr.amount), 0)
+    const sumOutcome = outcomesForYear
+      .filter(item => item.date.getMonth() === index)
+      .reduce((acc, curr) => acc + Number(curr.amount), 0)
+    return { label, income: sumIncome, expense: sumOutcome }
   })
+
+  // 6. Donasi Material – semua data, diurutkan berdasarkan tanggal terbaru
+  const rawMaterials = await db.$queryRaw<{
+    id: string
+    donorName: string
+    materialName: string
+    quantity: string
+    date: Date | null
+    description: string | null
+    createdAt: Date
+  }[]>`
+    SELECT id, "donorName", "materialName", quantity, date, description, "createdAt"
+    FROM "MaterialDonation"
+    ORDER BY date DESC NULLS LAST
+  `
+
+  const materialDonations = rawMaterials.map(item => ({
+    id: item.id,
+    donorName: item.donorName,
+    materialName: item.materialName,
+    quantity: item.quantity,
+    date: item.date ? item.date.toISOString() : null,
+    description: item.description || null,
+  }))
 
   return (
     <>
@@ -150,6 +144,7 @@ export default async function PublicLaporanPage() {
         expenseCategories={expenseCategories}
         transferChannels={transferChannels}
         monthlyTrend={monthlyTrend}
+        materialDonations={materialDonations}
       />
     </>
   )

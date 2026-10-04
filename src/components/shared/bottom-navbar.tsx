@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { PlusCircle, MinusCircle, Home, FileText, ShieldAlert } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText, ShieldAlert, Package } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -39,6 +39,13 @@ export function BottomNavbar() {
       icon: PlusCircle,
       activeBg: "bg-blue-100 text-blue-600 border-blue-500",
       activeText: "text-blue-600 font-bold",
+    },
+    {
+      title: "Material",
+      url: "/admin/material",
+      icon: Package,
+      activeBg: "bg-amber-100 text-amber-700 border-amber-500",
+      activeText: "text-amber-700 font-bold",
     },
     {
       title: "Pengeluaran",
