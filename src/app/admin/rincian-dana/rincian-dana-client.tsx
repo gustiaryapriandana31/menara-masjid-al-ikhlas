@@ -16,7 +16,8 @@ import {
   AlertTriangle, 
   Trash2,
   Pencil,
-  Upload
+  Upload,
+  Package
 } from "lucide-react"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
 import { cn } from "@/lib/utils"
@@ -51,14 +52,25 @@ interface OutcomeItem {
   receiptUrls: string[]
 }
 
+interface MaterialItem {
+  id: string
+  donorName: string
+  materialName: string
+  quantity: string
+  date: string
+  description: string
+  receiptUrls: string[]
+}
+
 interface RincianDanaClientProps {
   incomes: IncomeItem[]
   outcomes: OutcomeItem[]
+  materials: MaterialItem[]
 }
 
-export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClientProps) {
-  // Active Tab: 'income' or 'outcome'
-  const [activeTab, setActiveTab] = React.useState<"income" | "outcome">("income")
+export default function RincianDanaClient({ incomes, outcomes, materials }: RincianDanaClientProps) {
+  // Active Tab: 'income', 'outcome', 'material'
+  const [activeTab, setActiveTab] = React.useState<"income" | "outcome" | "material">("income")
 
   // --- FILTER STATES ---
   // Income Filters
@@ -74,6 +86,11 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
   const [outcomeMonth, setOutcomeMonth] = React.useState<string>("all")
   const [outcomeSearch, setOutcomeSearch] = React.useState<string>("")
   const [outcomePage, setOutcomePage] = React.useState<number>(1)
+
+  // Material Filters
+  const [materialMonth, setMaterialMonth] = React.useState<string>("all")
+  const [materialSearch, setMaterialSearch] = React.useState<string>("")
+  const [materialPage, setMaterialPage] = React.useState<number>(1)
 
   // Page Size Constant
   const pageSize = 10
@@ -166,6 +183,10 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
     return getUniqueMonths(outcomes.map(item => item.date))
   }, [outcomes])
 
+  const uniqueMaterialMonths = React.useMemo(() => {
+    return getUniqueMonths(materials.map(item => item.date))
+  }, [materials])
+
   // --- FILTER LOGIC ---
   const filteredIncomes = React.useMemo(() => {
     return incomes.filter(item => {
@@ -198,9 +219,23 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
     })
   }, [outcomes, outcomeCategory, outcomeAmountRange, outcomeMonth, outcomeSearch])
 
+  const filteredMaterials = React.useMemo(() => {
+    return materials.filter(item => {
+      const matchMonth = filterByMonth(item.date, materialMonth)
+
+      const s = materialSearch.toLowerCase().trim()
+      const matchSearch = !s ||
+        item.donorName.toLowerCase().includes(s) ||
+        item.materialName.toLowerCase().includes(s) ||
+        (item.description && item.description.toLowerCase().includes(s))
+
+      return matchMonth && matchSearch
+    })
+  }, [materials, materialMonth, materialSearch])
+
   // --- PAGINATION SLICE LOGIC ---
-  const currentPage = activeTab === "income" ? incomePage : outcomePage
-  const totalFilteredItems = activeTab === "income" ? filteredIncomes.length : filteredOutcomes.length
+  const currentPage = activeTab === "income" ? incomePage : activeTab === "outcome" ? outcomePage : materialPage
+  const totalFilteredItems = activeTab === "income" ? filteredIncomes.length : activeTab === "outcome" ? filteredOutcomes.length : filteredMaterials.length
   const totalPages = Math.ceil(totalFilteredItems / pageSize)
 
   const paginatedIncomes = React.useMemo(() => {
@@ -211,11 +246,17 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
     return filteredOutcomes.slice((outcomePage - 1) * pageSize, outcomePage * pageSize)
   }, [filteredOutcomes, outcomePage])
 
+  const paginatedMaterials = React.useMemo(() => {
+    return filteredMaterials.slice((materialPage - 1) * pageSize, materialPage * pageSize)
+  }, [filteredMaterials, materialPage])
+
   const handlePageChange = (page: number) => {
     if (activeTab === "income") {
       setIncomePage(page)
-    } else {
+    } else if (activeTab === "outcome") {
       setOutcomePage(page)
+    } else {
+      setMaterialPage(page)
     }
   }
 
@@ -227,12 +268,16 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
       setIncomeMonth("all")
       setIncomeSearch("")
       setIncomePage(1)
-    } else {
+    } else if (activeTab === "outcome") {
       setOutcomeCategory("all")
       setOutcomeAmountRange("all")
       setOutcomeMonth("all")
       setOutcomeSearch("")
       setOutcomePage(1)
+    } else {
+      setMaterialMonth("all")
+      setMaterialSearch("")
+      setMaterialPage(1)
     }
   }
 
@@ -882,15 +927,18 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
           <div className="relative max-w-sm w-full">
             <input
               type="text"
-              placeholder={activeTab === "income" ? "Cari nama donatur, alamat..." : "Cari nama pembeli, keperluan..."}
-              value={activeTab === "income" ? incomeSearch : outcomeSearch}
+              placeholder={activeTab === "income" ? "Cari nama donatur, alamat..." : activeTab === "outcome" ? "Cari nama pembeli, keperluan..." : "Cari nama donatur, material..."}
+              value={activeTab === "income" ? incomeSearch : activeTab === "outcome" ? outcomeSearch : materialSearch}
               onChange={(e) => {
                 if (activeTab === "income") {
                   setIncomeSearch(e.target.value)
                   setIncomePage(1)
-                } else {
+                } else if (activeTab === "outcome") {
                   setOutcomeSearch(e.target.value)
                   setOutcomePage(1)
+                } else {
+                  setMaterialSearch(e.target.value)
+                  setMaterialPage(1)
                 }
               }}
               className="w-full text-[11px] font-bold border-[1.5px] border-black rounded-[6px] py-1.5 pr-2.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
@@ -919,7 +967,7 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
                   <option value="CASH">Cash</option>
                   <option value="TRANSFER">Transfer</option>
                 </select>
-              ) : (
+              ) : activeTab === "outcome" ? (
                 <select
                   value={outcomeCategory}
                   onChange={(e) => {
@@ -934,49 +982,56 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
                   <option value="OPERATIONAL">Operasional</option>
                   <option value="OTHER">Lainnya</option>
                 </select>
+              ) : null}
+
+              {activeTab !== "material" && (
+                <select
+                  value={activeTab === "income" ? incomeAmountRange : outcomeAmountRange}
+                  onChange={(e) => {
+                    if (activeTab === "income") {
+                      setIncomeAmountRange(e.target.value)
+                      setIncomePage(1)
+                    } else if (activeTab === "outcome") {
+                      setOutcomeAmountRange(e.target.value)
+                      setOutcomePage(1)
+                    }
+                  }}
+                  className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer"
+                >
+                  <option value="all">Nominal</option>
+                  <option value="under_1m">&lt; Rp 1 Jt</option>
+                  <option value="range_1m_10m">Rp 1 - 10 Jt</option>
+                  <option value="above_10m">&gt; Rp 10 Jt</option>
+                  <option value="above_50m">&gt; Rp 50 Jt</option>
+                </select>
               )}
 
               <select
-                value={activeTab === "income" ? incomeAmountRange : outcomeAmountRange}
-                onChange={(e) => {
-                  if (activeTab === "income") {
-                    setIncomeAmountRange(e.target.value)
-                    setIncomePage(1)
-                  } else {
-                    setOutcomeAmountRange(e.target.value)
-                    setOutcomePage(1)
-                  }
-                }}
-                className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer"
-              >
-                <option value="all">Nominal</option>
-                <option value="under_1m">&lt; Rp 1 Jt</option>
-                <option value="above_1m">&ge; Rp 1 Jt</option>
-                <option value="above_5m">&ge; Rp 5 Jt</option>
-              </select>
-
-              <select
-                value={activeTab === "income" ? incomeMonth : outcomeMonth}
+                value={activeTab === "income" ? incomeMonth : activeTab === "outcome" ? outcomeMonth : materialMonth}
                 onChange={(e) => {
                   if (activeTab === "income") {
                     setIncomeMonth(e.target.value)
                     setIncomePage(1)
-                  } else {
+                  } else if (activeTab === "outcome") {
                     setOutcomeMonth(e.target.value)
                     setOutcomePage(1)
+                  } else {
+                    setMaterialMonth(e.target.value)
+                    setMaterialPage(1)
                   }
                 }}
                 className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer"
               >
                 <option value="all">Bulan</option>
-                {(activeTab === "income" ? uniqueIncomeMonths : uniqueOutcomeMonths).map(m => (
+                {(activeTab === "income" ? uniqueIncomeMonths : activeTab === "outcome" ? uniqueOutcomeMonths : uniqueMaterialMonths).map(m => (
                   <option key={m.value} value={m.value}>{m.label}</option>
                 ))}
               </select>
             </div>
 
             {((activeTab === "income" && (incomeType !== "all" || incomeAmountRange !== "all" || incomeMonth !== "all" || incomeSearch !== "")) ||
-              (activeTab === "outcome" && (outcomeCategory !== "all" || outcomeAmountRange !== "all" || outcomeMonth !== "all" || outcomeSearch !== ""))) && (
+              (activeTab === "outcome" && (outcomeCategory !== "all" || outcomeAmountRange !== "all" || outcomeMonth !== "all" || outcomeSearch !== "")) ||
+              (activeTab === "material" && (materialMonth !== "all" || materialSearch !== ""))) && (
               <button
                 onClick={handleResetFilters}
                 className="flex-shrink-0 text-[9px] font-black uppercase text-amber-900 hover:text-amber-950 flex items-center gap-1 border-[1.5px] border-black bg-amber-50 px-2 py-1.5 rounded-[6px] shadow-[1px_1px_0px_0px_#000] active:translate-y-px active:shadow-none transition-all cursor-pointer"
@@ -1184,8 +1239,66 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
                 )}
               </tbody>
             </table>
+          ) : (
+            // MATERIAL TABLE
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr className="border-b-[2px] border-black bg-amber-50/50">
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[5%] text-center border-r border-amber-200 last:border-r-0">No</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[25%] border-r border-amber-200 last:border-r-0">Donatur</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[20%] border-r border-amber-200 last:border-r-0">Material</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[15%] text-center border-r border-amber-200 last:border-r-0">Tanggal</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[8%] text-center border-r border-amber-200 last:border-r-0">Bukti</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[27%] border-r border-amber-200 last:border-r-0">Keterangan</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y-[1.5px] divide-neutral-200">
+                {paginatedMaterials.length > 0 ? (
+                  paginatedMaterials.map((item, idx) => (
+                    <tr key={item.id} className="hover:bg-neutral-50/70 border-b border-neutral-200 transition-colors last:border-b-0">
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
+                        {(materialPage - 1) * 10 + idx + 1}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="font-black text-neutral-800 text-[11px] uppercase tracking-tight">{item.donorName}</div>
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="font-black text-amber-700 text-[11px]">{item.materialName}</div>
+                        <div className="text-[10px] font-semibold text-neutral-500 mt-0.5">{item.quantity}</div>
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-600 tabular-nums">
+                        {formatLocalDate(item.date)}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center">
+                        {item.receiptUrls && item.receiptUrls.length > 0 ? (
+                          <button
+                            onClick={() => handlePreviewImages(item.receiptUrls)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-amber-100 hover:bg-amber-200 text-amber-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Lihat Bukti"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                          </button>
+                        ) : (
+                          <span className="text-[9px] text-neutral-400 font-semibold italic">-</span>
+                        )}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="text-[10px] text-neutral-700 font-medium break-words leading-relaxed max-w-[240px]">
+                          {item.description || "-"}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="p-8 text-center text-xs text-neutral-400 font-bold italic border-b-0">
+                      Tidak ada rincian data material.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           )}
-        </div>
       </div>
 
       {/* --- PAGINATION NAVIGATION CONTROLS - Tighter layout --- */}
@@ -1823,9 +1936,11 @@ function getUniqueMonths(dates: string[]): { value: string; label: string }[] {
 function filterByAmountRange(amount: number, range: string): boolean {
   if (range === "all") return true
   if (range === "under_1m") return amount < 1000000
+  if (range === "range_1m_10m") return amount >= 1000000 && amount <= 10000000
+  if (range === "above_10m") return amount > 10000000
+  if (range === "above_50m") return amount > 50000000
   if (range === "above_1m") return amount >= 1000000
   if (range === "above_5m") return amount >= 5000000
-  if (range === "above_10m") return amount >= 10000000
   return true
 }
 
