@@ -232,8 +232,13 @@ export default function Home() {
                 📜 Penanggung Jawab
               </div>
               <div className="p-5 flex-grow flex flex-col items-center justify-center text-center space-y-3">
-                <div className="h-12 w-12 rounded-full border-[2.5px] border-black bg-amber-100 flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
-                  <UserCheck className="h-6 w-6 text-emerald-800" />
+                <div className="h-20 w-20 rounded-full border-[2.5px] border-black shadow-[2px_2px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/panitia/Ust Ramlan.jpeg"
+                    alt="Ustadz Ramlan Rozali"
+                    className="h-full w-full object-cover object-top"
+                  />
                 </div>
                 <div>
                   <h4 className="text-xs font-black uppercase text-neutral-800 tracking-tight">Ust. Ramlan Rozali, S.Sos</h4>
@@ -270,48 +275,68 @@ export default function Home() {
               Pengurus Harian
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Ketua */}
-            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-2.5">
-              <div className="h-10 w-10 rounded-full border-[1.5px] border-black bg-emerald-100 flex items-center justify-center text-emerald-800 text-xs font-black shadow-[1.5px_1.5px_0px_0px_#000]">
-                ZA
+            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/panitia/Mang Fifik.jpeg"
+                  alt="Zulfikar Ali"
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase text-neutral-800">Zulfikar Ali, S.H</h4>
-                <p className="text-[8px] font-bold text-emerald-700 uppercase">Ketua Pembangunan</p>
+                <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Zulfikar Ali, S.H</h4>
+                <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Ketua Pembangunan</p>
               </div>
             </div>
 
             {/* Wakil Ketua */}
-            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-2.5">
-              <div className="h-10 w-10 rounded-full border-[1.5px] border-black bg-emerald-100 flex items-center justify-center text-emerald-800 text-xs font-black shadow-[1.5px_1.5px_0px_0px_#000]">
-                AT
+            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/panitia/Mang Agus.jpeg"
+                  alt="Agus Tomi"
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase text-neutral-800">Agus Tomi, S.H</h4>
-                <p className="text-[8px] font-bold text-emerald-700 uppercase">Wakil Ketua Pembangunan</p>
+                <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Agus Tomi, S.H</h4>
+                <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Wakil Ketua Pembangunan</p>
               </div>
             </div>
 
             {/* Sekretaris */}
-            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-2.5">
-              <div className="h-10 w-10 rounded-full border-[1.5px] border-black bg-emerald-100 flex items-center justify-center text-emerald-800 text-xs font-black shadow-[1.5px_1.5px_0px_0px_#000]">
-                NJ
+            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/panitia/Mang Jemi.jpeg"
+                  alt="Najemi"
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase text-neutral-800">Najemi</h4>
-                <p className="text-[8px] font-bold text-emerald-700 uppercase">Sekretaris Pembangunan</p>
+                <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Najemi</h4>
+                <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Sekretaris Pembangunan</p>
               </div>
             </div>
 
             {/* Bendahara */}
-            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-2.5">
-              <div className="h-10 w-10 rounded-full border-[1.5px] border-black bg-emerald-100 flex items-center justify-center text-emerald-800 text-xs font-black shadow-[1.5px_1.5px_0px_0px_#000]">
-                CG
+            <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/panitia/Mang Candra.jpeg"
+                  alt="Candra Gunawan"
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase text-neutral-800">Candra Gunawan, S.H</h4>
-                <p className="text-[8px] font-bold text-emerald-700 uppercase">Bendahara Pembangunan</p>
+                <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Candra Gunawan, S.H</h4>
+                <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Bendahara Pembangunan</p>
               </div>
             </div>
           </div>
