@@ -39,8 +39,8 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
       amount: rawAmount ? parseInt(rawAmount.toString(), 10) : 0,
       date: rawDate?.toString(),
       donorName: rawIsAnonymous ? "Hamba Allah" : rawDonorName?.toString(),
-      donorAddress: rawIsAnonymous ? null : rawDonorAddress?.toString() || null,
-      donorPhone: rawIsAnonymous ? null : rawDonorPhone?.toString() || null,
+      donorAddress: rawDonorAddress?.toString() || null,
+      donorPhone: rawDonorPhone?.toString() || null,
       description: rawDescription?.toString() || null,
       isAnonymous: rawIsAnonymous
     })
@@ -101,8 +101,8 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
     const incomeRecord = await db.income.create({
       data: {
         donorName: data.isAnonymous ? "Hamba Allah" : data.donorName,
-        donorAddress: data.isAnonymous ? null : data.donorAddress,
-        donorPhone: data.isAnonymous ? null : data.donorPhone || null,
+        donorAddress: data.donorAddress,
+        donorPhone: data.donorPhone,
         amount: data.amount,
         date: new Date(data.date),
         description: data.description,
