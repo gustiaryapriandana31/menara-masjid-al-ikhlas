@@ -216,21 +216,34 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     { value: "__lainnya__", label: "Lainnya" },
   ]
 
+  // Helper to match address filters flexible & substring-aware
+  const matchAddressFilter = React.useCallback((rawAddr: string | null | undefined, selectedFilter: string) => {
+    if (selectedFilter === "all") return true
+    const addr = (rawAddr || "").trim().toLowerCase()
+    if (!addr) return false
+
+    const isMeranjatII = addr.includes("meranjat ii") || addr.includes("meranjat 2")
+    const isMeranjatIlir = addr.includes("meranjat ilir")
+    const isMeranjatI = (addr.includes("meranjat i") || addr.includes("meranjat 1")) && !isMeranjatII && !isMeranjatIlir
+    const isPalembang = addr.includes("palembang")
+
+    if (selectedFilter === "Meranjat II") return isMeranjatII
+    if (selectedFilter === "Meranjat I") return isMeranjatI
+    if (selectedFilter === "Meranjat Ilir") return isMeranjatIlir
+    if (selectedFilter === "Palembang") return isPalembang
+    if (selectedFilter === "__lainnya__") {
+      return !isMeranjatII && !isMeranjatI && !isMeranjatIlir && !isPalembang
+    }
+    return addr.includes(selectedFilter.toLowerCase())
+  }, [])
+
   // --- FILTER LOGIC ---
   const filteredIncomes = React.useMemo(() => {
     return incomes.filter(item => {
       const matchType = incomeType === "all" || item.type === incomeType
       const matchAmount = filterByAmountRange(item.amount, incomeAmountRange)
       const matchMonth = filterByMonth(item.date, incomeMonth)
-      const matchAddress = (() => {
-        if (incomeAddress === "all") return true
-        const addr = (item.donorAddress || "").trim().toLowerCase()
-        if (incomeAddress === "__lainnya__") {
-          const known = ["meranjat ii", "meranjat i", "meranjat ilir", "palembang"]
-          return addr !== "" && !known.some(k => addr === k)
-        }
-        return addr === incomeAddress.toLowerCase()
-      })()
+      const matchAddress = matchAddressFilter(item.donorAddress, incomeAddress)
       
       const s = incomeSearch.toLowerCase().trim()
       const matchSearch = !s || 
@@ -240,7 +253,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
       return matchType && matchAmount && matchMonth && matchAddress && matchSearch
     })
-  }, [incomes, incomeType, incomeAmountRange, incomeMonth, incomeAddress, incomeSearch])
+  }, [incomes, incomeType, incomeAmountRange, incomeMonth, incomeAddress, incomeSearch, matchAddressFilter])
 
   const filteredOutcomes = React.useMemo(() => {
     return outcomes.filter(item => {
@@ -260,15 +273,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const filteredMaterials = React.useMemo(() => {
     return materials.filter(item => {
       const matchMonth = filterByMonth(item.date, materialMonth)
-      const matchAddress = (() => {
-        if (materialAddress === "all") return true
-        const addr = (item.donorAddress || "").trim().toLowerCase()
-        if (materialAddress === "__lainnya__") {
-          const known = ["meranjat ii", "meranjat i", "meranjat ilir", "palembang"]
-          return addr !== "" && !known.some(k => addr === k)
-        }
-        return addr === materialAddress.toLowerCase()
-      })()
+      const matchAddress = matchAddressFilter(item.donorAddress, materialAddress)
 
       const s = materialSearch.toLowerCase().trim()
       const matchSearch = !s ||
@@ -279,7 +284,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
       return matchMonth && matchAddress && matchSearch
     })
-  }, [materials, materialMonth, materialAddress, materialSearch])
+  }, [materials, materialMonth, materialAddress, materialSearch, matchAddressFilter])
 
   // --- PAGINATION SLICE LOGIC ---
   const currentPage = activeTab === "income" ? incomePage : activeTab === "outcome" ? outcomePage : materialPage
