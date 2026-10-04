@@ -1,6 +1,7 @@
 import db from '@/lib/db'
 import LaporanPublicClient from './laporan-public-client'
 import { LaporanPageJsonLd } from '@/components/shared/json-ld'
+import { safeDateToIso } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -130,7 +131,7 @@ export default async function PublicLaporanPage() {
     donorName: item.donorName,
     materialName: item.materialName,
     quantity: item.quantity,
-    date: item.date ? item.date.toISOString() : null,
+    date: safeDateToIso(item.date) || null,
     description: item.description || null,
   }))
 

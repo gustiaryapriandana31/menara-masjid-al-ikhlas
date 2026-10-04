@@ -1,5 +1,6 @@
 import db from '@/lib/db'
 import MaterialClient from './material-client'
+import { safeDateToIso } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,7 +31,7 @@ export default async function MaterialPage() {
     donorName: item.donorName,
     materialName: item.materialName,
     quantity: item.quantity,
-    date: item.date ? item.date.toISOString() : (item.createdAt ? item.createdAt.toISOString() : ''),
+    date: safeDateToIso(item.date) || safeDateToIso(item.createdAt),
     description: item.description || ''
   }))
 

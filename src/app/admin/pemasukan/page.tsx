@@ -1,5 +1,6 @@
 import db from '@/lib/db'
 import PemasukanClient from './pemasukan-client'
+import { safeDateToIso } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,7 +33,7 @@ export default async function PemasukanPage() {
     id: item.id,
     donorName: item.donorName,
     amount: Number(item.amount),
-    date: item.date ? item.date.toISOString() : (item.createdAt ? item.createdAt.toISOString() : ''),
+    date: safeDateToIso(item.date) || safeDateToIso(item.createdAt),
     type: item.type as 'CASH' | 'TRANSFER',
     description: item.description || ''
   }))

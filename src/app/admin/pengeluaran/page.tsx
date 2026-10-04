@@ -1,5 +1,6 @@
 import db from '@/lib/db'
 import PengeluaranClient from './pengeluaran-client'
+import { safeDateToIso } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,7 +23,7 @@ export default async function PengeluaranPage() {
     id: item.id,
     buyer: item.buyer,
     amount: Number(item.amount),
-    date: item.date.toISOString(),
+    date: safeDateToIso(item.date) || safeDateToIso(item.createdAt),
     category: item.category,
     description: item.description
   }))

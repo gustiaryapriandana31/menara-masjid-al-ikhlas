@@ -1,5 +1,6 @@
 import db from "@/lib/db"
 import ValidasiClient from "./validasi-client"
+import { safeDateToIso } from "@/lib/utils"
 
 export const dynamic = "force-dynamic"
 
@@ -22,21 +23,27 @@ export default async function ValidasiPage() {
     })
   ])
 
-  const serializeItem = (item: typeof pendingConfirmations[0]) => ({
-    id: item.id,
-    donorName: item.donorName,
-    donorAddress: item.donorAddress || "",
-    donorPhone: item.donorPhone || "",
-    isAnonymous: item.isAnonymous,
-    amount: Number(item.amount),
-    transferDate: item.transferDate.toISOString().split("T")[0],
-    paymentChannel: item.paymentChannel,
-    proofUrls: item.proofUrls,
-    status: item.status,
-    rejectionReason: item.rejectionReason || "",
-    validatedAt: item.validatedAt ? item.validatedAt.toISOString().split("T")[0] : "",
-    createdAt: item.createdAt.toISOString()
-  })
+  const serializeItem = (item: typeof pendingConfirmations[0]) => {
+    const rawTransferDate = safeDateToIso(item.transferDate)
+    const rawValidatedAt = safeDateToIso(item.validatedAt)
+    const rawCreatedAt = safeDateToIso(item.createdAt)
+
+    return {
+      id: item.id,
+      donorName: item.donorName,
+      donorAddress: item.donorAddress || "",
+      donorPhone: item.donorPhone || "",
+      isAnonymous: item.isAnonymous,
+      amount: Number(item.amount),
+      transferDate: rawTransferDate ? rawTransferDate.split("T")[0] : "",
+      paymentChannel: item.paymentChannel,
+      proofUrls: item.proofUrls,
+      status: item.status,
+      rejectionReason: item.rejectionReason || "",
+      validatedAt: rawValidatedAt ? rawValidatedAt.split("T")[0] : "",
+      createdAt: rawCreatedAt
+    }
+  }
 
   return (
     <ValidasiClient 
