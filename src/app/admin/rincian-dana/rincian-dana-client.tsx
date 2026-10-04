@@ -80,6 +80,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const [incomeType, setIncomeType] = React.useState<string>("all")
   const [incomeAmountRange, setIncomeAmountRange] = React.useState<string>("all")
   const [incomeMonth, setIncomeMonth] = React.useState<string>("all")
+  const [incomeAddress, setIncomeAddress] = React.useState<string>("all")
   const [incomeSearch, setIncomeSearch] = React.useState<string>("")
   const [incomePage, setIncomePage] = React.useState<number>(1)
 
@@ -92,6 +93,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
   // Material Filters
   const [materialMonth, setMaterialMonth] = React.useState<string>("all")
+  const [materialAddress, setMaterialAddress] = React.useState<string>("all")
   const [materialSearch, setMaterialSearch] = React.useState<string>("")
   const [materialPage, setMaterialPage] = React.useState<number>(1)
 
@@ -205,12 +207,34 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     return getUniqueMonths(materials.map(item => item.date))
   }, [materials])
 
+  // Pre-generate unique address keys for dropdown filtering
+  const uniqueIncomeAddresses = React.useMemo(() => {
+    const set = new Set<string>()
+    incomes.forEach(item => {
+      if (item.donorAddress && item.donorAddress.trim()) {
+        set.add(item.donorAddress.trim())
+      }
+    })
+    return Array.from(set).sort((a, b) => a.localeCompare(b))
+  }, [incomes])
+
+  const uniqueMaterialAddresses = React.useMemo(() => {
+    const set = new Set<string>()
+    materials.forEach(item => {
+      if (item.donorAddress && item.donorAddress.trim()) {
+        set.add(item.donorAddress.trim())
+      }
+    })
+    return Array.from(set).sort((a, b) => a.localeCompare(b))
+  }, [materials])
+
   // --- FILTER LOGIC ---
   const filteredIncomes = React.useMemo(() => {
     return incomes.filter(item => {
       const matchType = incomeType === "all" || item.type === incomeType
       const matchAmount = filterByAmountRange(item.amount, incomeAmountRange)
       const matchMonth = filterByMonth(item.date, incomeMonth)
+      const matchAddress = incomeAddress === "all" || (item.donorAddress && item.donorAddress.trim().toLowerCase() === incomeAddress.toLowerCase())
       
       const s = incomeSearch.toLowerCase().trim()
       const matchSearch = !s || 
@@ -218,9 +242,9 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
         (item.donorAddress && item.donorAddress.toLowerCase().includes(s)) ||
         (item.description && item.description.toLowerCase().includes(s))
 
-      return matchType && matchAmount && matchMonth && matchSearch
+      return matchType && matchAmount && matchMonth && matchAddress && matchSearch
     })
-  }, [incomes, incomeType, incomeAmountRange, incomeMonth, incomeSearch])
+  }, [incomes, incomeType, incomeAmountRange, incomeMonth, incomeAddress, incomeSearch])
 
   const filteredOutcomes = React.useMemo(() => {
     return outcomes.filter(item => {
@@ -240,16 +264,18 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const filteredMaterials = React.useMemo(() => {
     return materials.filter(item => {
       const matchMonth = filterByMonth(item.date, materialMonth)
+      const matchAddress = materialAddress === "all" || (item.donorAddress && item.donorAddress.trim().toLowerCase() === materialAddress.toLowerCase())
 
       const s = materialSearch.toLowerCase().trim()
       const matchSearch = !s ||
         item.donorName.toLowerCase().includes(s) ||
         item.materialName.toLowerCase().includes(s) ||
+        (item.donorAddress && item.donorAddress.toLowerCase().includes(s)) ||
         (item.description && item.description.toLowerCase().includes(s))
 
-      return matchMonth && matchSearch
+      return matchMonth && matchAddress && matchSearch
     })
-  }, [materials, materialMonth, materialSearch])
+  }, [materials, materialMonth, materialAddress, materialSearch])
 
   // --- PAGINATION SLICE LOGIC ---
   const currentPage = activeTab === "income" ? incomePage : activeTab === "outcome" ? outcomePage : materialPage
@@ -284,6 +310,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
       setIncomeType("all")
       setIncomeAmountRange("all")
       setIncomeMonth("all")
+      setIncomeAddress("all")
       setIncomeSearch("")
       setIncomePage(1)
     } else if (activeTab === "outcome") {
@@ -294,6 +321,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
       setOutcomePage(1)
     } else {
       setMaterialMonth("all")
+      setMaterialAddress("all")
       setMaterialSearch("")
       setMaterialPage(1)
     }
@@ -1147,7 +1175,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
           </div>
 
           {/* Right: Compact Filter Choices */}
-          <div className="flex flex-row items-center gap-2 text-[10px] w-full max-w-sm self-end md:self-auto">
+          <div className="flex flex-row items-center gap-2 text-[10px] w-full max-w-md self-end md:self-auto">
             <div className="flex-1 flex flex-row gap-2">
               {activeTab === "income" ? (
                 <select
@@ -1222,11 +1250,45 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                   <option key={m.value} value={m.value}>{m.label}</option>
                 ))}
               </select>
+
+              {activeTab === "income" && uniqueIncomeAddresses.length > 0 && (
+                <select
+                  value={incomeAddress}
+                  onChange={(e) => {
+                    setIncomeAddress(e.target.value)
+                    setIncomePage(1)
+                  }}
+                  className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer truncate"
+                  title="Filter Berdasarkan Alamat Donatur"
+                >
+                  <option value="all">Alamat</option>
+                  {uniqueIncomeAddresses.map(addr => (
+                    <option key={addr} value={addr}>{addr}</option>
+                  ))}
+                </select>
+              )}
+
+              {activeTab === "material" && uniqueMaterialAddresses.length > 0 && (
+                <select
+                  value={materialAddress}
+                  onChange={(e) => {
+                    setMaterialAddress(e.target.value)
+                    setMaterialPage(1)
+                  }}
+                  className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer truncate"
+                  title="Filter Berdasarkan Alamat Donatur"
+                >
+                  <option value="all">Alamat</option>
+                  {uniqueMaterialAddresses.map(addr => (
+                    <option key={addr} value={addr}>{addr}</option>
+                  ))}
+                </select>
+              )}
             </div>
 
-            {((activeTab === "income" && (incomeType !== "all" || incomeAmountRange !== "all" || incomeMonth !== "all" || incomeSearch !== "")) ||
+            {((activeTab === "income" && (incomeType !== "all" || incomeAmountRange !== "all" || incomeMonth !== "all" || incomeAddress !== "all" || incomeSearch !== "")) ||
               (activeTab === "outcome" && (outcomeCategory !== "all" || outcomeAmountRange !== "all" || outcomeMonth !== "all" || outcomeSearch !== "")) ||
-              (activeTab === "material" && (materialMonth !== "all" || materialSearch !== ""))) && (
+              (activeTab === "material" && (materialMonth !== "all" || materialAddress !== "all" || materialSearch !== ""))) && (
               <button
                 onClick={handleResetFilters}
                 className="flex-shrink-0 text-[9px] font-black uppercase text-amber-900 hover:text-amber-950 flex items-center gap-1 border-[1.5px] border-black bg-amber-50 px-2 py-1.5 rounded-[6px] shadow-[1px_1px_0px_0px_#000] active:translate-y-px active:shadow-none transition-all cursor-pointer"
