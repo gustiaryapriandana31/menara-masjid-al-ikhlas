@@ -1488,6 +1488,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                         ) : (
                           <span className="text-[9px] text-neutral-400 font-semibold italic">-</span>
                         )}
+                      </td>
                       {/* Action Buttons - Edit & Delete */}
                       <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center whitespace-nowrap">
                         <div className="flex items-center justify-center gap-1.5">
