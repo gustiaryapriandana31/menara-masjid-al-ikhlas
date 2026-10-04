@@ -17,7 +17,8 @@ import {
   Trash2,
   Pencil,
   Upload,
-  Package
+  Package,
+  Check
 } from "lucide-react"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
 import { cn } from "@/lib/utils"
@@ -55,6 +56,8 @@ interface OutcomeItem {
 interface MaterialItem {
   id: string
   donorName: string
+  donorAddress?: string
+  donorPhone?: string
   materialName: string
   quantity: string
   date: string
@@ -98,7 +101,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   // Delete Modal State
   const [deleteModal, setDeleteModal] = React.useState<{
     isOpen: boolean
-    type: "income" | "outcome"
+    type: "income" | "outcome" | "material"
     id: string
     name: string
     amount: number
@@ -117,7 +120,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   // --- EDIT MODAL STATE ---
   const [editModal, setEditModal] = React.useState<{
     isOpen: boolean
-    type: "income" | "outcome"
+    type: "income" | "outcome" | "material"
     id: string
     donorName: string
     donorAddress: string
@@ -128,6 +131,8 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     category: "MATERIAL" | "LABOR" | "OPERATIONAL" | "OTHER"
     amount: number
     amountInput: string
+    materialName: string
+    quantity: string
     date: string
     description: string
     existingReceiptUrls: string[]
@@ -149,6 +154,8 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     category: "MATERIAL",
     amount: 0,
     amountInput: "",
+    materialName: "",
+    quantity: "",
     date: "",
     description: "",
     existingReceiptUrls: [],
@@ -172,6 +179,17 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     currentIndex: 0,
     isLoading: false,
     error: null
+  })
+
+  // --- SUCCESS RESPONSE MODAL STATE ---
+  const [successModal, setSuccessModal] = React.useState<{
+    isOpen: boolean
+    title: string
+    message: string
+  }>({
+    isOpen: false,
+    title: "",
+    message: ""
   })
 
   // Pre-generate unique month keys for dropdown filtering
@@ -312,23 +330,26 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   }
 
   // Open Edit Modal
-  const handleOpenEditModal = async (type: "income" | "outcome", item: any) => {
+  const handleOpenEditModal = async (type: "income" | "outcome" | "material", item: any) => {
     const isIncome = type === "income"
+    const isMaterial = type === "material"
     const formattedDate = item.date ? new Date(item.date).toISOString().split("T")[0] : ""
     
     setEditModal({
       isOpen: true,
       type,
       id: item.id,
-      donorName: isIncome ? (item.donorName === "Hamba Allah" ? "" : item.donorName) : "",
-      donorAddress: isIncome ? (item.donorAddress || "") : "",
-      donorPhone: isIncome ? (item.donorPhone || "") : "",
-      isAnonymous: isIncome ? item.donorName === "Hamba Allah" : false,
+      donorName: (isIncome || isMaterial) ? (item.donorName === "Hamba Allah" ? "" : item.donorName) : "",
+      donorAddress: (isIncome || isMaterial) ? (item.donorAddress || "") : "",
+      donorPhone: (isIncome || isMaterial) ? (item.donorPhone || "") : "",
+      isAnonymous: (isIncome || isMaterial) ? item.donorName === "Hamba Allah" : false,
       incomeType: isIncome ? item.type : "CASH",
-      buyer: !isIncome ? item.buyer : "",
-      category: !isIncome ? item.category : "MATERIAL",
-      amount: item.amount,
-      amountInput: formatRupiah(item.amount),
+      buyer: (!isIncome && !isMaterial) ? item.buyer : "",
+      category: (!isIncome && !isMaterial) ? item.category : "MATERIAL",
+      amount: item.amount || 0,
+      amountInput: item.amount ? formatRupiah(item.amount) : "",
+      materialName: isMaterial ? (item.materialName || "") : "",
+      quantity: isMaterial ? (item.quantity || "") : "",
       date: formattedDate,
       description: item.description || "",
       existingReceiptUrls: item.receiptUrls || [],
@@ -412,9 +433,9 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     setEditModal(prev => ({ ...prev, isSubmitting: true, error: null }))
 
     try {
-      const { updateIncomeAction, updateOutcomeAction } = await import("./actions")
+      const { updateIncomeAction, updateOutcomeAction, updateMaterialAction } = await import("./actions")
 
-      if (editModal.amount <= 0) {
+      if (editModal.type !== "material" && editModal.amount <= 0) {
         throw new Error("Nominal transaksi harus lebih dari Rp 0.")
       }
       if (!editModal.date) {
@@ -423,7 +444,9 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
       const formData = new FormData()
       formData.append("id", editModal.id)
-      formData.append("amount", editModal.amount.toString())
+      if (editModal.type !== "material") {
+        formData.append("amount", editModal.amount.toString())
+      }
       formData.append("date", editModal.date)
       formData.append("existingReceiptUrls", JSON.stringify(editModal.existingReceiptUrls))
 
@@ -436,6 +459,23 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
         formData.append("donorPhone", editModal.donorPhone.trim())
         formData.append("description", editModal.description.trim())
         formData.append("type", editModal.incomeType)
+        formData.append("isAnonymous", editModal.isAnonymous ? "true" : "false")
+      } else if (editModal.type === "material") {
+        if (!editModal.isAnonymous && !editModal.donorName.trim()) {
+          throw new Error("Nama Donatur wajib diisi jika tidak dicentang anonim.")
+        }
+        if (!editModal.materialName.trim()) {
+          throw new Error("Nama material wajib diisi.")
+        }
+        if (!editModal.quantity.trim()) {
+          throw new Error("Jumlah / volume material wajib diisi.")
+        }
+        formData.append("donorName", editModal.isAnonymous ? "Hamba Allah" : editModal.donorName.trim())
+        formData.append("donorAddress", editModal.donorAddress.trim())
+        formData.append("donorPhone", editModal.donorPhone.trim())
+        formData.append("materialName", editModal.materialName.trim())
+        formData.append("quantity", editModal.quantity.trim())
+        formData.append("description", editModal.description.trim())
         formData.append("isAnonymous", editModal.isAnonymous ? "true" : "false")
       } else {
         if (!editModal.buyer.trim()) {
@@ -457,18 +497,26 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
       let res
       if (editModal.type === "income") {
         res = await updateIncomeAction(formData)
+      } else if (editModal.type === "material") {
+        res = await updateMaterialAction(formData)
       } else {
         res = await updateOutcomeAction(formData)
       }
 
       if (res.success) {
         editModal.newFiles.forEach(f => URL.revokeObjectURL(f.preview))
+        const savedTypeLabel = editModal.type === "income" ? "pemasukan" : editModal.type === "material" ? "donasi material" : "pengeluaran"
         setEditModal(prev => ({
           ...prev,
           isOpen: false,
           isSubmitting: false,
           error: null
         }))
+        setSuccessModal({
+          isOpen: true,
+          title: "Berhasil Memperbarui Data",
+          message: `Data ${savedTypeLabel} berhasil diperbarui di database.`
+        })
       } else {
         throw new Error(res.error || "Gagal memperbarui data transaksi.")
       }
@@ -482,13 +530,13 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   }
 
   // Open Delete Confirmation Modal
-  const handleOpenDeleteModal = (type: "income" | "outcome", item: any) => {
+  const handleOpenDeleteModal = (type: "income" | "outcome" | "material", item: any) => {
     setDeleteModal({
       isOpen: true,
       type,
       id: item.id,
-      name: type === "income" ? item.donorName : item.buyer,
-      amount: item.amount,
+      name: type === "outcome" ? item.buyer : item.donorName,
+      amount: item.amount || 0,
       isDeleting: false,
       error: null
     })
@@ -498,15 +546,18 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const handleConfirmDelete = async () => {
     setDeleteModal(prev => ({ ...prev, isDeleting: true, error: null }))
     try {
-      const { deleteIncomeAction, deleteOutcomeAction } = await import("./actions")
+      const { deleteIncomeAction, deleteOutcomeAction, deleteMaterialAction } = await import("./actions")
       let res
       if (deleteModal.type === "income") {
         res = await deleteIncomeAction(deleteModal.id)
+      } else if (deleteModal.type === "material") {
+        res = await deleteMaterialAction(deleteModal.id)
       } else {
         res = await deleteOutcomeAction(deleteModal.id)
       }
 
       if (res.success) {
+        const deletedTypeLabel = deleteModal.type === "income" ? "pemasukan" : deleteModal.type === "material" ? "donasi material" : "pengeluaran"
         setDeleteModal({
           isOpen: false,
           type: "income",
@@ -515,6 +566,11 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
           amount: 0,
           isDeleting: false,
           error: null
+        })
+        setSuccessModal({
+          isOpen: true,
+          title: "Berhasil Menghapus Data",
+          message: `Data ${deletedTypeLabel} berhasil dihapus dari database.`
         })
       } else {
         throw new Error(res.error || "Gagal menghapus data.")
@@ -674,6 +730,130 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
           2: { cellWidth: 50 },
           3: { cellWidth: 50 },
           4: { cellWidth: 40, halign: "right" },
+          5: { cellWidth: "auto" }
+        }
+      })
+
+
+      // =============================================
+      // HALAMAN BARU: TABEL DONASI MATERIAL
+      // =============================================
+      doc.addPage()
+
+      // Header halaman material
+      doc.setFont("helvetica", "bold")
+      doc.setFontSize(13)
+      doc.text("Daftar Donasi Material Pembangunan Menara Masjid Al-Ikhlas Meranjat II", pageWidth / 2, 15, { align: "center" })
+
+      doc.setFont("helvetica", "normal")
+      doc.setFontSize(9)
+      doc.text(`(Lampiran Laporan Kas Masuk \u2014 Dicetak Per Tanggal ${day} ${month} ${year})`, pageWidth / 2, 22, { align: "center" })
+
+      // Grouping materials by Month-Year descending
+      const matGroups: { [key: string]: MaterialItem[] } = {}
+      materials.forEach(matItem => {
+        const d = new Date(matItem.date)
+        const monthKey = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, "0")}`
+        if (!matGroups[monthKey]) {
+          matGroups[monthKey] = []
+        }
+        matGroups[monthKey].push(matItem)
+      })
+
+      const sortedMatKeys = Object.keys(matGroups).sort().reverse()
+      const matBodyRows: any[] = []
+      let matGlobalIndex = 1
+
+      sortedMatKeys.forEach(matKey => {
+        const [matYearStr, matMonthStr] = matKey.split("-")
+        const matY = parseInt(matYearStr, 10)
+        const matMIdx = parseInt(matMonthStr, 10)
+        const matGroupTitle = `${MONTH_NAMES[matMIdx].toUpperCase()} ${matY}`
+
+        // Month header row
+        matBodyRows.push([
+          {
+            content: matGroupTitle,
+            colSpan: 6,
+            styles: { halign: "left", fontStyle: "bold", fillColor: [254, 243, 199], textColor: [120, 53, 15] }
+          }
+        ])
+
+        // Items
+        let monthCount = 0
+        const matItems = matGroups[matKey].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        matItems.forEach(matItem => {
+          monthCount++
+          matBodyRows.push([
+            matGlobalIndex++,
+            formatLocalDate(matItem.date),
+            matItem.donorName,
+            matItem.donorAddress || "-",
+            `${matItem.materialName} (${matItem.quantity})`,
+            matItem.description || "-"
+          ])
+        })
+
+        // Month count row
+        matBodyRows.push([
+          {
+            content: `JUMLAH DONASI MATERIAL ${matGroupTitle}`,
+            colSpan: 4,
+            styles: { halign: "right", fontStyle: "bold", fillColor: [255, 251, 235], textColor: [0, 0, 0] }
+          },
+          {
+            content: `${monthCount} item`,
+            styles: { halign: "right", fontStyle: "bold", fillColor: [255, 251, 235], textColor: [0, 0, 0] }
+          },
+          {
+            content: "",
+            styles: { fillColor: [255, 251, 235] }
+          }
+        ])
+      })
+
+      autoTable(doc, {
+        startY: 28,
+        head: [
+          ["No", "Tanggal", "Nama Donatur", "Alamat", "Material & Jumlah", "Keterangan"]
+        ],
+        body: matBodyRows,
+        foot: [
+          [
+            {
+              content: "TOTAL DONASI MATERIAL",
+              colSpan: 4,
+              styles: { halign: "right", fontStyle: "bold", fillColor: [254, 243, 199], textColor: [0, 0, 0] }
+            },
+            {
+              content: `${materials.length} item`,
+              styles: { halign: "right", fontStyle: "bold", fillColor: [254, 243, 199], textColor: [0, 0, 0] }
+            },
+            {
+              content: "",
+              styles: { fillColor: [254, 243, 199] }
+            }
+          ]
+        ],
+        theme: "grid",
+        headStyles: {
+          fillColor: [120, 53, 15], // Amber-900
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+          halign: "center"
+        },
+        styles: {
+          font: "helvetica",
+          fontSize: 8.5,
+          cellPadding: 2.5,
+          lineColor: [217, 119, 6]
+        },
+        columnStyles: {
+          0: { cellWidth: 12, halign: "center" },
+          1: { cellWidth: 25, halign: "center" },
+          2: { cellWidth: 50 },
+          3: { cellWidth: 50 },
+          4: { cellWidth: 55 },
           5: { cellWidth: "auto" }
         }
       })
@@ -884,7 +1064,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
         </div>
       </div>
 
-      {/* Tabs - Brutalist Toggle */}
+      {/* Tabs - Brutalist Toggle (3 Tabs: Pemasukan, Material, Pengeluaran) */}
       <div className="flex border-[2px] border-black rounded-[14px] bg-white overflow-hidden p-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
         <button
           onClick={() => {
@@ -900,6 +1080,21 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
         >
           <PlusCircle className="h-4 w-4 shrink-0" />
           Pemasukan
+        </button>
+        <button
+          onClick={() => {
+            setActiveTab("material")
+            setMaterialPage(1)
+          }}
+          className={cn(
+            "flex-1 py-2 text-center text-xs font-black uppercase rounded-[10px] transition-all flex items-center justify-center gap-1.5 cursor-pointer",
+            activeTab === "material"
+              ? "bg-amber-100 text-amber-800 border-[1.5px] border-black shadow-[1.5px_1.5px_0px_0px_#000]"
+              : "text-neutral-500 hover:text-neutral-800"
+          )}
+        >
+          <Package className="h-4 w-4 shrink-0" />
+          Material
         </button>
         <button
           onClick={() => {
@@ -1045,7 +1240,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
         {/* Overflow Area for Tables */}
         <div className="overflow-x-auto">
-          {activeTab === "income" ? (
+          {activeTab === "income" && (
             // INCOMES TABLE
             <table className="w-full border-collapse text-left">
               <thead>
@@ -1148,18 +1343,103 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                 )}
               </tbody>
             </table>
-          ) : (
+          )}
+
+          {activeTab === "material" && (
+            // MATERIAL TABLE
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr className="border-b-[2px] border-black bg-amber-50/50">
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[5%] text-center border-r border-amber-200 last:border-r-0">No</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[23%] border-r border-amber-200 last:border-r-0">Donatur &amp; Alamat</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[18%] border-r border-amber-200 last:border-r-0">Material</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[13%] text-center border-r border-amber-200 last:border-r-0">Tanggal</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[7%] text-center border-r border-amber-200 last:border-r-0">Bukti</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[28%] border-r border-amber-200 last:border-r-0">Keterangan</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[6%] text-center last:border-r-0">Aksi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y-[1.5px] divide-neutral-200">
+                {paginatedMaterials.length > 0 ? (
+                  paginatedMaterials.map((item, idx) => (
+                    <tr key={item.id} className="hover:bg-neutral-50/70 border-b border-neutral-200 transition-colors last:border-b-0">
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
+                        {(materialPage - 1) * 10 + idx + 1}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="font-black text-neutral-800 text-[11px] uppercase tracking-tight">{item.donorName}</div>
+                        {item.donorAddress && (
+                          <div className="text-[9px] text-muted-foreground font-semibold leading-tight mt-1 italic">{item.donorAddress}</div>
+                        )}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="font-black text-amber-700 text-[11px]">{item.materialName}</div>
+                        <div className="text-[10px] font-semibold text-neutral-500 mt-0.5">{item.quantity}</div>
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-600 tabular-nums">
+                        {formatLocalDate(item.date)}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center">
+                        {item.receiptUrls && item.receiptUrls.length > 0 ? (
+                          <button
+                            onClick={() => handlePreviewImages(item.receiptUrls)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-amber-100 hover:bg-amber-200 text-amber-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Lihat Bukti"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                          </button>
+                        ) : (
+                          <span className="text-[9px] text-neutral-400 font-semibold italic">-</span>
+                        )}
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="text-[10px] text-neutral-700 font-medium break-words leading-relaxed max-w-[240px]">
+                          {item.description || "-"}
+                        </div>
+                      </td>
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center whitespace-nowrap">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => handleOpenEditModal("material", item)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-amber-100 hover:bg-amber-200 text-amber-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Edit Data Donasi Material"
+                          >
+                            <Pencil className="h-3.5 w-3.5 shrink-0" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenDeleteModal("material", item)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-red-100 hover:bg-red-200 text-red-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Hapus"
+                          >
+                            <Trash2 className="h-3.5 w-3.5 shrink-0" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-xs text-neutral-400 font-bold italic border-b-0">
+                      Tidak ada rincian data material.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+
+          {activeTab === "outcome" && (
             // OUTCOMES TABLE
             <table className="w-full border-collapse text-left">
               <thead>
                 <tr className="border-b-[2px] border-black bg-red-50/50">
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[5%] text-center border-r border-red-200 last:border-r-0">No</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[22%] border-r border-red-200 last:border-r-0">Pembeli</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[33%] border-r border-red-200 last:border-r-0">Keperluan</th>
+                  <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[18%] border-r border-red-200 last:border-r-0">Pembeli</th>
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[13%] text-right border-r border-red-200 last:border-r-0">Nominal</th>
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[9%] text-center border-r border-red-200 last:border-r-0">Tanggal</th>
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[8%] text-center border-r border-red-200 last:border-r-0">Kategori</th>
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[6%] text-center border-r border-red-200 last:border-r-0">Nota</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[33%] border-r border-red-200 last:border-r-0">Keterangan</th>
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[4%] text-center border-r border-red-200 last:border-r-0">Aksi</th>
                 </tr>
               </thead>
@@ -1171,9 +1451,15 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                       <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
                         {(outcomePage - 1) * 10 + idx + 1}
                       </td>
-                      {/* Buyer */}
+                      {/* Keperluan / Description - tampil lebih highlight */}
                       <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="font-black text-neutral-800 text-[11px] uppercase tracking-tight">{item.buyer}</div>
+                        <div className="text-[10px] font-bold text-neutral-800 break-words leading-relaxed">
+                          {item.description || "-"}
+                        </div>
+                      </td>
+                      {/* Buyer / Pembeli */}
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
+                        <div className="font-semibold text-neutral-600 text-[10px] uppercase tracking-tight">{item.buyer}</div>
                       </td>
                       {/* Amount */}
                       <td className="p-3 border-r border-neutral-200 last:border-r-0 text-right font-black text-[11px] text-red-800 tabular-nums">
@@ -1202,13 +1488,6 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                         ) : (
                           <span className="text-[9px] text-neutral-400 font-semibold italic">-</span>
                         )}
-                      </td>
-                      {/* Description / Keterangan */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="text-[10px] text-neutral-700 font-medium break-words leading-relaxed max-w-[240px]">
-                          {item.description}
-                        </div>
-                      </td>
                       {/* Action Buttons - Edit & Delete */}
                       <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center whitespace-nowrap">
                         <div className="flex items-center justify-center gap-1.5">
@@ -1239,66 +1518,8 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                 )}
               </tbody>
             </table>
-          ) : (
-            // MATERIAL TABLE
-            <table className="w-full border-collapse text-left">
-              <thead>
-                <tr className="border-b-[2px] border-black bg-amber-50/50">
-                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[5%] text-center border-r border-amber-200 last:border-r-0">No</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[25%] border-r border-amber-200 last:border-r-0">Donatur</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[20%] border-r border-amber-200 last:border-r-0">Material</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[15%] text-center border-r border-amber-200 last:border-r-0">Tanggal</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[8%] text-center border-r border-amber-200 last:border-r-0">Bukti</th>
-                  <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[27%] border-r border-amber-200 last:border-r-0">Keterangan</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y-[1.5px] divide-neutral-200">
-                {paginatedMaterials.length > 0 ? (
-                  paginatedMaterials.map((item, idx) => (
-                    <tr key={item.id} className="hover:bg-neutral-50/70 border-b border-neutral-200 transition-colors last:border-b-0">
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
-                        {(materialPage - 1) * 10 + idx + 1}
-                      </td>
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="font-black text-neutral-800 text-[11px] uppercase tracking-tight">{item.donorName}</div>
-                      </td>
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="font-black text-amber-700 text-[11px]">{item.materialName}</div>
-                        <div className="text-[10px] font-semibold text-neutral-500 mt-0.5">{item.quantity}</div>
-                      </td>
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-600 tabular-nums">
-                        {formatLocalDate(item.date)}
-                      </td>
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center">
-                        {item.receiptUrls && item.receiptUrls.length > 0 ? (
-                          <button
-                            onClick={() => handlePreviewImages(item.receiptUrls)}
-                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-amber-100 hover:bg-amber-200 text-amber-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
-                            title="Lihat Bukti"
-                          >
-                            <Eye className="h-3.5 w-3.5" />
-                          </button>
-                        ) : (
-                          <span className="text-[9px] text-neutral-400 font-semibold italic">-</span>
-                        )}
-                      </td>
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
-                        <div className="text-[10px] text-neutral-700 font-medium break-words leading-relaxed max-w-[240px]">
-                          {item.description || "-"}
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} className="p-8 text-center text-xs text-neutral-400 font-bold italic border-b-0">
-                      Tidak ada rincian data material.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
           )}
+        </div>
       </div>
 
       {/* --- PAGINATION NAVIGATION CONTROLS - Tighter layout --- */}
@@ -1370,21 +1591,25 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
             <div className="p-6 bg-[#faf8f5] space-y-4">
               <div className="text-center space-y-2">
                 <p className="text-xs font-bold text-neutral-700">
-                  Apakah Anda yakin ingin menghapus data {deleteModal.type === "income" ? "pemasukan" : "pengeluaran"} ini?
+                  Apakah Anda yakin ingin menghapus data {deleteModal.type === "income" ? "pemasukan" : deleteModal.type === "material" ? "donasi material" : "pengeluaran"} ini?
                 </p>
                 <div className="border-[2px] border-black bg-white rounded-[14px] p-3 shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] text-left">
                   <div className="text-[10px] font-black text-neutral-400 uppercase">
-                    {deleteModal.type === "income" ? "Donatur" : "Pembeli"}
+                    {deleteModal.type === "outcome" ? "Pembeli" : "Donatur"}
                   </div>
                   <div className="text-xs font-black uppercase text-neutral-800 truncate">
                     {deleteModal.name}
                   </div>
-                  <div className="text-[10px] font-black text-neutral-400 uppercase mt-1.5">
-                    Nominal
-                  </div>
-                  <div className="text-sm font-black text-red-700 tabular-nums">
-                    Rp {formatRupiah(deleteModal.amount)}
-                  </div>
+                  {deleteModal.type !== "material" && (
+                    <>
+                      <div className="text-[10px] font-black text-neutral-400 uppercase mt-1.5">
+                        Nominal
+                      </div>
+                      <div className="text-sm font-black text-red-700 tabular-nums">
+                        Rp {formatRupiah(deleteModal.amount)}
+                      </div>
+                    </>
+                  )}
                 </div>
                 {deleteModal.type === "income" && (
                   <p className="text-[9px] text-amber-700 font-bold leading-normal mt-2 text-left bg-amber-50 border border-amber-200 rounded p-2">
@@ -1538,7 +1763,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
             <div className="flex h-12 w-full items-center justify-between border-b-[2.5px] border-black bg-amber-100 px-4">
               <span className="text-xs font-black uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
                 <Pencil className="h-4 w-4 shrink-0" />
-                {editModal.type === "income" ? "Edit Data Pemasukan" : "Edit Data Pengeluaran"}
+                {editModal.type === "income" ? "Edit Data Pemasukan" : editModal.type === "material" ? "Edit Data Donasi Material" : "Edit Data Pengeluaran"}
               </span>
               <button
                 type="button"
@@ -1554,7 +1779,133 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
             {/* Modal Form Body */}
             <form onSubmit={handleSaveEdit} className="p-6 bg-[#faf8f5] space-y-4 max-h-[80vh] overflow-y-auto">
-              {editModal.type === "income" ? (
+              {editModal.type === "material" ? (
+                <>
+                  {/* Donatur Anonim Checkbox */}
+                  <div className="flex items-center gap-2 border-[1.5px] border-black bg-amber-50 p-2.5 rounded-[10px] shadow-[1.5px_1.5px_0px_0px_#000]">
+                    <input
+                      type="checkbox"
+                      id="editIsAnonymous"
+                      checked={editModal.isAnonymous}
+                      onChange={(e) => {
+                        const isAnon = e.target.checked
+                        setEditModal(prev => ({
+                          ...prev,
+                          isAnonymous: isAnon,
+                          donorName: isAnon ? "Hamba Allah" : (prev.donorName === "Hamba Allah" ? "" : prev.donorName)
+                        }))
+                      }}
+                      className="h-4 w-4 rounded border-black text-amber-600 focus:ring-amber-500 cursor-pointer"
+                    />
+                    <label htmlFor="editIsAnonymous" className="text-xs font-bold text-neutral-800 cursor-pointer">
+                      Sembunyikan Nama Donatur (Hamba Allah)
+                    </label>
+                  </div>
+
+                  {/* Nama Donatur */}
+                  {!editModal.isAnonymous && (
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Nama Donatur <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: H. Ahmad Subardjo"
+                        value={editModal.donorName}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, donorName: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                  )}
+
+                  {/* Alamat & Telepon */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Alamat Donatur
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Contoh: Dusun II Meranjat"
+                        value={editModal.donorAddress}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, donorAddress: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        No. HP / Whatsapp
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Contoh: 08123456789"
+                        value={editModal.donorPhone}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, donorPhone: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Nama Material & Jumlah */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Nama Material / Barang <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: Semen Holcim"
+                        value={editModal.materialName}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, materialName: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Jumlah / Volume <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: 50 Sak"
+                        value={editModal.quantity}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, quantity: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Tanggal Penerimaan */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Tanggal Penerimaan <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      required
+                      value={editModal.date}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, date: e.target.value }))}
+                      className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+
+                  {/* Keterangan */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Keterangan / Catatan
+                    </label>
+                    <textarea
+                      rows={2}
+                      placeholder="Catatan tambahan donasi..."
+                      value={editModal.description}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, description: e.target.value }))}
+                      className="w-full text-xs font-medium border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+                </>
+              ) : editModal.type === "income" ? (
                 <>
                   {/* Donatur Anonim Checkbox */}
                   <div className="flex items-center gap-2 border-[1.5px] border-black bg-amber-50 p-2.5 rounded-[10px] shadow-[1.5px_1.5px_0px_0px_#000]">
@@ -1898,6 +2249,43 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ===== SUCCESS RESPONSE MODAL ===== */}
+      {successModal.isOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
+          onClick={() => setSuccessModal(prev => ({ ...prev, isOpen: false }))}
+        >
+          <div
+            className="bg-white border-[3px] border-black rounded-[16px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] w-full max-w-sm p-6 flex flex-col items-center gap-4 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Icon centang */}
+            <div className="h-16 w-16 rounded-full bg-emerald-100 border-[3px] border-emerald-600 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <Check className="h-8 w-8 text-emerald-700 stroke-[3]" />
+            </div>
+
+            {/* Title */}
+            <div>
+              <h3 className="text-base font-black uppercase text-neutral-900 leading-tight">
+                {successModal.title}
+              </h3>
+              <p className="mt-1.5 text-[11px] text-neutral-600 font-semibold leading-relaxed">
+                {successModal.message}
+              </p>
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setSuccessModal(prev => ({ ...prev, isOpen: false }))}
+              className="w-full py-2.5 text-sm font-black uppercase rounded-[10px] border-[2px] border-black bg-emerald-400 text-emerald-950 hover:bg-emerald-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none transition-all cursor-pointer"
+            >
+              Selesai
+            </button>
           </div>
         </div>
       )}

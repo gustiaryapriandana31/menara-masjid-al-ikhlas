@@ -52,6 +52,8 @@ export default async function RincianDanaPage() {
   const serializedMaterials = materials.map(item => ({
     id: item.id,
     donorName: item.donorName,
+    donorAddress: item.donorAddress || '',
+    donorPhone: item.donorPhone || '',
     materialName: item.materialName,
     quantity: item.quantity,
     date: safeDateToIso(item.date) || safeDateToIso(item.createdAt),
