@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowRight, BarChart2, ShieldCheck, DollarSign, Calendar, Users, Building, Mail, Phone, MapPin, Shield, Award, Megaphone, Eye, Camera, HardHat, CheckCircle2, UserCheck, Briefcase } from "lucide-react";
+import { Heart, ArrowRight, BarChart2, ShieldCheck, DollarSign, Calendar, Users, Building, Mail, Phone, MapPin, Shield, Award, Megaphone, Eye, Camera, HardHat, CheckCircle2, UserCheck, Briefcase, FileDown } from "lucide-react";
 import { HomePageJsonLd, OrganizationJsonLd } from "@/components/shared/json-ld";
 import Footer from "@/components/shared/footer";
 import panitiaData from "@/data/panitia.json";
@@ -72,22 +72,31 @@ export default function Home() {
             </p>
             
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2">
               <Link 
                 href="/donasi" 
-                className="inline-flex items-center justify-center gap-2 border-[2.5px] border-black bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase px-6 py-4.5 rounded-[14px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-center"
+                className="inline-flex items-center justify-center gap-2 border-[2.5px] border-black bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase px-6 py-4 rounded-[14px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-center"
               >
-                <Heart className="h-4.5 w-4.5 fill-emerald-100 shrink-0" />
+                <Heart className="h-4 w-4 fill-emerald-100 shrink-0" />
                 Donasi Sekarang
               </Link>
               
               <Link 
                 href="/laporan-keuangan"
-                className="inline-flex items-center justify-center gap-2 border-[2.5px] border-black bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-black uppercase px-6 py-4.5 rounded-[14px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-center"
+                className="inline-flex items-center justify-center gap-2 border-[2.5px] border-black bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-black uppercase px-6 py-4 rounded-[14px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-center"
               >
-                <BarChart2 className="h-4.5 w-4.5 text-emerald-700 shrink-0" />
+                <BarChart2 className="h-4 w-4 text-emerald-700 shrink-0" />
                 Lihat Laporan Keuangan
               </Link>
+
+              <a
+                href="/PROPOSAL PEMBANGUNAN MENARA MASJID AL IKHLAS.pdf"
+                download="Proposal_Pembangunan_Menara_Masjid_Al_Ikhlas.pdf"
+                className="inline-flex items-center justify-center gap-2 border-[2.5px] border-black bg-amber-400 hover:bg-amber-500 text-neutral-900 text-xs font-black uppercase px-6 py-4 rounded-[14px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-center"
+              >
+                <FileDown className="h-4 w-4 shrink-0" />
+                Unduh Proposal
+              </a>
             </div>
           </div>
 

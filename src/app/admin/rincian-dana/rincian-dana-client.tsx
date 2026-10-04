@@ -207,26 +207,14 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     return getUniqueMonths(materials.map(item => item.date))
   }, [materials])
 
-  // Pre-generate unique address keys for dropdown filtering
-  const uniqueIncomeAddresses = React.useMemo(() => {
-    const set = new Set<string>()
-    incomes.forEach(item => {
-      if (item.donorAddress && item.donorAddress.trim()) {
-        set.add(item.donorAddress.trim())
-      }
-    })
-    return Array.from(set).sort((a, b) => a.localeCompare(b))
-  }, [incomes])
-
-  const uniqueMaterialAddresses = React.useMemo(() => {
-    const set = new Set<string>()
-    materials.forEach(item => {
-      if (item.donorAddress && item.donorAddress.trim()) {
-        set.add(item.donorAddress.trim())
-      }
-    })
-    return Array.from(set).sort((a, b) => a.localeCompare(b))
-  }, [materials])
+  // Predefined address filter options
+  const PREDEFINED_ADDRESSES = [
+    { value: "Meranjat II", label: "Meranjat II" },
+    { value: "Meranjat I", label: "Meranjat I" },
+    { value: "Meranjat Ilir", label: "Meranjat Ilir" },
+    { value: "Palembang", label: "Palembang" },
+    { value: "__lainnya__", label: "Lainnya" },
+  ]
 
   // --- FILTER LOGIC ---
   const filteredIncomes = React.useMemo(() => {
@@ -234,7 +222,15 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
       const matchType = incomeType === "all" || item.type === incomeType
       const matchAmount = filterByAmountRange(item.amount, incomeAmountRange)
       const matchMonth = filterByMonth(item.date, incomeMonth)
-      const matchAddress = incomeAddress === "all" || (item.donorAddress && item.donorAddress.trim().toLowerCase() === incomeAddress.toLowerCase())
+      const matchAddress = (() => {
+        if (incomeAddress === "all") return true
+        const addr = (item.donorAddress || "").trim().toLowerCase()
+        if (incomeAddress === "__lainnya__") {
+          const known = ["meranjat ii", "meranjat i", "meranjat ilir", "palembang"]
+          return addr !== "" && !known.some(k => addr === k)
+        }
+        return addr === incomeAddress.toLowerCase()
+      })()
       
       const s = incomeSearch.toLowerCase().trim()
       const matchSearch = !s || 
@@ -264,7 +260,15 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const filteredMaterials = React.useMemo(() => {
     return materials.filter(item => {
       const matchMonth = filterByMonth(item.date, materialMonth)
-      const matchAddress = materialAddress === "all" || (item.donorAddress && item.donorAddress.trim().toLowerCase() === materialAddress.toLowerCase())
+      const matchAddress = (() => {
+        if (materialAddress === "all") return true
+        const addr = (item.donorAddress || "").trim().toLowerCase()
+        if (materialAddress === "__lainnya__") {
+          const known = ["meranjat ii", "meranjat i", "meranjat ilir", "palembang"]
+          return addr !== "" && !known.some(k => addr === k)
+        }
+        return addr === materialAddress.toLowerCase()
+      })()
 
       const s = materialSearch.toLowerCase().trim()
       const matchSearch = !s ||
@@ -1251,36 +1255,24 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                 ))}
               </select>
 
-              {activeTab === "income" && uniqueIncomeAddresses.length > 0 && (
+              {(activeTab === "income" || activeTab === "material") && (
                 <select
-                  value={incomeAddress}
+                  value={activeTab === "income" ? incomeAddress : materialAddress}
                   onChange={(e) => {
-                    setIncomeAddress(e.target.value)
-                    setIncomePage(1)
+                    if (activeTab === "income") {
+                      setIncomeAddress(e.target.value)
+                      setIncomePage(1)
+                    } else {
+                      setMaterialAddress(e.target.value)
+                      setMaterialPage(1)
+                    }
                   }}
                   className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer truncate"
                   title="Filter Berdasarkan Alamat Donatur"
                 >
                   <option value="all">Alamat</option>
-                  {uniqueIncomeAddresses.map(addr => (
-                    <option key={addr} value={addr}>{addr}</option>
-                  ))}
-                </select>
-              )}
-
-              {activeTab === "material" && uniqueMaterialAddresses.length > 0 && (
-                <select
-                  value={materialAddress}
-                  onChange={(e) => {
-                    setMaterialAddress(e.target.value)
-                    setMaterialPage(1)
-                  }}
-                  className="flex-1 w-0 text-[10px] font-bold border-[1.5px] border-black rounded-[6px] px-2 py-1.5 bg-white focus:outline-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-center cursor-pointer truncate"
-                  title="Filter Berdasarkan Alamat Donatur"
-                >
-                  <option value="all">Alamat</option>
-                  {uniqueMaterialAddresses.map(addr => (
-                    <option key={addr} value={addr}>{addr}</option>
+                  {PREDEFINED_ADDRESSES.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               )}

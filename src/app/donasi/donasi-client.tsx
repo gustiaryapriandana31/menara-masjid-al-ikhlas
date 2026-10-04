@@ -125,7 +125,7 @@ export default function KonfirmasiDonasiPage() {
     }
   }
 
-  // Copy to clipboard handler
+  // Copy to clipboard handler - Sumsel Babel
   const [isCopied, setIsCopied] = React.useState(false)
   const handleCopyRekening = async () => {
     try {
@@ -134,6 +134,18 @@ export default function KonfirmasiDonasiPage() {
       setTimeout(() => setIsCopied(false), 2000)
     } catch (err) {
       console.error("Gagal menyalin rekening: ", err)
+    }
+  }
+
+  // Copy to clipboard handler - BRI
+  const [isCopiedBri, setIsCopiedBri] = React.useState(false)
+  const handleCopyRekeningBri = async () => {
+    try {
+      await navigator.clipboard.writeText("563701060006539")
+      setIsCopiedBri(true)
+      setTimeout(() => setIsCopiedBri(false), 2000)
+    } catch (err) {
+      console.error("Gagal menyalin rekening BRI: ", err)
     }
   }
 
@@ -425,6 +437,50 @@ export default function KonfirmasiDonasiPage() {
 
                     <span className="text-[9px] text-neutral-500 block leading-tight font-medium pl-1 text-center">
                       a.n. Infaq Pembangunan Masjid Al-Ikhlas
+                    </span>
+                  </div>
+
+                  {/* Divider between banks */}
+                  <div className="flex items-center gap-2 py-0.5">
+                    <div className="flex-1 border-t border-amber-300" />
+                    <span className="text-[8px] font-black uppercase text-amber-600">atau</span>
+                    <div className="flex-1 border-t border-amber-300" />
+                  </div>
+
+                  {/* Rekening BRI */}
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-black text-blue-800 uppercase block">Bank Rakyat Indonesia (BRI)</span>
+
+                    <div className="flex items-center gap-1.5 bg-white border-[1.5px] border-black rounded-[10px] p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] overflow-hidden">
+                      <span className="flex-1 text-sm font-black text-neutral-950 pl-2.5 tracking-wider select-all">
+                        5637-01-060006-53-9
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleCopyRekeningBri}
+                        className={cn(
+                          "px-2.5 py-1.5 text-[9px] font-black uppercase rounded-[6px] border border-black transition-all flex items-center gap-1 shrink-0 cursor-pointer",
+                          isCopiedBri
+                            ? "bg-emerald-500 text-white shadow-none translate-x-[1px] translate-y-[1px]"
+                            : "bg-blue-100 hover:bg-blue-200 text-blue-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                        )}
+                      >
+                        {isCopiedBri ? (
+                          <>
+                            <Check className="h-3 w-3 shrink-0" />
+                            <span>Tersalin</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3 shrink-0" />
+                            <span>Salin</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <span className="text-[9px] text-neutral-500 block leading-tight font-medium pl-1 text-center">
+                      a.n. Panitia Pembangunan
                     </span>
                   </div>
                 </div>
