@@ -16,20 +16,11 @@ const prismaClientSingleton = () => {
 };
 
 declare const globalThis: {
-  prismaGlobal?: ReturnType<typeof prismaClientSingleton>;
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
 } & typeof global;
 
-let db: ReturnType<typeof prismaClientSingleton>;
-
-if (process.env.NODE_ENV === 'production') {
-  db = prismaClientSingleton();
-} else {
-  // In development, recreate client if new models (such as materialDonation) aren't present on cached instance
-  if (!globalThis.prismaGlobal || !('materialDonation' in globalThis.prismaGlobal)) {
-    globalThis.prismaGlobal = prismaClientSingleton();
-  }
-  db = globalThis.prismaGlobal;
-}
+const db = globalThis.prismaGlobal ?? prismaClientSingleton();
 
 export default db;
 
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = db;

@@ -3,7 +3,6 @@
 import db from '@/lib/db'
 import { z } from 'zod'
 import { uploadReceipt, getSignedReceiptUrl } from '@/lib/storage'
-import { revalidatePath } from 'next/cache'
 
 // ─── Zod Validation Schema ────────────────────────────────────────────────────
 const createMaterialSchema = z.object({
@@ -11,7 +10,6 @@ const createMaterialSchema = z.object({
     .string()
     .min(3, "Nama Donatur minimal 3 karakter")
     .max(255, "Nama Donatur terlalu panjang (maksimal 255 karakter)"),
-  isAnonymous: z.boolean().default(false),
   donorAddress: z
     .string()
     .max(500, "Alamat terlalu panjang (maksimal 500 karakter)")
@@ -43,45 +41,49 @@ const createMaterialSchema = z.object({
     .optional()
     .nullable()
     .or(z.literal('')),
+  isAnonymous: z.boolean().default(false)
 })
 
-// ─── Create Material Donation ─────────────────────────────────────────────────
 /**
- * Server Action to validate and save a material donation record.
+ * Server Action to validate and save manual material donation record.
  */
 export async function createMaterialDonation(prevState: unknown, formData: FormData) {
   try {
-    const rawIsAnonymous = formData.get('isAnonymous') === 'true'
-    const rawDonorName   = formData.get('donorName')
-    const rawDonorAddress = formData.get('donorAddress')
-    const rawDonorPhone  = formData.get('donorPhone')
+    // 1. Extract values from FormData
     const rawMaterialName = formData.get('materialName')
-    const rawQuantity    = formData.get('quantity')
-    const rawDate        = formData.get('date')
-    const rawDescription = formData.get('description')
-    const files          = formData.getAll('files') as File[]
+    const rawQuantity     = formData.get('quantity')
+    const rawDate         = formData.get('date')
+    const rawDonorName    = formData.get('donorName')
+    const rawDonorAddress = formData.get('donorAddress')
+    const rawDonorPhone   = formData.get('donorPhone')
+    const rawDescription  = formData.get('description')
+    const rawIsAnonymous  = formData.get('isAnonymous') === 'true'
+    const files           = formData.getAll('files') as File[]
 
-    // Zod validation
-    const validated = createMaterialSchema.safeParse({
-      donorName:    rawIsAnonymous ? "Hamba Allah" : (rawDonorName?.toString().trim() || ""),
-      isAnonymous:  rawIsAnonymous,
-      donorAddress: rawDonorAddress?.toString().trim() || null,
-      donorPhone:   rawDonorPhone?.toString().trim() || null,
-      materialName: rawMaterialName?.toString().trim(),
-      quantity:     rawQuantity?.toString().trim(),
-      date:         rawDate?.toString().trim(),
-      description:  rawDescription?.toString().trim() || null,
+    // 2. Validate input fields using Zod
+    const validatedFields = createMaterialSchema.safeParse({
+      materialName: rawMaterialName?.toString(),
+      quantity:     rawQuantity?.toString(),
+      date:         rawDate?.toString(),
+      donorName:    rawIsAnonymous ? "Hamba Allah" : rawDonorName?.toString(),
+      donorAddress: rawDonorAddress?.toString() || null,
+      donorPhone:   rawDonorPhone?.toString() || null,
+      description:  rawDescription?.toString() || null,
+      isAnonymous:  rawIsAnonymous
     })
 
-    if (!validated.success) {
-      const errors = validated.error.flatten().fieldErrors
-      const firstError = Object.values(errors).flat()[0] || "Validasi input gagal."
-      return { success: false, error: firstError }
+    if (!validatedFields.success) {
+      const errors = validatedFields.error.flatten().fieldErrors
+      const firstErrorMessage = Object.values(errors).flat()[0] || "Validasi input gagal."
+      return {
+        success: false,
+        error: firstErrorMessage
+      }
     }
 
-    const data = validated.data
+    const data = validatedFields.data
 
-    // ── Upload files ──────────────────────────────────────────────────────────
+    // 3. Process file uploads if files are provided
     const receiptUrls: string[] = []
     const hasFiles = formData.get('addReceipt') === 'true'
 
@@ -115,86 +117,52 @@ export async function createMaterialDonation(prevState: unknown, formData: FormD
       }
     }
 
-    // ── Save to DB ────────────────────────────────────────────────────────────
-    let recordId: string
-
-    try {
-      if (db.materialDonation) {
-        const record = await db.materialDonation.create({
-          data: {
-            donorName:    data.isAnonymous ? "Hamba Allah" : data.donorName,
-            isAnonymous:  data.isAnonymous,
-            donorAddress: data.donorAddress || null,
-            donorPhone:   data.donorPhone || null,
-            materialName: data.materialName,
-            quantity:     data.quantity,
-            date:         new Date(data.date),
-            description:  data.description || null,
-            receiptUrls,
-          }
-        })
-        recordId = record.id
-      } else {
-        throw new Error("materialDonation delegate not available")
+    // 4. Save to database via Prisma (MaterialDonation Table)
+    const record = await db.materialDonation.create({
+      data: {
+        donorName:    data.isAnonymous ? "Hamba Allah" : data.donorName,
+        isAnonymous:  data.isAnonymous,
+        donorAddress: data.donorAddress,
+        donorPhone:   data.donorPhone,
+        materialName: data.materialName,
+        quantity:     data.quantity,
+        date:         new Date(data.date),
+        description:  data.description,
+        receiptUrls:  receiptUrls,
       }
-    } catch (dbErr) {
-      console.warn("Prisma delegate failed, using direct raw SQL fallback:", dbErr)
-      const rawRes = await db.$queryRaw<{ id: string }[]>`
-        INSERT INTO "MaterialDonation" (
-          id, "donorName", "isAnonymous", "donorAddress", "donorPhone",
-          "materialName", quantity, date, description, "receiptUrls", "createdAt", "updatedAt"
-        )
-        VALUES (
-          gen_random_uuid(),
-          ${data.isAnonymous ? "Hamba Allah" : data.donorName},
-          ${data.isAnonymous},
-          ${data.donorAddress || null},
-          ${data.donorPhone || null},
-          ${data.materialName},
-          ${data.quantity},
-          ${new Date(data.date)},
-          ${data.description || null},
-          ${receiptUrls}::text[],
-          NOW(),
-          NOW()
-        )
-        RETURNING id
-      `
-      recordId = rawRes[0]?.id || `mat_${Date.now()}`
-    }
+    })
 
-    // Revalidate relevant paths
-    try {
-      revalidatePath('/admin/material')
-      revalidatePath('/laporan-keuangan')
-      revalidatePath('/')
-    } catch {
-      // ignore revalidate errors if any
+    return {
+      success: true,
+      data: {
+        id: record.id
+      }
     }
-
-    return { success: true, data: { id: recordId } }
 
   } catch (err) {
     console.error("Error creating material donation:", err)
-    const message = err instanceof Error ? err.message : "Terjadi kesalahan saat menyimpan donasi material."
     return {
       success: false,
-      error: message
+      error: "Gagal menyimpan data donasi material ke database. Silakan coba beberapa saat lagi."
     }
   }
 }
 
-// ─── Get Signed URLs ──────────────────────────────────────────────────────────
 /**
- * Generate temporary signed URLs for viewing private receipt images.
+ * Server Action to generate temporary signed URLs for private receipt images.
  */
 export async function getMaterialSignedUrls(paths: string[]) {
   try {
-    if (!paths || paths.length === 0) return { success: true, urls: [] }
+    if (!paths || paths.length === 0) {
+      return { success: true, urls: [] }
+    }
 
     const urls = await Promise.all(
-      paths.map((path) => getSignedReceiptUrl(path))
+      paths.map(async (path) => {
+        return await getSignedReceiptUrl(path)
+      })
     )
+
     return { success: true, urls }
   } catch (err) {
     console.error("Error generating signed URLs:", err)
