@@ -14,11 +14,13 @@ import {
   X, 
   RotateCcw, 
   AlertTriangle, 
-  Trash2 
+  Trash2,
+  Pencil,
+  Upload
 } from "lucide-react"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
 import { cn } from "@/lib/utils"
-import { formatRupiah } from "@/lib/format"
+import { formatRupiah, formatTerbilang } from "@/lib/format"
 
 // Month Names in Indonesian
 const MONTH_NAMES = [
@@ -30,6 +32,7 @@ interface IncomeItem {
   id: string
   donorName: string
   donorAddress: string | null
+  donorPhone?: string | null
   amount: number
   date: string
   description: string | null
@@ -91,6 +94,51 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
     name: "",
     amount: 0,
     isDeleting: false,
+    error: null
+  })
+
+  // --- EDIT MODAL STATE ---
+  const [editModal, setEditModal] = React.useState<{
+    isOpen: boolean
+    type: "income" | "outcome"
+    id: string
+    donorName: string
+    donorAddress: string
+    donorPhone: string
+    isAnonymous: boolean
+    incomeType: "CASH" | "TRANSFER"
+    buyer: string
+    category: "MATERIAL" | "LABOR" | "OPERATIONAL" | "OTHER"
+    amount: number
+    amountInput: string
+    date: string
+    description: string
+    existingReceiptUrls: string[]
+    existingReceiptSignedUrls: string[]
+    isLoadingSignedUrls: boolean
+    newFiles: { file: File; preview: string }[]
+    isSubmitting: boolean
+    error: string | null
+  }>({
+    isOpen: false,
+    type: "income",
+    id: "",
+    donorName: "",
+    donorAddress: "",
+    donorPhone: "",
+    isAnonymous: false,
+    incomeType: "CASH",
+    buyer: "",
+    category: "MATERIAL",
+    amount: 0,
+    amountInput: "",
+    date: "",
+    description: "",
+    existingReceiptUrls: [],
+    existingReceiptSignedUrls: [],
+    isLoadingSignedUrls: false,
+    newFiles: [],
+    isSubmitting: false,
     error: null
   })
 
@@ -214,6 +262,176 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
         ...prev,
         isLoading: false,
         error: e instanceof Error ? e.message : "Gagal memuat berkas bukti belanja."
+      }))
+    }
+  }
+
+  // Open Edit Modal
+  const handleOpenEditModal = async (type: "income" | "outcome", item: any) => {
+    const isIncome = type === "income"
+    const formattedDate = item.date ? new Date(item.date).toISOString().split("T")[0] : ""
+    
+    setEditModal({
+      isOpen: true,
+      type,
+      id: item.id,
+      donorName: isIncome ? (item.donorName === "Hamba Allah" ? "" : item.donorName) : "",
+      donorAddress: isIncome ? (item.donorAddress || "") : "",
+      donorPhone: isIncome ? (item.donorPhone || "") : "",
+      isAnonymous: isIncome ? item.donorName === "Hamba Allah" : false,
+      incomeType: isIncome ? item.type : "CASH",
+      buyer: !isIncome ? item.buyer : "",
+      category: !isIncome ? item.category : "MATERIAL",
+      amount: item.amount,
+      amountInput: formatRupiah(item.amount),
+      date: formattedDate,
+      description: item.description || "",
+      existingReceiptUrls: item.receiptUrls || [],
+      existingReceiptSignedUrls: [],
+      isLoadingSignedUrls: !!(item.receiptUrls && item.receiptUrls.length > 0),
+      newFiles: [],
+      isSubmitting: false,
+      error: null
+    })
+
+    // Fetch signed URLs for existing receipts
+    if (item.receiptUrls && item.receiptUrls.length > 0) {
+      try {
+        const res = await getSignedUrls(item.receiptUrls)
+        if (res.success && res.urls) {
+          setEditModal(prev => ({
+            ...prev,
+            existingReceiptSignedUrls: res.urls,
+            isLoadingSignedUrls: false
+          }))
+        }
+      } catch {
+        setEditModal(prev => ({ ...prev, isLoadingSignedUrls: false }))
+      }
+    }
+  }
+
+  // Remove existing receipt image from edit modal
+  const handleRemoveExistingReceipt = (index: number) => {
+    setEditModal(prev => ({
+      ...prev,
+      existingReceiptUrls: prev.existingReceiptUrls.filter((_, i) => i !== index),
+      existingReceiptSignedUrls: prev.existingReceiptSignedUrls.filter((_, i) => i !== index)
+    }))
+  }
+
+  // Add new file uploads in edit modal
+  const handleAddNewFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files)
+      const validFiles: { file: File; preview: string }[] = []
+
+      for (const file of filesArray) {
+        if (file.size > 10 * 1024 * 1024) {
+          setEditModal(prev => ({ ...prev, error: `Berkas "${file.name}" terlalu besar (maksimal 10MB).` }))
+          return
+        }
+        if (!file.type.startsWith("image/")) {
+          setEditModal(prev => ({ ...prev, error: `Berkas "${file.name}" harus berupa gambar (JPG/PNG/WebP).` }))
+          return
+        }
+        validFiles.push({
+          file,
+          preview: URL.createObjectURL(file)
+        })
+      }
+
+      setEditModal(prev => ({
+        ...prev,
+        newFiles: [...prev.newFiles, ...validFiles],
+        error: null
+      }))
+    }
+  }
+
+  // Remove newly added file preview in edit modal
+  const handleRemoveNewFile = (index: number) => {
+    setEditModal(prev => {
+      const target = prev.newFiles[index]
+      if (target) URL.revokeObjectURL(target.preview)
+      return {
+        ...prev,
+        newFiles: prev.newFiles.filter((_, i) => i !== index)
+      }
+    })
+  }
+
+  // Save Edits via Server Actions
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setEditModal(prev => ({ ...prev, isSubmitting: true, error: null }))
+
+    try {
+      const { updateIncomeAction, updateOutcomeAction } = await import("./actions")
+
+      if (editModal.amount <= 0) {
+        throw new Error("Nominal transaksi harus lebih dari Rp 0.")
+      }
+      if (!editModal.date) {
+        throw new Error("Tanggal transaksi harus diisi.")
+      }
+
+      const formData = new FormData()
+      formData.append("id", editModal.id)
+      formData.append("amount", editModal.amount.toString())
+      formData.append("date", editModal.date)
+      formData.append("existingReceiptUrls", JSON.stringify(editModal.existingReceiptUrls))
+
+      if (editModal.type === "income") {
+        if (!editModal.isAnonymous && !editModal.donorName.trim()) {
+          throw new Error("Nama Donatur wajib diisi jika tidak dicentang anonim.")
+        }
+        formData.append("donorName", editModal.isAnonymous ? "Hamba Allah" : editModal.donorName.trim())
+        formData.append("donorAddress", editModal.donorAddress.trim())
+        formData.append("donorPhone", editModal.donorPhone.trim())
+        formData.append("description", editModal.description.trim())
+        formData.append("type", editModal.incomeType)
+        formData.append("isAnonymous", editModal.isAnonymous ? "true" : "false")
+      } else {
+        if (!editModal.buyer.trim()) {
+          throw new Error("Nama penanggung jawab / pembeli wajib diisi.")
+        }
+        if (!editModal.description.trim()) {
+          throw new Error("Keterangan pengeluaran wajib diisi.")
+        }
+        formData.append("buyer", editModal.buyer.trim())
+        formData.append("category", editModal.category)
+        formData.append("description", editModal.description.trim())
+      }
+
+      // Append new uploaded files
+      editModal.newFiles.forEach(item => {
+        formData.append("files", item.file)
+      })
+
+      let res
+      if (editModal.type === "income") {
+        res = await updateIncomeAction(formData)
+      } else {
+        res = await updateOutcomeAction(formData)
+      }
+
+      if (res.success) {
+        editModal.newFiles.forEach(f => URL.revokeObjectURL(f.preview))
+        setEditModal(prev => ({
+          ...prev,
+          isOpen: false,
+          isSubmitting: false,
+          error: null
+        }))
+      } else {
+        throw new Error(res.error || "Gagal memperbarui data transaksi.")
+      }
+    } catch (err: any) {
+      setEditModal(prev => ({
+        ...prev,
+        isSubmitting: false,
+        error: err.message || "Terjadi kesalahan saat memperbarui data."
       }))
     }
   }
@@ -845,15 +1063,24 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
                           <span className="text-[9px] text-neutral-400 font-semibold italic">-</span>
                         )}
                       </td>
-                      {/* Action Button - Delete */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center">
-                        <button
-                          onClick={() => handleOpenDeleteModal("income", item)}
-                          className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-red-100 hover:bg-red-200 text-red-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
-                          title="Hapus"
-                        >
-                          <Trash2 className="h-3.5 w-3.5 shrink-0" />
-                        </button>
+                      {/* Action Buttons - Edit & Delete */}
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center whitespace-nowrap">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => handleOpenEditModal("income", item)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-amber-100 hover:bg-amber-200 text-amber-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Edit Data Pemasukan"
+                          >
+                            <Pencil className="h-3.5 w-3.5 shrink-0" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenDeleteModal("income", item)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-red-100 hover:bg-red-200 text-red-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Hapus"
+                          >
+                            <Trash2 className="h-3.5 w-3.5 shrink-0" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -927,15 +1154,24 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
                           {item.description}
                         </div>
                       </td>
-                      {/* Action Button - Delete */}
-                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center">
-                        <button
-                          onClick={() => handleOpenDeleteModal("outcome", item)}
-                          className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-red-100 hover:bg-red-200 text-red-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
-                          title="Hapus"
-                        >
-                          <Trash2 className="h-3.5 w-3.5 shrink-0" />
-                        </button>
+                      {/* Action Buttons - Edit & Delete */}
+                      <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center whitespace-nowrap">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => handleOpenEditModal("outcome", item)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-amber-100 hover:bg-amber-200 text-amber-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Edit Data Pengeluaran"
+                          >
+                            <Pencil className="h-3.5 w-3.5 shrink-0" />
+                          </button>
+                          <button
+                            onClick={() => handleOpenDeleteModal("outcome", item)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border-[1.5px] border-black bg-red-100 hover:bg-red-200 text-red-900 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-px transition-all cursor-pointer"
+                            title="Hapus"
+                          >
+                            <Trash2 className="h-3.5 w-3.5 shrink-0" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -1180,6 +1416,379 @@ export default function RincianDanaClient({ incomes, outcomes }: RincianDanaClie
         </div>
       )}
 
+      {/* --- EDIT TRANSACTION MODAL (CUSTOM NEOBRUTALIST WINDOW overlay) --- */}
+      {editModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="relative max-w-xl w-full border-[3px] border-black bg-white rounded-[24px] overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] my-8">
+            
+            {/* Modal Header */}
+            <div className="flex h-12 w-full items-center justify-between border-b-[2.5px] border-black bg-amber-100 px-4">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
+                <Pencil className="h-4 w-4 shrink-0" />
+                {editModal.type === "income" ? "Edit Data Pemasukan" : "Edit Data Pengeluaran"}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  editModal.newFiles.forEach(f => URL.revokeObjectURL(f.preview))
+                  setEditModal(prev => ({ ...prev, isOpen: false }))
+                }}
+                className="h-7 w-7 rounded-full border-[1.5px] border-black bg-white flex items-center justify-center hover:bg-neutral-100 text-neutral-700 shadow-[1px_1px_0px_0px_#000] active:translate-y-px active:shadow-none transition-all cursor-pointer"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            {/* Modal Form Body */}
+            <form onSubmit={handleSaveEdit} className="p-6 bg-[#faf8f5] space-y-4 max-h-[80vh] overflow-y-auto">
+              {editModal.type === "income" ? (
+                <>
+                  {/* Donatur Anonim Checkbox */}
+                  <div className="flex items-center gap-2 border-[1.5px] border-black bg-amber-50 p-2.5 rounded-[10px] shadow-[1.5px_1.5px_0px_0px_#000]">
+                    <input
+                      type="checkbox"
+                      id="editIsAnonymous"
+                      checked={editModal.isAnonymous}
+                      onChange={(e) => {
+                        const isAnon = e.target.checked
+                        setEditModal(prev => ({
+                          ...prev,
+                          isAnonymous: isAnon,
+                          donorName: isAnon ? "Hamba Allah" : (prev.donorName === "Hamba Allah" ? "" : prev.donorName)
+                        }))
+                      }}
+                      className="h-4 w-4 rounded border-black text-amber-600 focus:ring-amber-500 cursor-pointer"
+                    />
+                    <label htmlFor="editIsAnonymous" className="text-xs font-bold text-neutral-800 cursor-pointer">
+                      Sembunyikan Nama Donatur (Hamba Allah)
+                    </label>
+                  </div>
+
+                  {/* Nama Donatur */}
+                  {!editModal.isAnonymous && (
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Nama Donatur <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: H. Ahmad Subardjo"
+                        value={editModal.donorName}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, donorName: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                  )}
+
+                  {/* Alamat & Telepon */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Alamat Donatur
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Contoh: Dusun II Meranjat"
+                        value={editModal.donorAddress}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, donorAddress: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        No. HP / Whatsapp
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Contoh: 08123456789"
+                        value={editModal.donorPhone}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, donorPhone: e.target.value }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Nominal & Tipe Pemasukan */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Nominal Pemasukan (Rp) <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="0"
+                        value={editModal.amountInput}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^0-9]/g, "")
+                          const num = raw ? parseInt(raw, 10) : 0
+                          setEditModal(prev => ({
+                            ...prev,
+                            amount: num,
+                            amountInput: raw ? formatRupiah(num) : ""
+                          }))
+                        }}
+                        className="w-full text-xs font-black border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000] tabular-nums"
+                      />
+                      {editModal.amount > 0 && (
+                        <p className="text-[10px] font-semibold text-emerald-800 italic mt-1">
+                          {formatTerbilang(editModal.amount)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Tipe Pemasukan <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={editModal.incomeType}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, incomeType: e.target.value as "CASH" | "TRANSFER" }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000] cursor-pointer"
+                      >
+                        <option value="CASH">Tunai / Cash</option>
+                        <option value="TRANSFER">Transfer Bank / QRIS</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Tanggal Penerimaan */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Tanggal Penerimaan <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      required
+                      value={editModal.date}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, date: e.target.value }))}
+                      className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+
+                  {/* Keterangan */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Keterangan / Catatan
+                    </label>
+                    <textarea
+                      rows={2}
+                      placeholder="Catatan tambahan donasi..."
+                      value={editModal.description}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, description: e.target.value }))}
+                      className="w-full text-xs font-medium border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Nama Pembeli */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Nama Pembeli / Penanggung Jawab <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Contoh: Pak Budi (Tukang)"
+                      value={editModal.buyer}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, buyer: e.target.value }))}
+                      className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+
+                  {/* Nominal & Kategori */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Nominal Pengeluaran (Rp) <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="0"
+                        value={editModal.amountInput}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^0-9]/g, "")
+                          const num = raw ? parseInt(raw, 10) : 0
+                          setEditModal(prev => ({
+                            ...prev,
+                            amount: num,
+                            amountInput: raw ? formatRupiah(num) : ""
+                          }))
+                        }}
+                        className="w-full text-xs font-black border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000] tabular-nums"
+                      />
+                      {editModal.amount > 0 && (
+                        <p className="text-[10px] font-semibold text-red-800 italic mt-1">
+                          {formatTerbilang(editModal.amount)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                        Kategori Pengeluaran <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={editModal.category}
+                        onChange={(e) => setEditModal(prev => ({ ...prev, category: e.target.value as any }))}
+                        className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000] cursor-pointer"
+                      >
+                        <option value="MATERIAL">Material / Bahan Bangunan</option>
+                        <option value="LABOR">Pekerja / Upah Tukang</option>
+                        <option value="OPERATIONAL">Operasional / Konsumsi</option>
+                        <option value="OTHER">Lainnya</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Tanggal Pengeluaran */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Tanggal Pengeluaran <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      required
+                      value={editModal.date}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, date: e.target.value }))}
+                      className="w-full text-xs font-bold border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+
+                  {/* Keterangan */}
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-neutral-700 mb-1">
+                      Keterangan Keperluan <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      rows={2}
+                      required
+                      placeholder="Rincian pembelian material atau keperluan..."
+                      value={editModal.description}
+                      onChange={(e) => setEditModal(prev => ({ ...prev, description: e.target.value }))}
+                      className="w-full text-xs font-medium border-[1.5px] border-black rounded-[8px] p-2 bg-white focus:outline-none shadow-[1.5px_1.5px_0px_0px_#000]"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Existing & New Receipts Attachment Section */}
+              <div className="border-[1.5px] border-black bg-white rounded-[12px] p-3 space-y-2.5 shadow-[2px_2px_0px_0px_#000]">
+                <label className="block text-[11px] font-black uppercase text-neutral-800">
+                  🖼️ Bukti Nota / Kwitansi
+                </label>
+
+                {/* Existing Images */}
+                {editModal.isLoadingSignedUrls ? (
+                  <div className="text-[10px] font-bold text-neutral-400 italic">Memuat gambar bukti tersimpan...</div>
+                ) : editModal.existingReceiptSignedUrls.length > 0 && (
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-bold text-neutral-500 uppercase">Gambar Tersimpan:</span>
+                    <div className="flex flex-wrap gap-2">
+                      {editModal.existingReceiptSignedUrls.map((sUrl, idx) => (
+                        <div key={idx} className="relative h-16 w-16 border-[1.5px] border-black rounded-[8px] overflow-hidden shadow-[1px_1px_0px_0px_#000] bg-neutral-100 group">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={sUrl} alt={`Bukti tersimpan ${idx + 1}`} className="h-full w-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveExistingReceipt(idx)}
+                            className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-600 text-white rounded-full flex items-center justify-center border border-black shadow-sm hover:bg-red-700 transition-colors"
+                            title="Hapus gambar ini"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* New files previews */}
+                {editModal.newFiles.length > 0 && (
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-bold text-emerald-700 uppercase">Gambar Baru Ditambahkan:</span>
+                    <div className="flex flex-wrap gap-2">
+                      {editModal.newFiles.map((item, idx) => (
+                        <div key={idx} className="relative h-16 w-16 border-[1.5px] border-emerald-600 rounded-[8px] overflow-hidden shadow-[1px_1px_0px_0px_#000] bg-emerald-50">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={item.preview} alt={`Berkas baru ${idx + 1}`} className="h-full w-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveNewFile(idx)}
+                            className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-600 text-white rounded-full flex items-center justify-center border border-black shadow-sm hover:bg-red-700 transition-colors"
+                            title="Batalkan gambar ini"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Upload New File Button */}
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    id="editFileInput"
+                    onChange={handleAddNewFiles}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="editFileInput"
+                    className="inline-flex items-center justify-center gap-1.5 border-[1.5px] border-black bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-[10px] font-black uppercase px-3 py-1.5 rounded-[8px] shadow-[1.5px_1.5px_0px_0px_#000] active:translate-y-px active:shadow-none transition-all cursor-pointer"
+                  >
+                    <Upload className="h-3.5 w-3.5" />
+                    + Tambah Foto Bukti
+                  </label>
+                </div>
+              </div>
+
+              {/* Error message */}
+              {editModal.error && (
+                <div className="text-[10px] font-black uppercase text-red-600 text-center bg-red-50 border border-red-200 rounded p-2">
+                  ❌ {editModal.error}
+                </div>
+              )}
+
+              {/* Form Action Buttons */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    editModal.newFiles.forEach(f => URL.revokeObjectURL(f.preview))
+                    setEditModal(prev => ({ ...prev, isOpen: false }))
+                  }}
+                  disabled={editModal.isSubmitting}
+                  className="flex-1 py-2 text-center text-xs font-black uppercase rounded-[10px] border-[2px] border-black bg-white hover:bg-neutral-100 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none transition-all cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={editModal.isSubmitting}
+                  className="flex-1 py-2 text-center text-xs font-black uppercase rounded-[10px] border-[2px] border-black bg-amber-300 text-amber-950 hover:bg-amber-400 disabled:opacity-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  {editModal.isSubmitting ? (
+                    <>
+                      <div className="h-3.5 w-3.5 rounded-full border-[2px] border-amber-950 border-t-transparent animate-spin" />
+                      Menyimpan...
+                    </>
+                  ) : (
+                    "Simpan Perubahan"
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
@@ -1191,7 +1800,9 @@ function getUniqueMonths(dates: string[]): { value: string; label: string }[] {
   const monthsMap = new Map<string, { year: number; month: number }>()
 
   dates.forEach((dStr) => {
+    if (!dStr) return
     const d = new Date(dStr)
+    if (isNaN(d.getTime())) return
     const m = d.getMonth()
     const y = d.getFullYear()
     const key = `${y}-${String(m).padStart(2, "0")}`
@@ -1221,7 +1832,9 @@ function filterByAmountRange(amount: number, range: string): boolean {
 // 3. Filter transaction by Month-Year key
 function filterByMonth(dateStr: string, selectedMonthKey: string): boolean {
   if (selectedMonthKey === "all") return true
+  if (!dateStr) return false
   const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return false
   const m = d.getMonth()
   const y = d.getFullYear()
   const key = `${y}-${String(m).padStart(2, "0")}`
@@ -1230,7 +1843,9 @@ function filterByMonth(dateStr: string, selectedMonthKey: string): boolean {
 
 // 4. Formatting date into DD/MM/YYYY
 function formatLocalDate(isoString: string): string {
+  if (!isoString) return "-"
   const date = new Date(isoString)
+  if (isNaN(date.getTime())) return "-"
   const day = String(date.getDate()).padStart(2, "0")
   const month = String(date.getMonth() + 1).padStart(2, "0")
   const year = date.getFullYear()
