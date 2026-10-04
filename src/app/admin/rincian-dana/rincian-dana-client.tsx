@@ -220,12 +220,11 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const matchAddressFilter = React.useCallback((rawAddr: string | null | undefined, selectedFilter: string) => {
     if (selectedFilter === "all") return true
     const addr = (rawAddr || "").trim().toLowerCase()
-    if (!addr) return false
 
-    const isMeranjatII = addr.includes("meranjat ii") || addr.includes("meranjat 2")
-    const isMeranjatIlir = addr.includes("meranjat ilir")
-    const isMeranjatI = (addr.includes("meranjat i") || addr.includes("meranjat 1")) && !isMeranjatII && !isMeranjatIlir
-    const isPalembang = addr.includes("palembang")
+    const isMeranjatII = addr ? (addr.includes("meranjat ii") || addr.includes("meranjat 2")) : false
+    const isMeranjatIlir = addr ? addr.includes("meranjat ilir") : false
+    const isMeranjatI = addr ? ((addr.includes("meranjat i") || addr.includes("meranjat 1")) && !isMeranjatII && !isMeranjatIlir) : false
+    const isPalembang = addr ? addr.includes("palembang") : false
 
     if (selectedFilter === "Meranjat II") return isMeranjatII
     if (selectedFilter === "Meranjat I") return isMeranjatI
@@ -234,7 +233,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
     if (selectedFilter === "__lainnya__") {
       return !isMeranjatII && !isMeranjatI && !isMeranjatIlir && !isPalembang
     }
-    return addr.includes(selectedFilter.toLowerCase())
+    return addr ? addr.includes(selectedFilter.toLowerCase()) : false
   }, [])
 
   // --- FILTER LOGIC ---
