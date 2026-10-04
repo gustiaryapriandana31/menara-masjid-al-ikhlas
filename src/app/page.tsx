@@ -146,7 +146,7 @@ export default function Home() {
           <div className="space-y-1">
             <h3 className="text-xs font-black uppercase text-neutral-800">Target Efisiensi</h3>
             <p className="text-[10px] text-neutral-500 font-bold leading-normal">
-              Target dana Rp 400 Juta dikelola secara cermat untuk pemenuhan material berkualitas tinggi dan upah tenaga kerja yang terencana.
+              Target dana Rp 459.510.000 dikelola secara cermat untuk pemenuhan material berkualitas tinggi dan upah tenaga kerja yang terencana.
             </p>
           </div>
         </div>

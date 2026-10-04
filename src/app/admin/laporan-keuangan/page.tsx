@@ -116,7 +116,7 @@ export default async function LaporanKeuanganPage() {
   const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"]
   const monthlyTrend = MONTH_LABELS.map((label, index) => {
     // Filter dan jumlahkan pemasukan yang terjadi pada index bulan ini (0-11)
-    const monthIncomes = incomesForYear.filter(item => item.date.getMonth() === index)
+    const monthIncomes = incomesForYear.filter(item => item.date?.getMonth() === index)
     const sumIncome = monthIncomes.reduce((acc, curr) => acc + Number(curr.amount), 0)
 
     // Filter dan jumlahkan pengeluaran yang terjadi pada index bulan ini (0-11)

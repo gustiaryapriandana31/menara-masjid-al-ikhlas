@@ -54,7 +54,7 @@ export default function LaporanClient({
   // Hitung agregasi tambahan
   const totalIncome = totalCash + totalTransfer
   const currentBalance = totalIncome - totalExpense
-  const targetDana = 400000000 // Target Rp 400 Juta
+  const targetDana = 459510000 // Target Rp 459.510.000
 
   // Helper untuk melabeli nama bank/saluran transfer
   const getChannelLabel = (key: string) => {

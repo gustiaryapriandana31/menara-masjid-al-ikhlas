@@ -127,7 +127,7 @@ export default async function PublicLaporanPage() {
 
   const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"]
   const monthlyTrend = MONTH_LABELS.map((label, index) => {
-    const monthIncomes = incomesForYear.filter(item => item.date.getMonth() === index)
+    const monthIncomes = incomesForYear.filter(item => item.date?.getMonth() === index)
     const sumIncome = monthIncomes.reduce((acc, curr) => acc + Number(curr.amount), 0)
 
     const monthOutcomes = outcomesForYear.filter(item => item.date.getMonth() === index)
