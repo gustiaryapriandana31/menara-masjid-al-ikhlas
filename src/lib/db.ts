@@ -3,7 +3,14 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
 const prismaClientSingleton = () => {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const connectionString = process.env.DATABASE_URL;
+  const isProduction = process.env.NODE_ENV === 'production';
+  const pool = new Pool({
+    connectionString,
+    ssl: (isProduction || (connectionString && connectionString.includes('supabase')))
+      ? { rejectUnauthorized: false }
+      : undefined
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 };
@@ -17,3 +24,4 @@ const db = globalThis.prismaGlobal ?? prismaClientSingleton();
 export default db;
 
 if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = db;
+

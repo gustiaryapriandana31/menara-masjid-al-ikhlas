@@ -32,10 +32,13 @@ export async function verifySession(token: string): Promise<string | null> {
     const parts = token.split('.');
     if (parts.length !== 2) return null;
     const [payload, sigHex] = parts;
+    if (!payload || !sigHex) return null;
     const key = await getCryptoKey();
     const enc = new TextEncoder();
+    const matches = sigHex.match(/.{1,2}/g);
+    if (!matches) return null;
     const sigBytes = new Uint8Array(
-      sigHex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))
+      matches.map(byte => parseInt(byte, 16))
     );
     const isValid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(payload));
     return isValid ? payload : null;
