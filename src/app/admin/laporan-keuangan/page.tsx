@@ -1,5 +1,6 @@
 import db from '@/lib/db'
 import LaporanClient from './laporan-client'
+import { safeDateToIso } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -130,8 +131,8 @@ export default async function LaporanKeuanganPage() {
     }
   })
 
-  // 6. Ambil data donatur dari Income (pemasukan manual) dan DonationConfirmation (donasi online)
-  const [incomeDonors, confirmationDonors] = await Promise.all([
+  // 6. Donatur & Transaksi Eager Loading (Pemasukan Uang, Konfirmasi Online, & Donasi Material)
+  const [incomeDonors, confirmationDonors, materialDonors, rawMaterials] = await Promise.all([
     db.income.findMany({
       select: {
         donorName: true,
@@ -140,19 +141,47 @@ export default async function LaporanKeuanganPage() {
       }
     }),
     db.donationConfirmation.findMany({
+      where: { status: 'APPROVED' },
       select: {
         donorName: true,
         donorAddress: true,
         donorPhone: true,
         isAnonymous: true
       }
+    }),
+    db.materialDonation.findMany({
+      select: {
+        donorName: true,
+        materialName: true,
+        quantity: true
+      }
+    }),
+    db.materialDonation.findMany({
+      orderBy: { date: 'desc' },
+      select: {
+        id: true,
+        donorName: true,
+        materialName: true,
+        quantity: true,
+        date: true,
+        createdAt: true,
+        description: true
+      }
     })
   ])
 
-  // Gabungkan dan filter unik
-  const donorMap = new Map<string, { donorName: string; donorAddress: string; donorPhone: string }>()
+  // Map Donatur Terpadu (Menentukan jenis donasi: "Uang", "Barang", atau "Uang & Barang")
+  interface UnifiedDonor {
+    donorName: string
+    donorAddress: string
+    donorPhone: string
+    hasMoney: boolean
+    hasMaterial: boolean
+  }
 
-  // Proses donatur dari income
+  const donorMap = new Map<string, UnifiedDonor>()
+
+  // A. Pemasukan Kas Uang (Income)
   incomeDonors.forEach(item => {
     const isHambaAllah = item.donorName.trim().toLowerCase() === "hamba allah"
     const key = isHambaAllah ? "hamba_allah" : `${item.donorName.trim().toLowerCase()}_${(item.donorPhone || '').trim()}`
@@ -161,17 +190,20 @@ export default async function LaporanKeuanganPage() {
       donorMap.set(key, {
         donorName: isHambaAllah ? "Hamba Allah" : item.donorName,
         donorAddress: isHambaAllah ? "" : (item.donorAddress || ""),
-        donorPhone: isHambaAllah ? "" : (item.donorPhone || "")
+        donorPhone: isHambaAllah ? "" : (item.donorPhone || ""),
+        hasMoney: true,
+        hasMaterial: false
       })
     } else {
       const existing = donorMap.get(key)!
+      existing.hasMoney = true
       if (!isHambaAllah && !existing.donorAddress && item.donorAddress) {
         existing.donorAddress = item.donorAddress
       }
     }
   })
 
-  // Proses donatur dari konfirmasi online
+  // B. Konfirmasi Donasi Online (DonationConfirmation)
   confirmationDonors.forEach(item => {
     const finalName = item.isAnonymous ? "Hamba Allah" : item.donorName
     const isHambaAllah = finalName.trim().toLowerCase() === "hamba allah"
@@ -181,22 +213,74 @@ export default async function LaporanKeuanganPage() {
       donorMap.set(key, {
         donorName: isHambaAllah ? "Hamba Allah" : finalName,
         donorAddress: isHambaAllah ? "" : (item.donorAddress || ""),
-        donorPhone: isHambaAllah ? "" : (item.donorPhone || "")
+        donorPhone: isHambaAllah ? "" : (item.donorPhone || ""),
+        hasMoney: true,
+        hasMaterial: false
       })
     } else {
       const existing = donorMap.get(key)!
+      existing.hasMoney = true
       if (!isHambaAllah && !existing.donorAddress && item.donorAddress) {
         existing.donorAddress = item.donorAddress
       }
     }
   })
 
-  const donors = Array.from(donorMap.values()).map((d, index) => ({
-    no: index + 1,
-    donorName: d.donorName,
-    donorAddress: d.donorAddress,
-    donorPhone: d.donorPhone
-  }))
+  // C. Donasi Material (MaterialDonation)
+  materialDonors.forEach(item => {
+    const isHambaAllah = item.donorName.trim().toLowerCase() === "hamba allah"
+    const key = isHambaAllah ? "hamba_allah" : `${item.donorName.trim().toLowerCase()}_`
+    
+    if (!donorMap.has(key)) {
+      donorMap.set(key, {
+        donorName: isHambaAllah ? "Hamba Allah" : item.donorName,
+        donorAddress: "",
+        donorPhone: "",
+        hasMoney: false,
+        hasMaterial: true
+      })
+    } else {
+      const existing = donorMap.get(key)!
+      existing.hasMaterial = true
+    }
+  })
+
+  const donors = Array.from(donorMap.values()).map((d, index) => {
+    let donationType: "MONEY" | "MATERIAL" | "BOTH" = "MONEY"
+    if (d.hasMoney && d.hasMaterial) {
+      donationType = "BOTH"
+    } else if (d.hasMaterial) {
+      donationType = "MATERIAL"
+    }
+
+    return {
+      no: index + 1,
+      donorName: d.donorName,
+      donorAddress: d.donorAddress,
+      donorPhone: d.donorPhone,
+      donationType
+    }
+  })
+
+  // Agregasi Top Material untuk statistik
+  const materialGroupMap = new Map<string, number>()
+  rawMaterials.forEach(m => {
+    const name = m.materialName.trim()
+    const count = materialGroupMap.get(name) || 0
+    materialGroupMap.set(name, count + 1)
+  })
+
+  const topMaterials = Array.from(materialGroupMap.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5)
+
+  const materialStats = {
+    totalTrans: rawMaterials.length,
+    totalTypes: materialGroupMap.size,
+    totalDonors: new Set(rawMaterials.map(m => m.donorName.trim().toLowerCase())).size,
+    topMaterials
+  }
 
   // ==========================================
   // PENGIRIMAN DATA KE KOMPONEN CLIENT (VIEW)
@@ -210,6 +294,7 @@ export default async function LaporanKeuanganPage() {
       transferChannels={transferChannels}
       monthlyTrend={monthlyTrend}
       donors={donors}
+      materialStats={materialStats}
     />
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Wallet, TrendingUp, TrendingDown, Target, BarChart2, PieChart as PieIcon, HelpCircle, FileText } from "lucide-react"
+import { Wallet, TrendingUp, TrendingDown, Target, BarChart2, PieChart as PieIcon, HelpCircle, FileText, ChevronLeft, ChevronRight, Package, Eye } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatRupiah } from "@/lib/format"
 import { ProgressBar, PieChart, DonutChart, BarChart } from "@/components/dashboard/dashboard-charts"
@@ -11,6 +11,14 @@ interface Donor {
   donorName: string
   donorAddress: string
   donorPhone: string
+  donationType: "MONEY" | "MATERIAL" | "BOTH"
+}
+
+interface MaterialStats {
+  totalTrans: number
+  totalTypes: number
+  totalDonors: number
+  topMaterials: { name: string; count: number }[]
 }
 
 interface LaporanClientProps {
@@ -39,6 +47,7 @@ interface LaporanClientProps {
     expense: number
   }[]
   donors?: Donor[]
+  materialStats?: MaterialStats
 }
 
 export default function LaporanClient({
@@ -49,12 +58,18 @@ export default function LaporanClient({
   transferChannels,
   monthlyTrend,
   donors = [],
+  materialStats,
   isAdmin = true
 }: LaporanClientProps & { isAdmin?: boolean }) {
   // Hitung agregasi tambahan
   const totalIncome = totalCash + totalTransfer
   const currentBalance = totalIncome - totalExpense
   const targetDana = 459510000 // Target Rp 459.510.000
+
+  const [donorPage, setDonorPage] = React.useState(1)
+  const itemsPerPage = 10
+  const totalDonorPages = Math.ceil(donors.length / itemsPerPage)
+  const paginatedDonors = donors.slice((donorPage - 1) * itemsPerPage, donorPage * itemsPerPage)
 
   // Helper untuk melabeli nama bank/saluran transfer
   const getChannelLabel = (key: string) => {
@@ -108,13 +123,14 @@ export default function LaporanClient({
         idx + 1,
         item.donorName.toUpperCase(),
         item.donorAddress || "-",
-        item.donorPhone || "-"
+        item.donorPhone || "-",
+        item.donationType === "BOTH" ? "Uang + Barang" : item.donationType === "MATERIAL" ? "Barang" : "Uang"
       ])
 
       autoTable(doc, {
         startY: 29,
         head: [
-          ["No", "Nama Donatur", "Alamat", "No. Telepon / WA"]
+          ["No", "Nama Donatur", "Alamat", "No. Telepon / WA", "Bentuk Donasi"]
         ],
         body: bodyRows,
         theme: "grid",
@@ -131,10 +147,11 @@ export default function LaporanClient({
           lineColor: [209, 213, 219] // gray-300 grid borders
         },
         columnStyles: {
-          0: { cellWidth: 15, halign: "center" },
-          1: { cellWidth: 65 },
-          2: { cellWidth: 70 },
-          3: { cellWidth: 40, halign: "center" }
+          0: { cellWidth: 12, halign: "center" },
+          1: { cellWidth: 55 },
+          2: { cellWidth: 55 },
+          3: { cellWidth: 35, halign: "center" },
+          4: { cellWidth: 33, halign: "center" }
         }
       })
 
@@ -301,6 +318,72 @@ export default function LaporanClient({
 
       </div>
 
+      {/* =============================================================
+          STATISTIK DONASI MATERIAL (KPI CARDS & TOP MATERIAL CHART)
+          ============================================================= */}
+      {materialStats && (
+        <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+          <CardHeader className="pb-3 border-b-[2.5px] border-black bg-amber-50/60">
+            <CardTitle className="text-xs font-black uppercase tracking-tight text-amber-950 flex items-center gap-2">
+              <Package className="h-4.5 w-4.5 text-amber-700" /> Ringkasan & Visualisasi Donasi Material
+            </CardTitle>
+            <CardDescription className="text-[10px] text-neutral-600 font-medium">
+              Statistik penerimaan sumbangan dalam bentuk barang/material bangunan untuk proyek menara.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-4 space-y-4">
+            {/* KPI Cards Ringkas Material */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="border-[1.5px] border-black bg-amber-50 p-3 rounded-[12px] shadow-[2px_2px_0px_0px_#000]">
+                <div className="text-[9px] font-black uppercase text-amber-800">Total Transaksi Material</div>
+                <div className="text-lg font-black text-amber-950 mt-0.5 tabular-nums">{materialStats.totalTrans} Transaksi</div>
+                <div className="text-[9px] text-amber-700 font-semibold">Tercatat di sistem</div>
+              </div>
+              <div className="border-[1.5px] border-black bg-emerald-50 p-3 rounded-[12px] shadow-[2px_2px_0px_0px_#000]">
+                <div className="text-[9px] font-black uppercase text-emerald-800">Variasi Jenis Barang</div>
+                <div className="text-lg font-black text-emerald-950 mt-0.5 tabular-nums">{materialStats.totalTypes} Jenis</div>
+                <div className="text-[9px] text-emerald-700 font-semibold">Material berbeda</div>
+              </div>
+              <div className="border-[1.5px] border-black bg-blue-50 p-3 rounded-[12px] shadow-[2px_2px_0px_0px_#000]">
+                <div className="text-[9px] font-black uppercase text-blue-800">Donatur Material</div>
+                <div className="text-lg font-black text-blue-950 mt-0.5 tabular-nums">{materialStats.totalDonors} Donatur</div>
+                <div className="text-[9px] text-blue-700 font-semibold">Menyumbang barang</div>
+              </div>
+            </div>
+
+            {/* Top Material Progress Chart */}
+            {materialStats.topMaterials.length > 0 && (
+              <div className="border-[1.5px] border-black bg-neutral-50/80 rounded-[12px] p-3.5 space-y-3 shadow-[2px_2px_0px_0px_#000]">
+                <div className="text-[10px] font-black uppercase text-neutral-800 flex items-center justify-between">
+                  <span>🏆 5 Material Paling Sering Didonasikan</span>
+                  <span className="text-[9px] text-neutral-500 font-bold">Berdasarkan Frekuensi Sumbangan</span>
+                </div>
+                <div className="space-y-2.5">
+                  {materialStats.topMaterials.map((item, idx) => {
+                    const maxCount = materialStats.topMaterials[0]?.count || 1
+                    const percent = Math.round((item.count / maxCount) * 100)
+                    return (
+                      <div key={idx} className="space-y-1">
+                        <div className="flex justify-between items-center text-[10px] font-bold">
+                          <span className="text-neutral-800 uppercase tracking-tight font-black">{item.name}</span>
+                          <span className="text-amber-900 tabular-nums">{item.count} Transaksi</span>
+                        </div>
+                        <div className="w-full h-2.5 bg-white border-[1.5px] border-black rounded-full overflow-hidden shadow-[1px_1px_0px_0px_#000]">
+                          <div
+                            style={{ width: `${percent}%` }}
+                            className="h-full bg-gradient-to-r from-amber-400 to-amber-500 border-r-[1.5px] border-black"
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         {/* DONUT CHART: SEBARAN PENGELUARAN KATEGORI */}
@@ -358,7 +441,7 @@ export default function LaporanClient({
       </div>
 
       {/* =============================================================
-          4. TABEL DAFTAR DONATUR MASJID (NEOBRUTALIST TABEL)
+          4. TABEL DAFTAR DONATUR MASJID (NEOBRUTALIST TABEL GABUNGAN)
           ============================================================= */}
       {isAdmin && (
         <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
@@ -368,7 +451,7 @@ export default function LaporanClient({
                 🕌 Daftar Donatur Masjid Al-Ikhlas
               </CardTitle>
               <CardDescription className="text-[10px] text-neutral-500 font-medium">
-                Kumpulan seluruh nama donatur beserta nomor kontak aktif (diperoleh dari input manual & donasi online).
+                Kumpulan seluruh nama donatur beserta nomor kontak aktif dan bentuk donasi (uang, barang/material, atau keduanya).
               </CardDescription>
             </div>
             {donors.length > 0 && (
@@ -390,15 +473,16 @@ export default function LaporanClient({
               <table className="w-full border-collapse text-left">
                 <thead>
                   <tr className="border-b-[2px] border-black bg-emerald-50/50">
-                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[6%] text-center border-r border-emerald-200 last:border-r-0">No</th>
-                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[30%] border-r border-emerald-200 last:border-r-0">Nama Donatur</th>
-                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[42%] border-r border-emerald-200 last:border-r-0">Alamat</th>
-                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[14%] text-center border-r border-emerald-200 last:border-r-0">No. Telepon / WA</th>
-                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[8%] text-center last:border-r-0">Hubungi</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[5%] text-center border-r border-emerald-200 last:border-r-0">No</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[27%] border-r border-emerald-200 last:border-r-0">Nama Donatur</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[35%] border-r border-emerald-200 last:border-r-0">Alamat</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[15%] text-center border-r border-emerald-200 last:border-r-0">Bentuk Donasi</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[12%] text-center border-r border-emerald-200 last:border-r-0">No. HP / WA</th>
+                    <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[6%] text-center last:border-r-0">Aksi</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y-[1.5px] divide-neutral-200">
-                  {donors.map((item, idx) => {
+                  {paginatedDonors.map((item, idx) => {
                     const cleanedPhone = item.donorPhone 
                       ? `62${item.donorPhone.replace(/^0/, "").replace(/[^0-9]/g, "")}` 
                       : "";
@@ -406,7 +490,7 @@ export default function LaporanClient({
                       <tr key={idx} className="hover:bg-neutral-50/70 border-b border-neutral-200 transition-colors last:border-b-0">
                         {/* No */}
                         <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] font-bold text-neutral-500 tabular-nums">
-                          {idx + 1}
+                          {(donorPage - 1) * itemsPerPage + idx + 1}
                         </td>
                         {/* Nama Donatur */}
                         <td className="p-3 border-r border-neutral-200 last:border-r-0 whitespace-normal">
@@ -419,6 +503,22 @@ export default function LaporanClient({
                           <div className="text-[10px] text-neutral-700 font-medium leading-relaxed">
                             {item.donorAddress || "-"}
                           </div>
+                        </td>
+                        {/* Bentuk Donasi */}
+                        <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center">
+                          {item.donationType === "BOTH" ? (
+                            <span className="inline-block text-[8px] font-black uppercase px-2 py-0.5 rounded-full border border-purple-400 bg-purple-100 text-purple-900 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                              Uang + Barang
+                            </span>
+                          ) : item.donationType === "MATERIAL" ? (
+                            <span className="inline-block text-[8px] font-black uppercase px-2 py-0.5 rounded-full border border-amber-400 bg-amber-100 text-amber-900 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                              Barang
+                            </span>
+                          ) : (
+                            <span className="inline-block text-[8px] font-black uppercase px-2 py-0.5 rounded-full border border-blue-400 bg-blue-100 text-blue-900 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                              Uang
+                            </span>
+                          )}
                         </td>
                         {/* No. Telepon / WA */}
                         <td className="p-3 border-r border-neutral-200 last:border-r-0 text-center text-[10px] text-neutral-700 font-medium tabular-nums">
@@ -439,7 +539,7 @@ export default function LaporanClient({
                               </svg>
                             </a>
                           ) : (
-                            <span className="text-[9px] text-neutral-400 font-medium italic">Tidak ada WA</span>
+                            <span className="text-[9px] text-neutral-400 font-medium italic">-</span>
                           )}
                         </td>
                       </tr>
@@ -447,6 +547,31 @@ export default function LaporanClient({
                   })}
                 </tbody>
               </table>
+            )}
+            
+            {/* Pagination Donors */}
+            {totalDonorPages > 1 && (
+              <div className="flex items-center justify-between p-3 border-t-[2.5px] border-black bg-neutral-50/50">
+                <div className="text-[10px] font-black uppercase text-neutral-500">
+                  Halaman {donorPage} dari {totalDonorPages} ({donors.length} donatur)
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setDonorPage(p => Math.max(1, p - 1))}
+                    disabled={donorPage === 1}
+                    className="h-7 px-2 rounded-lg border-[1.5px] border-black bg-white text-neutral-800 disabled:opacity-50 hover:bg-neutral-100 flex items-center justify-center shadow-[1px_1px_0px_0px_#000] disabled:shadow-none active:translate-y-px active:shadow-none transition-all cursor-pointer"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => setDonorPage(p => Math.min(totalDonorPages, p + 1))}
+                    disabled={donorPage === totalDonorPages}
+                    className="h-7 px-2 rounded-lg border-[1.5px] border-black bg-white text-neutral-800 disabled:opacity-50 hover:bg-neutral-100 flex items-center justify-center shadow-[1px_1px_0px_0px_#000] disabled:shadow-none active:translate-y-px active:shadow-none transition-all cursor-pointer"
+                  >
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>
