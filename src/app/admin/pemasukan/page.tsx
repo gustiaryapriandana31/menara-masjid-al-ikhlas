@@ -9,24 +9,31 @@ export const metadata = {
 }
 
 export default async function PemasukanPage() {
-  // Fetch the last 5 manual cash incomes
-  const recentIncomes = await db.income.findMany({
-    where: {
-      type: 'CASH'
-    },
-    take: 5,
-    orderBy: {
-      date: 'desc'
-    }
-  })
+  // Fetch 7 most recent incomes sorted by actual transaction date (date field),
+  // falling back to createdAt for records where date is null.
+  // Using raw SQL because Prisma's orderBy doesn't support NULLS LAST / COALESCE.
+  const recentIncomes = await db.$queryRaw<{
+    id: string
+    donorName: string
+    amount: string
+    date: Date | null
+    type: string
+    description: string | null
+    createdAt: Date
+  }[]>`
+    SELECT id, "donorName", amount::text, date, type, description, "createdAt"
+    FROM "Income"
+    ORDER BY date DESC NULLS LAST
+    LIMIT 7
+  `
 
   // Serialize the data for Client Component compatibility
   const serializedRecentIncomes = recentIncomes.map(item => ({
     id: item.id,
     donorName: item.donorName,
     amount: Number(item.amount),
-    date: item.date.toISOString(),
-    type: item.type,
+    date: item.date ? item.date.toISOString() : (item.createdAt ? item.createdAt.toISOString() : ''),
+    type: item.type as 'CASH' | 'TRANSFER',
     description: item.description || ''
   }))
 
