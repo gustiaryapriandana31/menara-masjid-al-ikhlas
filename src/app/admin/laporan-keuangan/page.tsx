@@ -1,6 +1,7 @@
 import db from '@/lib/db'
 import LaporanClient from './laporan-client'
 import { safeDateToIso } from '@/lib/utils'
+import { aggregateQuantities } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
 
@@ -262,24 +263,46 @@ export default async function LaporanKeuanganPage() {
     }
   })
 
-  // Agregasi Top Material untuk statistik
-  const materialGroupMap = new Map<string, number>()
+  // Agregasi Material per Jenis Material & Kuantitas
+  const materialGroupMap = new Map<string, { name: string; count: number; quantities: string[]; donors: Set<string> }>()
   rawMaterials.forEach(m => {
     const name = m.materialName.trim()
-    const count = materialGroupMap.get(name) || 0
-    materialGroupMap.set(name, count + 1)
+    const key = name.toLowerCase()
+    if (!materialGroupMap.has(key)) {
+      materialGroupMap.set(key, {
+        name,
+        count: 1,
+        quantities: m.quantity ? [m.quantity.trim()] : [],
+        donors: new Set([m.donorName.trim().toLowerCase()])
+      })
+    } else {
+      const existing = materialGroupMap.get(key)!
+      existing.count += 1
+      if (m.quantity) {
+        existing.quantities.push(m.quantity.trim())
+      }
+      existing.donors.add(m.donorName.trim().toLowerCase())
+    }
   })
 
-  const topMaterials = Array.from(materialGroupMap.entries())
-    .map(([name, count]) => ({ name, count }))
+  const materialTypes = Array.from(materialGroupMap.values())
+    .map(item => ({
+      name: item.name,
+      count: item.count,
+      quantities: item.quantities,
+      totalQuantityDisplay: aggregateQuantities(item.quantities),
+      donorCount: item.donors.size
+    }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 5)
+
+  const topMaterials = materialTypes.slice(0, 5).map(m => ({ name: m.name, count: m.count }))
 
   const materialStats = {
     totalTrans: rawMaterials.length,
     totalTypes: materialGroupMap.size,
     totalDonors: new Set(rawMaterials.map(m => m.donorName.trim().toLowerCase())).size,
-    topMaterials
+    topMaterials,
+    materialTypes
   }
 
   // ==========================================

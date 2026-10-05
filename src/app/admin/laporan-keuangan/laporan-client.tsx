@@ -18,7 +18,14 @@ interface MaterialStats {
   totalTrans: number
   totalTypes: number
   totalDonors: number
-  topMaterials: { name: string; count: number }[]
+  topMaterials?: { name: string; count: number }[]
+  materialTypes?: {
+    name: string
+    count: number
+    quantities: string[]
+    totalQuantityDisplay?: string
+    donorCount: number
+  }[]
 }
 
 interface LaporanClientProps {
@@ -319,75 +326,119 @@ export default function LaporanClient({
       </div>
 
       {/* =============================================================
-          STATISTIK DONASI MATERIAL (KPI CARDS & TOP MATERIAL CHART)
+          DONASI MATERIAL & SEBARAN PENGELUARAN BELANJA (SIDE-BY-SIDE)
           ============================================================= */}
-      {materialStats && (
-        <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-          <CardHeader className="pb-3 border-b-[2.5px] border-black bg-amber-50/60">
-            <CardTitle className="text-xs font-black uppercase tracking-tight text-amber-950 flex items-center gap-2">
-              <Package className="h-4.5 w-4.5 text-amber-700" /> Ringkasan & Visualisasi Donasi Material
-            </CardTitle>
-            <CardDescription className="text-[10px] text-neutral-600 font-medium">
-              Statistik penerimaan sumbangan dalam bentuk barang/material bangunan untuk proyek menara.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-4 space-y-4">
-            {/* KPI Cards Ringkas Material */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="border-[1.5px] border-black bg-amber-50 p-3 rounded-[12px] shadow-[2px_2px_0px_0px_#000]">
-                <div className="text-[9px] font-black uppercase text-amber-800">Total Transaksi Material</div>
-                <div className="text-lg font-black text-amber-950 mt-0.5 tabular-nums">{materialStats.totalTrans} Transaksi</div>
-                <div className="text-[9px] text-amber-700 font-semibold">Tercatat di sistem</div>
-              </div>
-              <div className="border-[1.5px] border-black bg-emerald-50 p-3 rounded-[12px] shadow-[2px_2px_0px_0px_#000]">
-                <div className="text-[9px] font-black uppercase text-emerald-800">Variasi Jenis Barang</div>
-                <div className="text-lg font-black text-emerald-950 mt-0.5 tabular-nums">{materialStats.totalTypes} Jenis</div>
-                <div className="text-[9px] text-emerald-700 font-semibold">Material berbeda</div>
-              </div>
-              <div className="border-[1.5px] border-black bg-blue-50 p-3 rounded-[12px] shadow-[2px_2px_0px_0px_#000]">
-                <div className="text-[9px] font-black uppercase text-blue-800">Donatur Material</div>
-                <div className="text-lg font-black text-blue-950 mt-0.5 tabular-nums">{materialStats.totalDonors} Donatur</div>
-                <div className="text-[9px] text-blue-700 font-semibold">Menyumbang barang</div>
-              </div>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-            {/* Top Material Progress Chart */}
-            {materialStats.topMaterials.length > 0 && (
-              <div className="border-[1.5px] border-black bg-neutral-50/80 rounded-[12px] p-3.5 space-y-3 shadow-[2px_2px_0px_0px_#000]">
-                <div className="text-[10px] font-black uppercase text-neutral-800 flex items-center justify-between">
-                  <span>🏆 5 Material Paling Sering Didonasikan</span>
-                  <span className="text-[9px] text-neutral-500 font-bold">Berdasarkan Frekuensi Sumbangan</span>
-                </div>
-                <div className="space-y-2.5">
-                  {materialStats.topMaterials.map((item, idx) => {
-                    const maxCount = materialStats.topMaterials[0]?.count || 1
-                    const percent = Math.round((item.count / maxCount) * 100)
-                    return (
-                      <div key={idx} className="space-y-1">
-                        <div className="flex justify-between items-center text-[10px] font-bold">
-                          <span className="text-neutral-800 uppercase tracking-tight font-black">{item.name}</span>
-                          <span className="text-amber-900 tabular-nums">{item.count} Transaksi</span>
-                        </div>
-                        <div className="w-full h-2.5 bg-white border-[1.5px] border-black rounded-full overflow-hidden shadow-[1px_1px_0px_0px_#000]">
-                          <div
-                            style={{ width: `${percent}%` }}
-                            className="h-full bg-gradient-to-r from-amber-400 to-amber-500 border-r-[1.5px] border-black"
-                          />
-                        </div>
+        {/* LEFT COLUMN: RINGKASAN & VISUALISASI DONASI MATERIAL */}
+        <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden lg:col-span-6 flex flex-col justify-between">
+          <CardHeader className="pb-3 border-b-[2.5px] border-black bg-amber-50/70 flex flex-row items-center justify-between gap-2 flex-wrap">
+            <div className="space-y-0.5">
+              <CardTitle className="text-xs font-black uppercase tracking-tight text-amber-950 flex items-center gap-2">
+                <Package className="h-4 w-4 text-amber-700" /> Ringkasan &amp; Visualisasi Donasi Material
+              </CardTitle>
+              <CardDescription className="text-[10px] text-neutral-600 font-medium">
+                Statistik penerimaan sumbangan barang &amp; material fisik dari para donatur.
+              </CardDescription>
+            </div>
+            {materialStats && (
+              <span className="text-[9px] font-black uppercase px-2.5 py-1 rounded-full border border-amber-400 bg-amber-100 text-amber-900 shadow-[1px_1px_0px_0px_#000]">
+                {materialStats.totalTypes} Jenis Material
+              </span>
+            )}
+          </CardHeader>
+
+          <CardContent className="p-4 space-y-4 flex-1 flex flex-col justify-between">
+            {materialStats ? (
+              <div className="space-y-4 flex-1 flex flex-col justify-between">
+                
+                {/* Ringkasan Angka Utama / 2 Metric Cards */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="border-[2px] border-black bg-amber-100/70 p-3 rounded-[14px] shadow-[2px_2px_0px_0px_#000] flex items-center justify-between">
+                    <div>
+                      <div className="text-[9px] font-black uppercase text-amber-900">Jenis Material</div>
+                      <div className="text-base font-black text-amber-950 mt-0.5 tabular-nums">
+                        {materialStats.totalTypes} <span className="text-[10px] font-bold text-neutral-600">Material</span>
                       </div>
-                    )
-                  })}
+                    </div>
+                    <span className="h-8 w-8 rounded-[8px] border border-black bg-amber-200 flex items-center justify-center text-sm shadow-[1px_1px_0px_0px_#000] shrink-0">
+                      🧱
+                    </span>
+                  </div>
+
+                  <div className="border-[2px] border-black bg-blue-100/70 p-3 rounded-[14px] shadow-[2px_2px_0px_0px_#000] flex items-center justify-between">
+                    <div>
+                      <div className="text-[9px] font-black uppercase text-blue-900">Jumlah Donatur Material</div>
+                      <div className="text-base font-black text-blue-950 mt-0.5 tabular-nums">
+                        {materialStats.totalDonors} <span className="text-[10px] font-bold text-neutral-600">Donatur</span>
+                      </div>
+                    </div>
+                    <span className="h-8 w-8 rounded-[8px] border border-black bg-blue-200 flex items-center justify-center text-sm shadow-[1px_1px_0px_0px_#000] shrink-0">
+                      👥
+                    </span>
+                  </div>
                 </div>
+
+                {/* Grid Card Rincian Barang Disumbangkan */}
+                <div className="space-y-2.5 flex-1">
+                  <div className="text-[9px] font-black uppercase text-neutral-500 tracking-wider flex items-center justify-between">
+                    <span>📦 Rincian Barang Disumbangkan:</span>
+                    <span className="text-[8px] text-amber-800 font-bold bg-amber-100 px-2 py-0.5 rounded border border-amber-300 shadow-[0.5px_0.5px_0px_0px_#000]">
+                      Tercatat
+                    </span>
+                  </div>
+
+                  {materialStats.materialTypes && materialStats.materialTypes.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-2.5 max-h-[250px] overflow-y-auto pr-1">
+                      {materialStats.materialTypes.map((mat, idx) => (
+                        <div 
+                          key={idx} 
+                          className="border-[2px] border-black bg-gradient-to-br from-amber-50/80 to-orange-50/40 p-3.5 rounded-[14px] shadow-[2.5px_2.5px_0px_0px_#000] flex items-center justify-between gap-3 hover:translate-y-[-1px] transition-all"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="h-8 w-8 rounded-[9px] border-[1.5px] border-black bg-amber-200 flex items-center justify-center font-black text-sm text-amber-950 shadow-[1px_1px_0px_0px_#000] shrink-0">
+                              🧱
+                            </span>
+                            <div className="min-w-0">
+                              <h4 className="text-xs font-black text-neutral-900 uppercase tracking-tight truncate">{mat.name}</h4>
+                              <span className="text-[9px] font-bold text-neutral-500 uppercase">Sumbangan Material</span>
+                            </div>
+                          </div>
+
+                          <div className="border-[1.5px] border-black bg-white px-3 py-1.5 rounded-[10px] shadow-[1px_1px_0px_0px_#000] text-right shrink-0">
+                            <span className="text-[8px] font-bold text-neutral-400 uppercase block">Total Terkumpul:</span>
+                            <span className="text-sm font-black text-amber-900 tabular-nums">
+                              {mat.totalQuantityDisplay || mat.quantities.join(", ") || `${mat.count} penyerahan`}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : materialStats.topMaterials && materialStats.topMaterials.length > 0 ? (
+                    <div className="space-y-2">
+                      {materialStats.topMaterials.map((item, idx) => (
+                        <div key={idx} className="border-[1.5px] border-black bg-neutral-50 p-2.5 rounded-[12px] shadow-[1.5px_1.5px_0px_0px_#000] flex justify-between items-center">
+                          <span className="text-xs font-black text-neutral-800 uppercase">{item.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-xs font-bold text-neutral-400 italic bg-neutral-50 rounded-[12px] border border-dashed border-neutral-300">
+                      Belum ada rincian material.
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="p-6 text-center text-xs font-bold text-neutral-400 italic bg-neutral-50 rounded-[12px] border border-dashed border-neutral-300">
+                Belum ada data donasi material.
               </div>
             )}
           </CardContent>
         </Card>
-      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
-        {/* DONUT CHART: SEBARAN PENGELUARAN KATEGORI */}
-        <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden lg:col-span-6">
+        {/* RIGHT COLUMN: DONUT CHART SEBARAN PENGELUARAN BELANJA */}
+        <Card className="bg-white border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden lg:col-span-6 flex flex-col justify-between">
           <CardHeader className="pb-3 border-b-[2.5px] border-black bg-neutral-50/50">
             <CardTitle className="text-xs font-black uppercase tracking-tight text-neutral-800">
               🛍️ Distribusi Pengeluaran Belanja
@@ -396,7 +447,7 @@ export default function LaporanClient({
               Sebaran pemakaian dana berdasarkan pos/kategori kebutuhan material dan operasional.
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex items-center justify-center min-h-64">
+          <CardContent className="flex items-center justify-center p-4 flex-1 min-h-[260px]">
             <DonutChart
               material={expenseCategories.MATERIAL}
               labor={expenseCategories.LABOR}
@@ -404,38 +455,6 @@ export default function LaporanClient({
               other={expenseCategories.OTHER}
             />
           </CardContent>
-        </Card>
-
-        {/* INFORMASI REKENING / CATATAN TRANSPARANSI */}
-        <Card className="bg-[#fffbeb] border-[2.5px] border-black rounded-[18px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] lg:col-span-6 p-5 flex flex-col justify-center gap-4">
-          <div className="flex gap-3">
-            <div className="h-10 w-10 bg-amber-200 border-[2.5px] border-black rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center shrink-0">
-              <HelpCircle className="h-5 w-5 text-amber-800" />
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-xs font-black uppercase tracking-wider text-amber-950">Syiar Keuangan Transparan</h3>
-              <p className="text-[10px] text-neutral-800 leading-normal font-bold">
-                Seluruh grafik statistik di atas dihitung secara waktu-nyata (real-time) bersumber langsung dari database transaksi yang diinput oleh panitia dan donatur.
-              </p>
-            </div>
-          </div>
-          <hr className="border-t-[1.5px] border-black" />
-          <div className="text-[10px] text-neutral-700 space-y-2 font-medium">
-            <p>
-              💡 **Tips Analisis**:
-            </p>
-            <ul className="list-disc pl-4 space-y-1">
-              <li>Arahkan kursor Anda ke masing-masing batang grafik bulanan untuk melihat rincian detail kas masuk & keluar bulan tersebut.</li>
-              <li>Pastikan dana simpanan (saldo kas) selalu berada di zona positif untuk menjaga kestabilan upah tukang dan pembelian material menara.</li>
-              <li>
-                {isAdmin ? (
-                  "Untuk rincian detil setiap item transaksi, silakan merujuk ke menu Rincian Dana di panel navigasi Anda."
-                ) : (
-                  "Setiap donasi online yang masuk memerlukan validasi dari bendahara pembangunan sebelum tercatat secara riil di grafik keuangan ini."
-                )}
-              </li>
-            </ul>
-          </div>
         </Card>
 
       </div>

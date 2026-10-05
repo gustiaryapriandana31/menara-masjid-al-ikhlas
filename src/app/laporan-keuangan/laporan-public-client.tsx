@@ -40,6 +40,19 @@ interface LaporanPublicClientProps {
     expense: number
   }[]
   materialDonations: MaterialDonationItem[]
+  materialStats?: {
+    totalTrans: number
+    totalTypes: number
+    totalDonors: number
+    topMaterials?: { name: string; count: number }[]
+    materialTypes?: {
+      name: string
+      count: number
+      quantities: string[]
+      totalQuantityDisplay?: string
+      donorCount: number
+    }[]
+  }
 }
 
 function formatLocalDate(isoStr: string | null): string {
@@ -57,6 +70,7 @@ export default function LaporanPublicClient({
   transferChannels,
   monthlyTrend,
   materialDonations,
+  materialStats,
 }: LaporanPublicClientProps) {
   return (
     <div className="relative min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col font-sans">
@@ -104,6 +118,7 @@ export default function LaporanPublicClient({
           expenseCategories={expenseCategories}
           transferChannels={transferChannels}
           monthlyTrend={monthlyTrend}
+          materialStats={materialStats}
           isAdmin={false}
         />
 

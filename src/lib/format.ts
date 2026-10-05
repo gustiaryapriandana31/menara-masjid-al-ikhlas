@@ -50,3 +50,51 @@ export function formatTerbilang(amount: number): string {
 export function formatRupiah(amount: number): string {
   return new Intl.NumberFormat("id-ID").format(amount)
 }
+
+/**
+ * Agregasi array string kuantitas material (contoh: ["20 sak", "30 sak"] -> "50 Sak")
+ */
+export function aggregateQuantities(quantities: string[]): string {
+  if (!quantities || quantities.length === 0) return "-"
+
+  const unitTotals = new Map<string, number>()
+  const textItems: string[] = []
+
+  quantities.forEach(qStr => {
+    const trimmed = qStr.trim()
+    if (!trimmed) return
+
+    // Match number + unit (e.g., "30 sak", "1.5 truk", "1000 pcs")
+    const match = trimmed.match(/^([\d.,]+)\s*(.*)$/)
+    if (match) {
+      const numStr = match[1].replace(/\./g, "").replace(",", ".")
+      const num = parseFloat(numStr)
+      const unit = match[2] ? match[2].trim().toLowerCase() : ""
+
+      if (!isNaN(num) && num > 0) {
+        const unitKey = unit || "unit"
+        unitTotals.set(unitKey, (unitTotals.get(unitKey) || 0) + num)
+      } else {
+        textItems.push(trimmed)
+      }
+    } else {
+      textItems.push(trimmed)
+    }
+  })
+
+  const results: string[] = []
+  unitTotals.forEach((totalNum, unit) => {
+    const formattedNum = new Intl.NumberFormat("id-ID").format(totalNum)
+    const formattedUnit = unit === "unit" ? "" : ` ${unit.charAt(0).toUpperCase() + unit.slice(1)}`
+    results.push(`${formattedNum}${formattedUnit}`)
+  })
+
+  textItems.forEach(item => {
+    if (!results.includes(item)) {
+      results.push(item)
+    }
+  })
+
+  return results.length > 0 ? results.join(", ") : quantities.join(", ")
+}
+

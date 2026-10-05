@@ -52,27 +52,34 @@ interface PieChartProps {
 }
 
 export function PieChart({ cash, transfer }: PieChartProps) {
+  const [hoveredSlice, setHoveredSlice] = React.useState<"CASH" | "TRANSFER" | null>(null)
   const total = cash + transfer
   const cashPercent = total > 0 ? (cash / total) * 100 : 50
   const transferPercent = total > 0 ? (transfer / total) * 100 : 50
 
-  // -------------------------------------------------------------
-  // BELAJAR SVG MATH:
-  // - Kita menggunakan lingkaran SVG (circle) dengan jari-jari (radius) r = 15.91549430918954
-  // - Mengapa angka desimal aneh itu? Karena Keliling Lingkaran (Circumference) = 2 * PI * r.
-  //   Jika r = 15.91549430..., maka Keliling = 2 * 3.14159265... * 15.91549430... = TEPAT 100 unit!
-  // - Dengan keliling tepat 100, kita bisa langsung memakai persentase (0-100) sebagai nilai strokeDasharray
-  //   tanpa perlu konversi matematika lagi!
-  // - strokeDasharray="[Panjang_Sektor] [Panjang_Sisa_Keliling]"
-  // - strokeDashoffset="-[Akumulasi_Sektor_Sebelumnya]" untuk meletakkan sektor berikutnya secara melingkar.
-  // -------------------------------------------------------------
   const radius = 15.91549430918954
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 p-4">
+    <div className="relative flex flex-col sm:flex-row items-center justify-center gap-6 p-4 w-full">
+      {/* Tooltip Card Floating (Ringkas & Sederhana) */}
+      {hoveredSlice && (
+        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-neutral-900 text-white border-[2.5px] border-black p-2.5 rounded-[12px] z-50 text-[10px] pointer-events-none shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] font-bold space-y-1 animate-in fade-in zoom-in-95 duration-150 min-w-40 text-center">
+          <p className="border-b border-neutral-700 pb-1 uppercase tracking-wider text-[9px] text-amber-400 flex items-center justify-center gap-1.5">
+            <span className={`h-2 w-2 rounded-full ${hoveredSlice === "CASH" ? "bg-amber-400" : "bg-violet-400"}`} />
+            {hoveredSlice === "CASH" ? "Pemasukan Tunai" : "Pemasukan Transfer"}
+          </p>
+          <div className="text-emerald-400 text-xs font-black tabular-nums pt-0.5">
+            Rp {formatRupiah(hoveredSlice === "CASH" ? cash : transfer)}
+          </div>
+          <p className="text-[9px] text-neutral-400 font-semibold">
+            {(hoveredSlice === "CASH" ? cashPercent : transferPercent).toFixed(1)}% dari total
+          </p>
+        </div>
+      )}
+
       {/* Ilustrasi Lingkaran SVG */}
-      <div className="relative w-36 h-36 shrink-0">
-        <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
+      <div className="relative w-36 h-36 shrink-0 group">
+        <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90 overflow-visible">
           {/* Sektor 1: Tunai/Cash (Warna Kuning Amber) */}
           <circle
             cx="21"
@@ -80,10 +87,12 @@ export function PieChart({ cash, transfer }: PieChartProps) {
             r={radius}
             fill="transparent"
             stroke="#f59e0b"
-            strokeWidth="7"
+            strokeWidth={hoveredSlice === "CASH" ? 9 : 7}
             strokeDasharray={`${cashPercent} ${100 - cashPercent}`}
             strokeDashoffset="0"
-            className="transition-all duration-300 hover:stroke-[8.5] cursor-pointer"
+            className="transition-all duration-200 cursor-pointer"
+            onMouseEnter={() => setHoveredSlice("CASH")}
+            onMouseLeave={() => setHoveredSlice(null)}
           />
           {/* Sektor 2: Transfer (Warna Ungu Violet) */}
           <circle
@@ -92,23 +101,47 @@ export function PieChart({ cash, transfer }: PieChartProps) {
             r={radius}
             fill="transparent"
             stroke="#8b5cf6"
-            strokeWidth="7"
+            strokeWidth={hoveredSlice === "TRANSFER" ? 9 : 7}
             strokeDasharray={`${transferPercent} ${100 - transferPercent}`}
             strokeDashoffset={-cashPercent}
-            className="transition-all duration-300 hover:stroke-[8.5] cursor-pointer"
+            className="transition-all duration-200 cursor-pointer"
+            onMouseEnter={() => setHoveredSlice("TRANSFER")}
+            onMouseLeave={() => setHoveredSlice(null)}
           />
         </svg>
+
         {/* Teks di Tengah Lingkaran */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center font-black text-xs text-neutral-800 pointer-events-none">
-          <span>{total > 0 ? Math.round(cashPercent) : 50}%</span>
-          <span className="text-[8px] font-bold text-neutral-500 uppercase tracking-widest">Tunai</span>
+        <div className="absolute inset-0 flex flex-col items-center justify-center font-black text-xs text-neutral-800 pointer-events-none transition-all px-2 text-center">
+          {hoveredSlice === "CASH" ? (
+            <>
+              <span className="text-amber-600 text-sm font-black tabular-nums">{cashPercent.toFixed(0)}%</span>
+              <span className="text-[8px] font-bold text-amber-800 uppercase tracking-widest">Tunai</span>
+            </>
+          ) : hoveredSlice === "TRANSFER" ? (
+            <>
+              <span className="text-violet-600 text-sm font-black tabular-nums">{transferPercent.toFixed(0)}%</span>
+              <span className="text-[8px] font-bold text-violet-800 uppercase tracking-widest">Transfer</span>
+            </>
+          ) : (
+            <>
+              <span>{total > 0 ? Math.round(cashPercent) : 50}%</span>
+              <span className="text-[8px] font-bold text-neutral-500 uppercase tracking-widest">Tunai</span>
+            </>
+          )}
         </div>
       </div>
 
       {/* Legenda (Keterangan Warna) */}
-      <div className="space-y-2.5 text-xs font-bold w-full sm:w-auto">
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 bg-[#f59e0b] border-[2px] border-black rounded shadow-[1.5px_1.5px_0px_0px_#000]" />
+      <div className="space-y-2 text-xs font-bold w-full sm:w-auto">
+        <div 
+          className={cn(
+            "flex items-center gap-2 p-1.5 rounded-lg border border-transparent transition-all cursor-pointer",
+            hoveredSlice === "CASH" && "bg-amber-50 border-amber-300 shadow-[1px_1px_0px_0px_#000]"
+          )}
+          onMouseEnter={() => setHoveredSlice("CASH")}
+          onMouseLeave={() => setHoveredSlice(null)}
+        >
+          <div className="h-4 w-4 bg-[#f59e0b] border-[2px] border-black rounded shadow-[1.5px_1.5px_0px_0px_#000] shrink-0" />
           <div className="flex flex-col">
             <span className="text-neutral-700">Tunai (Cash)</span>
             <span className="text-[10px] text-amber-700 tabular-nums">
@@ -116,8 +149,15 @@ export function PieChart({ cash, transfer }: PieChartProps) {
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 bg-[#8b5cf6] border-[2px] border-black rounded shadow-[1.5px_1.5px_0px_0px_#000]" />
+        <div 
+          className={cn(
+            "flex items-center gap-2 p-1.5 rounded-lg border border-transparent transition-all cursor-pointer",
+            hoveredSlice === "TRANSFER" && "bg-violet-50 border-violet-300 shadow-[1px_1px_0px_0px_#000]"
+          )}
+          onMouseEnter={() => setHoveredSlice("TRANSFER")}
+          onMouseLeave={() => setHoveredSlice(null)}
+        >
+          <div className="h-4 w-4 bg-[#8b5cf6] border-[2px] border-black rounded shadow-[1.5px_1.5px_0px_0px_#000] shrink-0" />
           <div className="flex flex-col">
             <span className="text-neutral-700">Transfer (Online)</span>
             <span className="text-[10px] text-violet-700 tabular-nums">
@@ -142,43 +182,52 @@ interface DonutChartProps {
 }
 
 export function DonutChart({ material, labor, operational, other }: DonutChartProps) {
+  const [hoveredIdx, setHoveredIdx] = React.useState<number | null>(null)
   const total = material + labor + operational + other
 
-  // Fungsi pembantu menghitung persentase dari nilai absolut
   const getPercent = (val: number) => (total > 0 ? (val / total) * 100 : 0)
 
-  const pMaterial = getPercent(material)
-  const pLabor = getPercent(labor)
-  const pOperational = getPercent(operational)
-  const pOther = getPercent(other)
-
-  // Desimal ajaib untuk keliling lingkaran = 100
   const radius = 15.91549430918954
 
-  // Buat array konfigurasi sektor
   const slices = [
-    { value: pMaterial, amount: material, color: "#ef4444", label: "Material" },
-    { value: pLabor, amount: labor, color: "#3b82f6", label: "Upah Tukang" },
-    { value: pOperational, amount: operational, color: "#eab308", label: "Operasional" },
-    { value: pOther, amount: other, color: "#10b981", label: "Lainnya" }
-  ].filter(s => s.value > 0) // Hanya tampilkan kategori yang memiliki pengeluaran > 0
+    { value: getPercent(material), amount: material, color: "#ef4444", label: "Material" },
+    { value: getPercent(labor), amount: labor, color: "#3b82f6", label: "Upah Tukang" },
+    { value: getPercent(operational), amount: operational, color: "#eab308", label: "Operasional" },
+    { value: getPercent(other), amount: other, color: "#10b981", label: "Lainnya" }
+  ].filter(s => s.value > 0)
 
-  // Jika tidak ada pengeluaran sama sekali, buat sektor abu-abu default (100%)
   if (slices.length === 0) {
     slices.push({ value: 100, amount: 0, color: "#e5e5e5", label: "Belum Ada Pengeluaran" })
   }
 
-  // Variabel penampung offset bertumpuk
+  const activeSlice = hoveredIdx !== null ? slices[hoveredIdx] : null
   let accumulatedPercent = 0
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 p-4">
+    <div className="relative flex flex-col sm:flex-row items-center justify-center gap-6 p-4 w-full">
+      {/* Tooltip Card Floating (Ringkas & Sederhana) */}
+      {activeSlice && (
+        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-neutral-900 text-white border-[2.5px] border-black p-2.5 rounded-[12px] z-50 text-[10px] pointer-events-none shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] font-bold space-y-1 animate-in fade-in zoom-in-95 duration-150 min-w-44 text-center">
+          <p className="border-b border-neutral-700 pb-1 uppercase tracking-wider text-[9px] text-red-400 flex items-center justify-center gap-1.5">
+            <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: activeSlice.color }} />
+            Belanja {activeSlice.label}
+          </p>
+          <div className="text-emerald-400 text-xs font-black tabular-nums pt-0.5">
+            Rp {formatRupiah(activeSlice.amount)}
+          </div>
+          <p className="text-[9px] text-neutral-400 font-semibold">
+            {activeSlice.value.toFixed(1)}% dari total pengeluaran
+          </p>
+        </div>
+      )}
+
       {/* Ilustrasi Donat SVG */}
-      <div className="relative w-36 h-36 shrink-0">
-        <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
+      <div className="relative w-36 h-36 shrink-0 group">
+        <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90 overflow-visible">
           {slices.map((slice, idx) => {
             const offset = -accumulatedPercent
-            accumulatedPercent += slice.value // Tambahkan untuk sektor berikutnya
+            accumulatedPercent += slice.value
+            const isHovered = hoveredIdx === idx
 
             return (
               <circle
@@ -188,38 +237,69 @@ export function DonutChart({ material, labor, operational, other }: DonutChartPr
                 r={radius}
                 fill="transparent"
                 stroke={slice.color}
-                strokeWidth="7" // strokeWidth tebal membuat lubang donat mengecil
+                strokeWidth={isHovered ? 9 : 7}
                 strokeDasharray={`${slice.value} ${100 - slice.value}`}
                 strokeDashoffset={offset}
-                className="transition-all duration-300 hover:stroke-[8.5] cursor-pointer"
+                className="transition-all duration-200 cursor-pointer"
+                onMouseEnter={() => setHoveredIdx(idx)}
+                onMouseLeave={() => setHoveredIdx(null)}
               />
-            );
+            )
           })}
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center font-black text-xs text-neutral-800 pointer-events-none">
-          <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-wider">Total</span>
-          <span className="text-[10px] font-black text-neutral-800 tabular-nums">Rp {formatRupiah(total)}</span>
+
+        {/* Center Text */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center font-black text-xs text-neutral-800 pointer-events-none transition-all px-2 text-center">
+          {activeSlice ? (
+            <>
+              <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-wider truncate max-w-[80px]">
+                {activeSlice.label}
+              </span>
+              <span className="text-[10px] font-black text-neutral-900 tabular-nums">
+                Rp {formatRupiah(activeSlice.amount)}
+              </span>
+              <span className="text-[8px] font-bold text-amber-600 tabular-nums">
+                ({activeSlice.value.toFixed(1)}%)
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-wider">Total</span>
+              <span className="text-[10px] font-black text-neutral-800 tabular-nums">Rp {formatRupiah(total)}</span>
+            </>
+          )}
         </div>
       </div>
 
       {/* Legenda Kategori */}
-      <div className="space-y-2 text-xs font-bold w-full sm:w-auto">
-        {slices.map((slice, idx) => (
-          <div key={idx} className="flex items-center gap-2">
+      <div className="space-y-1.5 text-xs font-bold w-full sm:w-auto">
+        {slices.map((slice, idx) => {
+          const isHovered = hoveredIdx === idx
+          return (
             <div 
-              style={{ backgroundColor: slice.color }} 
-              className="h-3.5 w-3.5 border-[2px] border-black rounded shadow-[1.5px_1.5px_0px_0px_#000] shrink-0" 
-            />
-            <div className="flex flex-col min-w-32">
-              <span className="text-neutral-700">{slice.label}</span>
-              {slice.amount > 0 && (
-                <span className="text-[9px] text-neutral-500 font-semibold tabular-nums">
-                  Rp {formatRupiah(slice.amount)} ({slice.value.toFixed(1)}%)
-                </span>
+              key={idx} 
+              className={cn(
+                "flex items-center gap-2 p-1.5 rounded-lg border border-transparent transition-all cursor-pointer",
+                isHovered && "bg-neutral-100 border-neutral-300 shadow-[1px_1px_0px_0px_#000]"
               )}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+            >
+              <div 
+                style={{ backgroundColor: slice.color }} 
+                className="h-3.5 w-3.5 border-[2px] border-black rounded shadow-[1.5px_1.5px_0px_0px_#000] shrink-0" 
+              />
+              <div className="flex flex-col min-w-32">
+                <span className="text-neutral-700">{slice.label}</span>
+                {slice.amount > 0 && (
+                  <span className="text-[9px] text-neutral-500 font-semibold tabular-nums">
+                    Rp {formatRupiah(slice.amount)} ({slice.value.toFixed(1)}%)
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
