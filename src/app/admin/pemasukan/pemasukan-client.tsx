@@ -1,11 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, CircleDollarSign, FileText, Upload, X, Check, Image as ImageIcon, Wallet, PlusCircle } from "lucide-react"
+import { Calendar, CircleDollarSign, FileText, Upload, X, Check, Image as ImageIcon, Wallet, PlusCircle, Eye } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { cn, formatLocalDate, toLocalDateInputValue, compareIncomes } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
 import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createPemasukan } from "./actions"
@@ -17,6 +17,8 @@ interface RecentIncome {
   date: string
   type: "CASH" | "TRANSFER"
   description: string
+  receiptUrls?: string[]
+  donationConfirmationId?: string | null
 }
 
 interface PemasukanClientProps {
@@ -28,10 +30,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
   // State Form
   const [amountInput, setAmountInput] = React.useState("")
   const [amount, setAmount] = React.useState<number>(0)
-  const [date, setDate] = React.useState(() => {
-    const today = new Date()
-    return today.toISOString().split("T")[0]
-  })
+  const [date, setDate] = React.useState(() => toLocalDateInputValue(new Date()))
   const [donorName, setDonorName] = React.useState("")
   const [donorAddress, setDonorAddress] = React.useState("")
   const [donorPhone, setDonorPhone] = React.useState("")
@@ -39,12 +38,13 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
   const [isAnonymous, setIsAnonymous] = React.useState(false)
   const [addReceipt, setAddReceipt] = React.useState(false)
   const [selectedFiles, setSelectedFiles] = React.useState<{ file: File; preview: string }[]>([])
+  const [previewModalUrl, setPreviewModalUrl] = React.useState<string | null>(null)
   const [error, setError] = React.useState<string | null>(null)
   const [success, setSuccess] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
 
   // Local state to keep track of recent manual incomes for real-time update
-  const [incomesList, setIncomesList] = React.useState<RecentIncome[]>(recentIncomes)
+  const [incomesList, setIncomesList] = React.useState<RecentIncome[]>(() => [...recentIncomes].sort(compareIncomes))
 
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const cameraInputRef = React.useRef<HTMLInputElement>(null)
@@ -169,7 +169,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
         type: "CASH",
         description: description.trim()
       }
-      setIncomesList(prev => [newIncome, ...prev].slice(0, 7))
+      setIncomesList(prev => [newIncome, ...prev].sort(compareIncomes).slice(0, 10))
 
       // Trigger coin animation
       triggerAnimation("income", amount, isAnonymous ? "Hamba Allah" : donorName.trim())
@@ -461,17 +461,26 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
                         <p className="text-[10px] font-black text-neutral-700 uppercase tracking-wider">Berkas terpilih ({selectedFiles.length}):</p>
                         <div className="grid grid-cols-3 gap-2">
                           {selectedFiles.map((fileObj, idx) => (
-                            <div key={idx} className="relative group rounded-[10px] border-[2px] border-black bg-white p-1 h-16 w-full flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <div key={idx} className="relative group rounded-[10px] border-[2px] border-black bg-white p-1 h-16 w-full flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
                                 src={fileObj.preview}
                                 alt={`Preview ${idx + 1}`}
-                                className="object-cover h-full w-full rounded-[6px]"
+                                className="object-cover h-full w-full rounded-[6px] transition-transform group-hover:scale-105"
+                                onClick={() => setPreviewModalUrl(fileObj.preview)}
                               />
                               <button
                                 type="button"
-                                onClick={() => removeFile(idx)}
-                                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 border-[1.5px] border-black hover:bg-red-600 shadow-sm transition-all cursor-pointer"
+                                onClick={() => setPreviewModalUrl(fileObj.preview)}
+                                className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                                title="Klik untuk memperbesar gambar"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); removeFile(idx); }}
+                                className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 border-[1.5px] border-black hover:bg-red-600 shadow-sm transition-all cursor-pointer z-10"
                                 title="Hapus gambar"
                               >
                                 <X className="h-3 w-3" />
@@ -550,6 +559,24 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
         </div>
 
       </div>
+
+      {/* Fullscreen Image Preview Modal */}
+      {previewModalUrl && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setPreviewModalUrl(null)}>
+          <div className="relative max-w-3xl max-h-[90vh] bg-white rounded-[20px] border-[3px] border-black p-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setPreviewModalUrl(null)}
+              className="absolute top-4 right-4 z-10 bg-red-600 hover:bg-red-700 text-white p-2 rounded-full border-[2px] border-black shadow-[2px_2px_0px_0px_#000] active:translate-y-px transition-all cursor-pointer"
+              title="Tutup Preview"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previewModalUrl} alt="Preview Bukti" className="max-h-[80vh] w-auto max-w-full object-contain rounded-[12px]" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

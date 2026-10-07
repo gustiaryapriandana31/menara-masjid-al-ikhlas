@@ -1,6 +1,6 @@
 import db from '@/lib/db'
 import RincianDanaClient from './rincian-dana-client'
-import { safeDateToIso } from '@/lib/utils'
+import { safeDateToIso, compareIncomes } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -37,7 +37,7 @@ export default async function RincianDanaPage() {
     type: item.type,
     receiptUrls: item.receiptUrls || [],
     donationConfirmationId: item.donationConfirmationId
-  }))
+  })).sort(compareIncomes)
 
   const serializedOutcomes = outcomes.map(item => ({
     id: item.id,

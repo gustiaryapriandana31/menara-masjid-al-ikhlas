@@ -31,7 +31,7 @@ export async function proxy(request: NextRequest) {
 
   // 2. User is already logged in and attempts to access the login page -> Redirect to admin panel
   if (pathname === '/login' && isSessionValid) {
-    const adminUrl = new URL('/admin/pemasukan', request.nextUrl)
+    const adminUrl = new URL('/admin/laporan-keuangan', request.nextUrl)
     return NextResponse.redirect(adminUrl)
   }
 

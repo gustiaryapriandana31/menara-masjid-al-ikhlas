@@ -5,6 +5,7 @@ import { Check, X, Eye, ShieldAlert, Calendar, CreditCard, User, MapPin, Loader2
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { formatRupiah } from "@/lib/format"
+import { formatLocalDate } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
@@ -211,7 +212,7 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
                         <CreditCard className="h-3 w-3 text-neutral-400" /> {getChannelLabel(item.paymentChannel)}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3 text-neutral-400" /> {item.transferDate}
+                        <Calendar className="h-3 w-3 text-neutral-400" /> {formatLocalDate(item.transferDate)}
                       </span>
                     </div>
                   </div>
@@ -310,7 +311,7 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
 
                       {/* Tgl Transfer */}
                       <td className="px-3 py-2.5 font-semibold text-neutral-600 tabular-nums whitespace-nowrap">
-                        {item.transferDate}
+                        {formatLocalDate(item.transferDate)}
                       </td>
 
                       {/* Status */}
@@ -337,7 +338,7 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
 
                       {/* Tgl Validasi */}
                       <td className="px-3 py-2.5 font-semibold text-neutral-500 tabular-nums whitespace-nowrap">
-                        {item.validatedAt || <span className="text-neutral-300">—</span>}
+                        {item.validatedAt ? formatLocalDate(item.validatedAt) : <span className="text-neutral-300">—</span>}
                       </td>
 
                       {/* WA */}
@@ -419,7 +420,7 @@ export default function ValidasiClient({ initialConfirmations, historyConfirmati
                 <div className="space-y-0.5">
                   <span className="text-neutral-400 block text-[9px] uppercase">Tanggal Transfer</span>
                   <span className="text-neutral-900 flex items-center gap-1">
-                    <Calendar className="h-3 w-3 text-neutral-400" /> {selectedItem.transferDate}
+                    <Calendar className="h-3 w-3 text-neutral-400" /> {formatLocalDate(selectedItem.transferDate)}
                   </span>
                 </div>
 

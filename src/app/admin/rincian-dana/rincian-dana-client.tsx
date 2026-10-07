@@ -21,7 +21,7 @@ import {
   Check
 } from "lucide-react"
 import { getSignedUrls } from "@/app/admin/pemasukan/actions"
-import { cn } from "@/lib/utils"
+import { cn, safeDateToIso, toLocalDateInputValue, compareIncomes } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
 
 // Month Names in Indonesian
@@ -251,7 +251,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
         (item.description && item.description.toLowerCase().includes(s))
 
       return matchType && matchAmount && matchMonth && matchAddress && matchSearch
-    })
+    }).sort(compareIncomes)
   }, [incomes, incomeType, incomeAmountRange, incomeMonth, incomeAddress, incomeSearch, matchAddressFilter])
 
   const filteredOutcomes = React.useMemo(() => {
@@ -369,7 +369,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
   const handleOpenEditModal = async (type: "income" | "outcome" | "material", item: any) => {
     const isIncome = type === "income"
     const isMaterial = type === "material"
-    const formattedDate = item.date ? new Date(item.date).toISOString().split("T")[0] : ""
+    const formattedDate = item.date ? toLocalDateInputValue(item.date) : ""
     
     setEditModal({
       isOpen: true,
@@ -1714,7 +1714,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
       {/* --- LIGHTBOX MODAL DIALOG --- */}
       {lightbox.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="relative max-w-lg w-full border-[3px] border-black bg-white rounded-[24px] overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             
             {/* Modal Header */}
@@ -2212,13 +2212,26 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                     <span className="text-[10px] font-bold text-neutral-500 uppercase">Gambar Tersimpan:</span>
                     <div className="flex flex-wrap gap-2">
                       {editModal.existingReceiptSignedUrls.map((sUrl, idx) => (
-                        <div key={idx} className="relative h-16 w-16 border-[1.5px] border-black rounded-[8px] overflow-hidden shadow-[1px_1px_0px_0px_#000] bg-neutral-100 group">
+                        <div key={idx} className="relative h-16 w-16 border-[1.5px] border-black rounded-[8px] overflow-hidden shadow-[1px_1px_0px_0px_#000] bg-neutral-100 group cursor-pointer">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={sUrl} alt={`Bukti tersimpan ${idx + 1}`} className="h-full w-full object-cover" />
+                          <img
+                            src={sUrl}
+                            alt={`Bukti tersimpan ${idx + 1}`}
+                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                            onClick={() => setLightbox({ isOpen: true, urls: editModal.existingReceiptSignedUrls, currentIndex: idx, isLoading: false, error: null })}
+                          />
                           <button
                             type="button"
-                            onClick={() => handleRemoveExistingReceipt(idx)}
-                            className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-600 text-white rounded-full flex items-center justify-center border border-black shadow-sm hover:bg-red-700 transition-colors"
+                            onClick={() => setLightbox({ isOpen: true, urls: editModal.existingReceiptSignedUrls, currentIndex: idx, isLoading: false, error: null })}
+                            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                            title="Klik untuk memperbesar gambar"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); handleRemoveExistingReceipt(idx); }}
+                            className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-600 text-white rounded-full flex items-center justify-center border border-black shadow-sm hover:bg-red-700 transition-colors z-10"
                             title="Hapus gambar ini"
                           >
                             <X className="h-3 w-3" />
@@ -2235,13 +2248,26 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                     <span className="text-[10px] font-bold text-emerald-700 uppercase">Gambar Baru Ditambahkan:</span>
                     <div className="flex flex-wrap gap-2">
                       {editModal.newFiles.map((item, idx) => (
-                        <div key={idx} className="relative h-16 w-16 border-[1.5px] border-emerald-600 rounded-[8px] overflow-hidden shadow-[1px_1px_0px_0px_#000] bg-emerald-50">
+                        <div key={idx} className="relative h-16 w-16 border-[1.5px] border-emerald-600 rounded-[8px] overflow-hidden shadow-[1px_1px_0px_0px_#000] bg-emerald-50 group cursor-pointer">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={item.preview} alt={`Berkas baru ${idx + 1}`} className="h-full w-full object-cover" />
+                          <img
+                            src={item.preview}
+                            alt={`Berkas baru ${idx + 1}`}
+                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                            onClick={() => setLightbox({ isOpen: true, urls: editModal.newFiles.map(f => f.preview), currentIndex: idx, isLoading: false, error: null })}
+                          />
                           <button
                             type="button"
-                            onClick={() => handleRemoveNewFile(idx)}
-                            className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-600 text-white rounded-full flex items-center justify-center border border-black shadow-sm hover:bg-red-700 transition-colors"
+                            onClick={() => setLightbox({ isOpen: true, urls: editModal.newFiles.map(f => f.preview), currentIndex: idx, isLoading: false, error: null })}
+                            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                            title="Klik untuk memperbesar gambar"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); handleRemoveNewFile(idx); }}
+                            className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-600 text-white rounded-full flex items-center justify-center border border-black shadow-sm hover:bg-red-700 transition-colors z-10"
                             title="Batalkan gambar ini"
                           >
                             <X className="h-3 w-3" />

@@ -1,11 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, CircleDollarSign, FileText, Upload, X, Check, Image as ImageIcon, Tag, Layers, MinusCircle } from "lucide-react"
+import { Calendar, CircleDollarSign, FileText, Upload, X, Check, Image as ImageIcon, Tag, Layers, MinusCircle, Eye } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { cn, formatLocalDate, toLocalDateInputValue } from "@/lib/utils"
 import { formatRupiah, formatTerbilang } from "@/lib/format"
 import { useMoneyAnimation } from "@/components/shared/money-animation-provider"
 import { createPengeluaran } from "./actions"
@@ -36,14 +36,12 @@ export default function PengeluaranClient({ recentOutcomes }: PengeluaranClientP
   // State Form
   const [amountInput, setAmountInput] = React.useState("")
   const [amount, setAmount] = React.useState<number>(0)
-  const [date, setDate] = React.useState(() => {
-    const today = new Date()
-    return today.toISOString().split("T")[0]
-  })
+  const [date, setDate] = React.useState(() => toLocalDateInputValue(new Date()))
   const [category, setCategory] = React.useState("")
   const [buyer, setBuyer] = React.useState("")
   const [description, setDescription] = React.useState("")
   const [selectedFiles, setSelectedFiles] = React.useState<{ file: File; preview: string }[]>([])
+  const [previewModalUrl, setPreviewModalUrl] = React.useState<string | null>(null)
   const [error, setError] = React.useState<string | null>(null)
   const [success, setSuccess] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -468,17 +466,26 @@ export default function PengeluaranClient({ recentOutcomes }: PengeluaranClientP
                       <p className="text-[10px] font-black text-neutral-700 uppercase tracking-wider">Kuitansi terpilih ({selectedFiles.length}):</p>
                       <div className="grid grid-cols-3 gap-2">
                         {selectedFiles.map((fileObj, idx) => (
-                          <div key={idx} className="relative group rounded-[10px] border-[2px] border-black bg-white p-1 h-16 w-full flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                          <div key={idx} className="relative group rounded-[10px] border-[2px] border-black bg-white p-1 h-16 w-full flex items-center justify-center overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={fileObj.preview}
                               alt={`Preview ${idx + 1}`}
-                              className="object-cover h-full w-full rounded-[6px]"
+                              className="object-cover h-full w-full rounded-[6px] transition-transform group-hover:scale-105"
+                              onClick={() => setPreviewModalUrl(fileObj.preview)}
                             />
                             <button
                               type="button"
-                              onClick={() => removeFile(idx)}
-                              className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 border-[1.5px] border-black hover:bg-red-600 shadow-sm transition-all cursor-pointer"
+                              onClick={() => setPreviewModalUrl(fileObj.preview)}
+                              className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                              title="Klik untuk memperbesar gambar"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); removeFile(idx); }}
+                              className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 border-[1.5px] border-black hover:bg-red-600 shadow-sm transition-all cursor-pointer z-10"
                               title="Hapus kuitansi"
                             >
                               <X className="h-3 w-3" />
@@ -551,6 +558,24 @@ export default function PengeluaranClient({ recentOutcomes }: PengeluaranClientP
         </div>
 
       </div>
+
+      {/* Fullscreen Image Preview Modal */}
+      {previewModalUrl && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setPreviewModalUrl(null)}>
+          <div className="relative max-w-3xl max-h-[90vh] bg-white rounded-[20px] border-[3px] border-black p-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setPreviewModalUrl(null)}
+              className="absolute top-4 right-4 z-10 bg-red-600 hover:bg-red-700 text-white p-2 rounded-full border-[2px] border-black shadow-[2px_2px_0px_0px_#000] active:translate-y-px transition-all cursor-pointer"
+              title="Tutup Preview"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previewModalUrl} alt="Preview Bukti" className="max-h-[80vh] w-auto max-w-full object-contain rounded-[12px]" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
