@@ -216,7 +216,7 @@ export default function LaporanPublicClient({
             <h4 className="text-xs font-black uppercase text-neutral-800 tracking-wider">Menu Navigasi</h4>
             <div className="flex flex-col gap-2 text-[11px] font-black uppercase">
               <Link href="/" className="text-emerald-800 hover:text-emerald-950 hover:underline">Beranda Utama</Link>
-              <Link href="/donasi" className="text-emerald-800 hover:text-emerald-950 hover:underline">Konfirmasi Donasi</Link>
+              <Link href="/#donasi" className="text-emerald-800 hover:text-emerald-950 hover:underline">Cara Donasi</Link>
               <Link href="/laporan-keuangan" className="text-emerald-800 hover:text-emerald-950 hover:underline">Laporan Keuangan</Link>
             </div>
           </div>

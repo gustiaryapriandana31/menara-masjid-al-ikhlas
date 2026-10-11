@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowRight, BarChart2, ShieldCheck, DollarSign, Calendar, Users, Building, Mail, Phone, MapPin, Shield, Award, Megaphone, Eye, Camera, HardHat, CheckCircle2, UserCheck, Briefcase, FileDown } from "lucide-react";
+import { Heart, ArrowRight, BarChart2, ShieldCheck, DollarSign, Calendar, Users, Building, Mail, Phone, MapPin, Shield, Award, Megaphone, Eye, Camera, HardHat, CheckCircle2, UserCheck, Briefcase, FileDown, Copy, MessageCircle, Banknote } from "lucide-react";
 import { HomePageJsonLd, OrganizationJsonLd } from "@/components/shared/json-ld";
 import Footer from "@/components/shared/footer";
 import panitiaData from "@/data/panitia.json";
@@ -74,7 +74,7 @@ export default function Home() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2">
               <Link 
-                href="/donasi" 
+                href="/#donasi" 
                 className="inline-flex items-center justify-center gap-2 border-[2.5px] border-black bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase px-6 py-4 rounded-[14px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-center"
               >
                 <Heart className="h-4 w-4 fill-emerald-100 shrink-0" />
@@ -174,7 +174,145 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. SUSUNAN PANITIA / BAGAN STRUKTUR */}
+      {/* 4. SECTION DONASI – NOMOR REKENING */}
+      <section id="donasi" className="w-full bg-neutral-900 border-y-[3px] border-black py-16 px-4 md:px-8">
+        <div className="max-w-5xl mx-auto space-y-10">
+
+          {/* Heading */}
+          <div className="text-center space-y-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-amber-400 bg-amber-400/10 text-amber-300 px-3.5 py-1 text-[10px] font-black uppercase shadow-[1.5px_1.5px_0px_0px_#f59e0b]">
+              <Heart className="h-3 w-3 fill-amber-300" /> Cara Berdonasi
+            </span>
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight text-white">
+              Transfer Donasi Anda
+            </h2>
+            <p className="text-xs text-neutral-400 font-medium max-w-lg mx-auto leading-relaxed">
+              Donasikan untuk pembangunan Menara Masjid Al-Ikhlas melalui rekening berikut. Setiap rupiah akan dicatat secara transparan.
+            </p>
+          </div>
+
+          {/* Dua Card Rekening */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* Card 1 – Bank Sumsel Babel (Kuning) */}
+            <div className="relative border-[3px] border-black bg-amber-400 rounded-[22px] shadow-[6px_6px_0px_0px_#000] overflow-hidden">
+              {/* Stripe header */}
+              <div className="bg-amber-500 border-b-[3px] border-black px-5 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full border-[2px] border-black bg-white flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
+                    <Banknote className="h-4 w-4 text-amber-700" />
+                  </div>
+                  <span className="text-xs font-black uppercase text-amber-950 tracking-wide">Bank Sumsel Babel</span>
+                </div>
+                <span className="text-[9px] font-black uppercase bg-black text-amber-400 px-2 py-0.5 rounded-full">Rekening Masjid</span>
+              </div>
+
+              <div className="p-5 space-y-4">
+                <div>
+                  <p className="text-[9px] font-black uppercase text-amber-900/70 tracking-wider mb-1">Nomor Rekening</p>
+                  <div className="flex items-center gap-3 bg-white/30 border-[2px] border-black rounded-[12px] px-4 py-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span className="text-xl font-black text-amber-950 tracking-widest flex-1 select-all">153-10-01879</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-[10px]">
+                  <div className="bg-white/30 border-[1.5px] border-black rounded-[10px] p-2.5">
+                    <p className="text-[8px] font-black text-amber-900/60 uppercase mb-0.5">Atas Nama</p>
+                    <p className="font-black text-amber-950 leading-tight">Masjid Al-Ikhlas Meranjat II</p>
+                  </div>
+                  <div className="bg-white/30 border-[1.5px] border-black rounded-[10px] p-2.5">
+                    <p className="text-[8px] font-black text-amber-900/60 uppercase mb-0.5">Peruntukan</p>
+                    <p className="font-black text-amber-950 leading-tight">Rekening Kas Masjid</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2 – Bank BRI (Biru) */}
+            <div className="relative border-[3px] border-black bg-blue-500 rounded-[22px] shadow-[6px_6px_0px_0px_#000] overflow-hidden">
+              {/* Stripe header */}
+              <div className="bg-blue-600 border-b-[3px] border-black px-5 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full border-[2px] border-black bg-white flex items-center justify-center shadow-[2px_2px_0px_0px_#000]">
+                    <Banknote className="h-4 w-4 text-blue-700" />
+                  </div>
+                  <span className="text-xs font-black uppercase text-white tracking-wide">Bank BRI</span>
+                </div>
+                <span className="text-[9px] font-black uppercase bg-black text-blue-400 px-2 py-0.5 rounded-full">Rekening Pembangunan</span>
+              </div>
+
+              <div className="p-5 space-y-4">
+                <div>
+                  <p className="text-[9px] font-black uppercase text-blue-100/80 tracking-wider mb-1">Nomor Rekening</p>
+                  <div className="flex items-center gap-3 bg-white/20 border-[2px] border-black rounded-[12px] px-4 py-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span className="text-xl font-black text-white tracking-widest flex-1 select-all">3832-01-037490-53-9</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-[10px]">
+                  <div className="bg-white/20 border-[1.5px] border-black rounded-[10px] p-2.5">
+                    <p className="text-[8px] font-black text-blue-100/70 uppercase mb-0.5">Atas Nama</p>
+                    <p className="font-black text-white leading-tight">Ramlan Rozali</p>
+                  </div>
+                  <div className="bg-white/20 border-[1.5px] border-black rounded-[10px] p-2.5">
+                    <p className="text-[8px] font-black text-blue-100/70 uppercase mb-0.5">Peruntukan</p>
+                    <p className="font-black text-white leading-tight">Dana Pembangunan Menara</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Konfirmasi via WA */}
+          <div className="border-[2.5px] border-black bg-neutral-800 rounded-[20px] p-6 shadow-[4px_4px_0px_0px_#10b981] space-y-4">
+            <div className="flex items-center gap-3 border-b border-neutral-700 pb-3">
+              <div className="h-9 w-9 rounded-full border-[2px] border-emerald-400 bg-emerald-900/40 flex items-center justify-center shrink-0">
+                <MessageCircle className="h-4 w-4 text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-xs font-black uppercase text-white">Sudah Transfer?</p>
+                <p className="text-[10px] text-neutral-400 font-medium">Silakan konfirmasi via WhatsApp ke salah satu panitia berikut</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Kontak 1 */}
+              <a
+                href="https://wa.me/6281377884175"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 border-[2px] border-black bg-neutral-700 hover:bg-emerald-900/60 rounded-[14px] p-3.5 transition-all shadow-[2px_2px_0px_0px_#10b981] hover:shadow-[3px_3px_0px_0px_#10b981] group"
+              >
+                <div className="h-10 w-10 rounded-full border-[2px] border-emerald-400 bg-emerald-900/40 flex items-center justify-center shrink-0">
+                  <MessageCircle className="h-5 w-5 text-emerald-400" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[8px] font-black uppercase text-emerald-400 tracking-wider">Ketua Pembangunan</p>
+                  <p className="text-xs font-black text-white leading-tight truncate">Bpk. Candra Gunawan</p>
+                  <p className="text-[10px] font-bold text-neutral-300 tracking-wider">0813-7788-4175</p>
+                </div>
+              </a>
+
+              {/* Kontak 2 */}
+              <a
+                href="https://wa.me/6281278256470"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 border-[2px] border-black bg-neutral-700 hover:bg-emerald-900/60 rounded-[14px] p-3.5 transition-all shadow-[2px_2px_0px_0px_#10b981] hover:shadow-[3px_3px_0px_0px_#10b981] group"
+              >
+                <div className="h-10 w-10 rounded-full border-[2px] border-emerald-400 bg-emerald-900/40 flex items-center justify-center shrink-0">
+                  <MessageCircle className="h-5 w-5 text-emerald-400" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[8px] font-black uppercase text-emerald-400 tracking-wider">Ketua DKM</p>
+                  <p className="text-xs font-black text-white leading-tight truncate">Ustadz Ramlan</p>
+                  <p className="text-[10px] font-bold text-neutral-300 tracking-wider">0812-7825-6470</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. SUSUNAN PANITIA / BAGAN STRUKTUR */}
       <section className="p-4 md:p-8 w-full max-w-5xl mx-auto space-y-8 pt-16">
         <div className="text-center space-y-2">
           <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-55 px-3 py-1 rounded-full border border-emerald-300 shadow-[1px_1px_0px_0px_#000]">

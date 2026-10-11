@@ -54,8 +54,8 @@ export default function Footer() {
         <div className="space-y-3">
           <h4 className="text-xs font-black uppercase text-neutral-800 tracking-wider">Link Cepat</h4>
           <div className="flex flex-col gap-2 text-[11px] font-black uppercase">
-            <Link href="/donasi" className="text-emerald-800 hover:text-emerald-950 hover:underline">
-              Formulir Donasi
+            <Link href="/#donasi" className="text-emerald-800 hover:text-emerald-950 hover:underline">
+              Cara Donasi
             </Link>
             <Link href="/laporan-keuangan" className="text-emerald-800 hover:text-emerald-950 hover:underline">
               Laporan Keuangan
