@@ -126,16 +126,16 @@ export default function RekeningSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <RekeningCard
             bankName="Bank Sumsel Babel"
-            accountNumber="1531001879"
-            accountName="Masjid Al-Ikhlas Meranjat II"
+            accountNumber="8290900017"
+            accountName="Masjid Al-Ikhlas Desa Meranjat II"
             purpose="Rekening Kas Masjid"
             colorScheme="yellow"
             badge="Rekening Masjid"
           />
           <RekeningCard
             bankName="Bank BRI"
-            accountNumber="383201037490539"
-            accountName="Ramlan Rozali"
+            accountNumber="563701060006539"
+            accountName="Panitia Pembangunan Menara"
             purpose="Dana Pembangunan Menara"
             colorScheme="blue"
             badge="Rekening Pembangunan"
@@ -166,7 +166,7 @@ export default function RekeningSection() {
               </div>
               <div className="min-w-0">
                 <p className="text-[8px] font-black uppercase text-emerald-400 tracking-wider">Ketua Pembangunan</p>
-                <p className="text-xs font-black text-white leading-tight truncate">Bpk. Candra Gunawan</p>
+                <p className="text-xs font-black text-white leading-tight truncate">Bapak Candra Gunawan</p>
                 <p className="text-[10px] font-bold text-neutral-300 tracking-wider">0813-7788-4175</p>
               </div>
             </a>
