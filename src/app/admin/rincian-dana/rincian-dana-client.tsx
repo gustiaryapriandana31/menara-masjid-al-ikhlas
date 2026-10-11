@@ -1943,6 +1943,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                     </label>
                     <input
                       type="date"
+                      lang="id-ID"
                       required
                       value={editModal.date}
                       onChange={(e) => setEditModal(prev => ({ ...prev, date: e.target.value }))}
@@ -2083,6 +2084,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                     </label>
                     <input
                       type="date"
+                      lang="id-ID"
                       required
                       value={editModal.date}
                       onChange={(e) => setEditModal(prev => ({ ...prev, date: e.target.value }))}
@@ -2174,6 +2176,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
                     </label>
                     <input
                       type="date"
+                      lang="id-ID"
                       required
                       value={editModal.date}
                       onChange={(e) => setEditModal(prev => ({ ...prev, date: e.target.value }))}

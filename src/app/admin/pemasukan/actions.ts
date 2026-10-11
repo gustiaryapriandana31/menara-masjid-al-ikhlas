@@ -16,7 +16,8 @@ const createPemasukanSchema = z.object({
   donorAddress: z.string().max(500, "Alamat terlalu panjang (maksimal 500 karakter)").optional().nullable().or(z.literal('')),
   donorPhone: z.string().max(20, "Nomor telepon tidak valid").optional().nullable().or(z.literal('')),
   description: z.string().max(500, "Keterangan terlalu panjang (maksimal 500 karakter)").optional().nullable().or(z.literal('')),
-  isAnonymous: z.boolean().default(false)
+  isAnonymous: z.boolean().default(false),
+  incomeType: z.enum(["CASH", "TRANSFER"]).default("CASH")
 })
 
 /**
@@ -32,6 +33,7 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
     const rawDonorPhone = formData.get('donorPhone')
     const rawDescription = formData.get('description')
     const rawIsAnonymous = formData.get('isAnonymous') === 'true'
+    const rawIncomeType = formData.get('incomeType')?.toString() || 'CASH'
     const files = formData.getAll('files') as File[]
 
     // 2. Validate input fields using Zod
@@ -42,7 +44,8 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
       donorAddress: rawDonorAddress?.toString() || null,
       donorPhone: rawDonorPhone?.toString() || null,
       description: rawDescription?.toString() || null,
-      isAnonymous: rawIsAnonymous
+      isAnonymous: rawIsAnonymous,
+      incomeType: rawIncomeType === 'TRANSFER' ? 'TRANSFER' : 'CASH'
     })
 
     if (!validatedFields.success) {
@@ -106,7 +109,7 @@ export async function createPemasukan(prevState: unknown, formData: FormData) {
         amount: data.amount,
         date: new Date(data.date),
         description: data.description,
-        type: 'CASH', // Form pemasukan manual dari admin diset sebagai CASH
+        type: data.incomeType, // Simpan tipe pemasukan sesuai pilihan form
         receiptUrls: receiptUrls,
       }
     })

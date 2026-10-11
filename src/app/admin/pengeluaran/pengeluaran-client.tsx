@@ -307,6 +307,7 @@ export default function PengeluaranClient({ recentOutcomes }: PengeluaranClientP
                   </label>
                   <Input
                     type="date"
+                    lang="id-ID"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     disabled={isSubmitting}

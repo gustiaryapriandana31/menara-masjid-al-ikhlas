@@ -268,6 +268,7 @@ export default function MaterialClient({ recentMaterials }: MaterialClientProps)
                   <div className="relative">
                     <Input
                       type="date"
+                      lang="id-ID"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       disabled={isSubmitting}

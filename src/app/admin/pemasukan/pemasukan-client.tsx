@@ -36,6 +36,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
   const [donorPhone, setDonorPhone] = React.useState("")
   const [description, setDescription] = React.useState("")
   const [isAnonymous, setIsAnonymous] = React.useState(false)
+  const [incomeType, setIncomeType] = React.useState<"CASH" | "TRANSFER">("CASH")
   const [addReceipt, setAddReceipt] = React.useState(false)
   const [selectedFiles, setSelectedFiles] = React.useState<{ file: File; preview: string }[]>([])
   const [previewModalUrl, setPreviewModalUrl] = React.useState<string | null>(null)
@@ -145,6 +146,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
       formData.append("donorPhone", donorPhone.trim())
       formData.append("description", description.trim())
       formData.append("isAnonymous", isAnonymous ? "true" : "false")
+      formData.append("incomeType", incomeType)
       formData.append("addReceipt", addReceipt ? "true" : "false")
 
       // Masukkan file-file biner ke FormData
@@ -166,7 +168,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
         donorName: isAnonymous ? "Hamba Allah" : donorName.trim(),
         amount: amount,
         date: new Date(date).toISOString(),
-        type: "CASH",
+        type: incomeType,
         description: description.trim()
       }
       setIncomesList(prev => [newIncome, ...prev].sort(compareIncomes).slice(0, 10))
@@ -183,6 +185,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
       setDonorPhone("")
       setDescription("")
       setIsAnonymous(false)
+      setIncomeType("CASH")
       setAddReceipt(false)
       
       // Bersihkan preview file
@@ -278,6 +281,46 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
                   )}
                 </div>
 
+                {/* Tipe Pemasukan */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                    <span className="text-blue-600">◆</span> Tipe Pemasukan
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => !isSubmitting && setIncomeType("CASH")}
+                      disabled={isSubmitting}
+                      className={cn(
+                        "flex items-center justify-center gap-2 rounded-[12px] border-[2.5px] h-10 px-3 text-sm font-bold transition-all",
+                        incomeType === "CASH"
+                          ? "bg-blue-600 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          : "bg-white border-black text-neutral-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-blue-50"
+                      )}
+                    >
+                      <Wallet className="h-4 w-4 shrink-0" />
+                      Tunai / Cash
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => !isSubmitting && setIncomeType("TRANSFER")}
+                      disabled={isSubmitting}
+                      className={cn(
+                        "flex items-center justify-center gap-2 rounded-[12px] border-[2.5px] h-10 px-3 text-sm font-bold transition-all",
+                        incomeType === "TRANSFER"
+                          ? "bg-blue-600 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                          : "bg-white border-black text-neutral-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-blue-50"
+                      )}
+                    >
+                      <CircleDollarSign className="h-4 w-4 shrink-0" />
+                      Transfer / QRIS
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground font-medium pl-1">
+                    {incomeType === "CASH" ? "Donasi diterima langsung secara tunai/cash." : "Donasi masuk via transfer bank atau scan QRIS."}
+                  </p>
+                </div>
+
                 {/* Input Tanggal */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
@@ -285,6 +328,7 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
                   </label>
                   <Input
                     type="date"
+                    lang="id-ID"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     disabled={isSubmitting}

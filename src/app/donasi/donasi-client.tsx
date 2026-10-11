@@ -655,6 +655,7 @@ export default function KonfirmasiDonasiPage() {
                     <div className="relative">
                       <Input
                         type="date"
+                        lang="id-ID"
                         value={transferDate}
                         onChange={(e) => setTransferDate(e.target.value)}
                         disabled={isSubmitting}
