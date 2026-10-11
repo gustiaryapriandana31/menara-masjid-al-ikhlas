@@ -1,9 +1,9 @@
+import Link from "next/link"
 import { BottomNavbar } from "@/components/shared/bottom-navbar"
 import { Sidebar } from "@/components/shared/sidebar"
 import { logoutAction } from "@/app/login/actions"
 import { LogOut } from "lucide-react"
 import { NotificationProvider } from "@/components/shared/notification-provider"
-import { NotificationBell } from "@/components/shared/notification-bell"
 
 export default function AdminLayout({
   children,
@@ -19,15 +19,13 @@ export default function AdminLayout({
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col md:h-screen md:overflow-y-auto">
           {/* Top Header Bar Brutalist - Mobile only */}
-          <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-6 md:hidden">
-            <div className="flex items-center gap-2">
+          <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-4 sm:px-6 md:hidden">
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Lihat Beranda Publik">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover" />
               <span className="text-xs font-black tracking-tight uppercase">PANITIA PEMBANGUNAN</span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <NotificationBell />
-              
+            </Link>
+            <div className="flex items-center gap-2">
               <form action={logoutAction}>
                 <button
                   type="submit"
@@ -41,7 +39,7 @@ export default function AdminLayout({
           </header>
 
           {/* Content wrapper */}
-          <main className="p-4 md:p-8 w-full max-w-5xl md:max-w-6xl mx-auto flex-1 pb-24 md:pb-8">
+          <main className="p-3.5 sm:p-6 md:p-8 w-full max-w-5xl md:max-w-6xl mx-auto flex-1 pb-24 md:pb-8 min-w-0 overflow-x-hidden">
             {children}
           </main>
         </div>

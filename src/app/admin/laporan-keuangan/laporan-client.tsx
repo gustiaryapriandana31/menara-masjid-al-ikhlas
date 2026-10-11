@@ -489,7 +489,7 @@ export default function LaporanClient({
                 Belum ada data donatur yang tersimpan.
               </div>
             ) : (
-              <table className="w-full border-collapse text-left">
+              <table className="w-full min-w-[650px] border-collapse text-left">
                 <thead>
                   <tr className="border-b-[2px] border-black bg-emerald-50/50">
                     <th className="p-3 text-[10px] font-black uppercase text-emerald-900 w-[5%] text-center border-r border-emerald-200 last:border-r-0">No</th>

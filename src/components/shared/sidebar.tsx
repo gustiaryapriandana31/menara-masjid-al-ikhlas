@@ -3,15 +3,12 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { PlusCircle, MinusCircle, Home, FileText, LogOut, ShieldAlert, Package } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText, LogOut, Package } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logoutAction } from "@/app/login/actions"
-import { useNotifications } from "./notification-provider"
-import { NotificationBell } from "./notification-bell"
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { pendingCount } = useNotifications()
 
   const navItems = [
     {
@@ -27,13 +24,6 @@ export function Sidebar() {
       icon: FileText,
       activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
       activeText: "text-neutral-800 font-bold",
-    },
-    {
-      title: "Validasi Donasi",
-      url: "/admin/validasi",
-      icon: ShieldAlert,
-      activeBg: "bg-blue-50 text-blue-600 border-blue-500",
-      activeText: "text-blue-600 font-bold",
     },
     {
       title: "Pemasukan",
@@ -62,17 +52,14 @@ export function Sidebar() {
     <aside className="hidden md:flex flex-col w-64 shrink-0 border-r-[2.5px] border-black bg-white min-h-screen p-6 sticky top-0 z-40">
       {/* Brand Header */}
       <div className="flex items-center justify-between gap-2 mb-8">
-        <div className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" title="Lihat Beranda Publik">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.jpg" alt="Logo" className="h-9 w-9 rounded-full border-[1.5px] border-black object-cover" />
           <div className="flex flex-col">
             <span className="text-sm font-black uppercase tracking-tight leading-tight">PANITIA PEMBANGUNAN</span>
             <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-widest leading-none">Menara Al-Ikhlas</span>
           </div>
-        </div>
-        
-        {/* Desktop Bell Notification */}
-        <NotificationBell />
+        </Link>
       </div>
 
       {/* Navigation Links */}
@@ -94,13 +81,6 @@ export function Sidebar() {
             >
               <Icon className="h-4 w-4 shrink-0" />
               <span>{item.title}</span>
-              
-              {/* Badge count for validation pending */}
-              {item.url === "/admin/validasi" && pendingCount > 0 && (
-                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full border-[1.5px] border-black bg-red-100 px-1 text-[9px] font-black text-red-800 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
-                  {pendingCount}
-                </span>
-              )}
             </Link>
           )
         })}

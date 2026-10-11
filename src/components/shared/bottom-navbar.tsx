@@ -1,15 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { PlusCircle, MinusCircle, Home, FileText, ShieldAlert, Package } from "lucide-react"
+import { PlusCircle, MinusCircle, Home, FileText, Package } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { useNotifications } from "./notification-provider"
 
 export function BottomNavbar() {
   const pathname = usePathname()
-  const { pendingCount } = useNotifications()
 
   const navItems = [
     {
@@ -25,13 +23,6 @@ export function BottomNavbar() {
       icon: FileText,
       activeBg: "bg-neutral-100 text-neutral-800 border-neutral-600",
       activeText: "text-neutral-800 font-bold",
-    },
-    {
-      title: "Validasi",
-      url: "/admin/validasi",
-      icon: ShieldAlert,
-      activeBg: "bg-blue-50 text-blue-600 border-blue-500",
-      activeText: "text-blue-600 font-bold",
     },
     {
       title: "Pemasukan",
@@ -57,7 +48,7 @@ export function BottomNavbar() {
   ]
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 h-16 max-w-md mx-auto border-[2.5px] border-black bg-card rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+    <div className="fixed bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-50 h-15 sm:h-16 max-w-md mx-auto border-[2.5px] border-black bg-card rounded-[18px] sm:rounded-[20px] shadow-[3.5px_3.5px_0px_0px_rgba(0,0,0,1)]">
       <div className="flex h-full items-center justify-around px-1">
         {navItems.map((item) => {
           const isActive = pathname === item.url
@@ -71,22 +62,15 @@ export function BottomNavbar() {
             >
               <div
                 className={cn(
-                  "relative flex h-8 w-11 items-center justify-center rounded-[10px] border-[1.5px] border-transparent transition-all",
+                  "relative flex h-7.5 sm:h-8 w-10 sm:w-12 items-center justify-center rounded-[9px] sm:rounded-[10px] border-[1.5px] border-transparent transition-all",
                   isActive 
                     ? cn("border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]", item.activeBg) 
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Icon className="h-4 w-4" />
-                
-                {/* Mobile badge count for validation pending */}
-                {item.url === "/admin/validasi" && pendingCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full border border-black bg-red-500 px-1 text-[8px] font-black text-white shadow-[0.5px_0.5px_0px_0px_rgba(0,0,0,1)]">
-                    {pendingCount}
-                  </span>
-                )}
               </div>
-              <span className={cn("text-[8px] uppercase tracking-wider font-semibold text-center whitespace-nowrap", isActive ? item.activeText : "text-muted-foreground")}>
+              <span className={cn("text-[8px] sm:text-[9px] uppercase tracking-tight font-black text-center whitespace-nowrap", isActive ? item.activeText : "text-muted-foreground")}>
                 {item.title}
               </span>
             </Link>

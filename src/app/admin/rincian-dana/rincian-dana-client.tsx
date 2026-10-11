@@ -1300,7 +1300,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
         <div className="overflow-x-auto">
           {activeTab === "income" && (
             // INCOMES TABLE
-            <table className="w-full border-collapse text-left">
+            <table className="w-full min-w-[760px] border-collapse text-left">
               <thead>
                 <tr className="border-b-[2px] border-black bg-blue-50/50">
                   <th className="p-3 text-[10px] font-black uppercase text-blue-900 w-[5%] text-center border-r border-blue-200 last:border-r-0">No</th>
@@ -1405,7 +1405,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
           {activeTab === "material" && (
             // MATERIAL TABLE
-            <table className="w-full border-collapse text-left">
+            <table className="w-full min-w-[760px] border-collapse text-left">
               <thead>
                 <tr className="border-b-[2px] border-black bg-amber-50/50">
                   <th className="p-3 text-[10px] font-black uppercase text-amber-900 w-[5%] text-center border-r border-amber-200 last:border-r-0">No</th>
@@ -1488,7 +1488,7 @@ export default function RincianDanaClient({ incomes, outcomes, materials }: Rinc
 
           {activeTab === "outcome" && (
             // OUTCOMES TABLE
-            <table className="w-full border-collapse text-left">
+            <table className="w-full min-w-[760px] border-collapse text-left">
               <thead>
                 <tr className="border-b-[2px] border-black bg-red-50/50">
                   <th className="p-3 text-[10px] font-black uppercase text-red-900 w-[5%] text-center border-r border-red-200 last:border-r-0">No</th>

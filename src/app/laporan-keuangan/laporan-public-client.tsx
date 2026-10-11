@@ -76,33 +76,34 @@ export default function LaporanPublicClient({
     <div className="relative min-h-screen bg-[#faf8f5] text-neutral-900 flex flex-col font-sans">
       
       {/* Public Header */}
-      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-4 md:px-8 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
+      <header className="sticky top-0 z-40 flex h-14 sm:h-16 w-full items-center justify-between border-b-[2.5px] border-black bg-white px-3 sm:px-6 md:px-8 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
         <Link 
           href="/" 
-          className="flex items-center gap-1.5 border-[1.5px] border-black bg-neutral-100 hover:bg-neutral-200 px-3 py-1.5 rounded-full text-xs font-black shadow-[1.5px_1.5px_0px_0px_#000] transition-all"
+          className="flex items-center gap-1.5 border-[1.5px] border-black bg-neutral-100 hover:bg-neutral-200 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-black shadow-[1.5px_1.5px_0px_0px_#000] active:translate-x-[0.5px] active:translate-y-[0.5px] transition-all shrink-0"
         >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span>Kembali ke Beranda</span>
+          <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+          <span className="hidden xs:inline">Kembali ke Beranda</span>
+          <span className="xs:hidden">Beranda</span>
         </Link>
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 min-w-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover" />
-          <span className="text-xs md:text-sm font-black tracking-tight uppercase">Menara Masjid Al-Ikhlas</span>
+          <img src="/logo.jpg" alt="Logo" className="h-6 w-6 rounded-full border border-black object-cover shrink-0" />
+          <span className="text-[11px] sm:text-xs md:text-sm font-black tracking-tight uppercase truncate">Menara Al-Ikhlas</span>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 md:p-8 w-full max-w-5xl mx-auto space-y-6">
+      <main className="flex-1 p-3.5 sm:p-6 md:p-8 w-full max-w-5xl mx-auto space-y-6">
         
         {/* Banner Transparansi Publik */}
-        <div className="w-full border-[2.5px] border-black rounded-[22px] bg-gradient-to-br from-emerald-800 to-emerald-950 p-6 text-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
+        <div className="w-full border-[2.5px] border-black rounded-[18px] sm:rounded-[22px] bg-gradient-to-br from-emerald-800 to-emerald-950 p-4.5 sm:p-6 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
           <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 text-[120px] opacity-10 select-none"></div>
           <div className="flex items-center gap-2 mb-2">
             <span className="bg-amber-400 text-emerald-950 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-black shadow-[1.5px_1.5px_0px_0px_#000]">
               Transparansi Keuangan
             </span>
           </div>
-          <h1 className="text-lg md:text-2xl font-black tracking-tight">
+          <h1 className="text-base sm:text-lg md:text-2xl font-black tracking-tight">
             Laporan Keterbukaan Publik &amp; Audit Kas
           </h1>
           <p className="text-[10px] md:text-xs text-emerald-100/90 font-medium max-w-2xl mt-1.5 leading-relaxed">
@@ -121,58 +122,6 @@ export default function LaporanPublicClient({
           materialStats={materialStats}
           isAdmin={false}
         />
-
-        {/* ── Seksi Donasi Material ─────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-[10px] border-[2px] border-black bg-amber-100 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-              <Package className="h-4 w-4 text-amber-700" />
-            </div>
-            <div>
-              <h2 className="text-sm font-black uppercase tracking-tight text-neutral-800">Donasi Material / Barang</h2>
-              <p className="text-[10px] text-neutral-500 font-medium">Sumbangan berupa material bangunan dari para donatur — tidak mempengaruhi saldo kas</p>
-            </div>
-          </div>
-
-          {materialDonations.length > 0 ? (
-            <div className="border-[2.5px] border-black rounded-[18px] bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-              <div className="divide-y-[1.5px] divide-neutral-200">
-                {materialDonations.map((item, idx) => (
-                  <div key={item.id} className="p-4 flex items-start gap-4 hover:bg-amber-50/40 transition-colors">
-                    <span className="shrink-0 h-7 w-7 flex items-center justify-center rounded-[8px] border-[1.5px] border-black bg-amber-100 text-[10px] font-black text-amber-800 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]">
-                      {idx + 1}
-                    </span>
-                    <div className="flex-1 min-w-0 space-y-1">
-                      <div className="flex items-start justify-between gap-2 flex-wrap">
-                        <span className="text-[11px] font-black text-neutral-800 uppercase tracking-tight">
-                          {item.donorName}
-                        </span>
-                        <span className="shrink-0 text-[8px] font-black uppercase px-1.5 py-0.5 rounded border border-amber-400 bg-amber-50 text-amber-800 shadow-[0.5px_0.5px_0px_0px_rgba(0,0,0,1)]">
-                          Material
-                        </span>
-                      </div>
-                      <p className="text-[11px] font-bold text-amber-700">
-                        {item.materialName}
-                        <span className="text-neutral-500 font-semibold ml-1.5">— {item.quantity}</span>
-                      </p>
-                      <div className="flex items-center gap-3 text-[9px] text-neutral-400 font-semibold">
-                        <span>{formatLocalDate(item.date)}</span>
-                        {item.description && (
-                          <span className="italic truncate max-w-[200px]">{item.description}</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="border-[2.5px] border-dashed border-neutral-300 rounded-[18px] bg-white p-8 text-center">
-              <Package className="h-8 w-8 text-neutral-300 mx-auto mb-2" />
-              <p className="text-xs text-neutral-400 font-bold italic">Belum ada data donasi material yang tercatat.</p>
-            </div>
-          )}
-        </div>
 
       </main>
 

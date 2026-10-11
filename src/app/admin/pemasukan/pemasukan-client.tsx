@@ -292,28 +292,28 @@ export default function PemasukanClient({ recentIncomes }: PemasukanClientProps)
                       onClick={() => !isSubmitting && setIncomeType("CASH")}
                       disabled={isSubmitting}
                       className={cn(
-                        "flex items-center justify-center gap-2 rounded-[12px] border-[2.5px] h-10 px-3 text-sm font-bold transition-all",
+                        "flex items-center justify-center gap-1.5 rounded-[12px] border-[2.5px] h-10 px-2 sm:px-3 text-xs sm:text-sm font-bold transition-all cursor-pointer",
                         incomeType === "CASH"
                           ? "bg-blue-600 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                           : "bg-white border-black text-neutral-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-blue-50"
                       )}
                     >
-                      <Wallet className="h-4 w-4 shrink-0" />
-                      Tunai / Cash
+                      <Wallet className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+                      <span className="truncate">Tunai / Cash</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => !isSubmitting && setIncomeType("TRANSFER")}
                       disabled={isSubmitting}
                       className={cn(
-                        "flex items-center justify-center gap-2 rounded-[12px] border-[2.5px] h-10 px-3 text-sm font-bold transition-all",
+                        "flex items-center justify-center gap-1.5 rounded-[12px] border-[2.5px] h-10 px-2 sm:px-3 text-xs sm:text-sm font-bold transition-all cursor-pointer",
                         incomeType === "TRANSFER"
                           ? "bg-blue-600 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                           : "bg-white border-black text-neutral-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-blue-50"
                       )}
                     >
-                      <CircleDollarSign className="h-4 w-4 shrink-0" />
-                      Transfer / QRIS
+                      <CircleDollarSign className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+                      <span className="truncate">Transfer / QRIS</span>
                     </button>
                   </div>
                   <p className="text-[10px] text-muted-foreground font-medium pl-1">

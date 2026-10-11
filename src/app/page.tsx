@@ -277,16 +277,16 @@ export default function Home() {
           </div>
 
           {/* MIDDLE ROW: Pengurus Harian */}
-          <div className="border-[2.5px] border-black bg-white rounded-[22px] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-5 relative z-10">
+          <div className="border-[2.5px] border-black bg-white rounded-[18px] sm:rounded-[22px] p-4 sm:p-6 shadow-[3.5px_3.5px_0px_0px_rgba(0,0,0,1)] sm:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-4 sm:space-y-5 relative z-10">
             <div className="text-center">
               <span className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-[1px_1px_0px_0px_#000]">
                 Pengurus Harian
               </span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {/* Ketua */}
-              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[14px] sm:rounded-[16px] p-3 sm:p-4 flex flex-col items-center text-center space-y-2.5 sm:space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/panitia/Mang Fifik.jpeg"
@@ -295,14 +295,14 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Zulfikar Ali, S.H</h4>
-                  <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Ketua Pembangunan</p>
+                  <h4 className="text-[10px] sm:text-[11px] font-black uppercase text-neutral-800 leading-tight">Zulfikar Ali, S.H</h4>
+                  <p className="text-[7.5px] sm:text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Ketua Pembangunan</p>
                 </div>
               </div>
 
               {/* Wakil Ketua */}
-              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[14px] sm:rounded-[16px] p-3 sm:p-4 flex flex-col items-center text-center space-y-2.5 sm:space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/panitia/Mang Agus.jpeg"
@@ -311,14 +311,14 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Agus Tomi, S.H</h4>
-                  <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Wakil Ketua Pembangunan</p>
+                  <h4 className="text-[10px] sm:text-[11px] font-black uppercase text-neutral-800 leading-tight">Agus Tomi, S.H</h4>
+                  <p className="text-[7.5px] sm:text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Wakil Ketua Pembangunan</p>
                 </div>
               </div>
 
               {/* Sekretaris */}
-              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[14px] sm:rounded-[16px] p-3 sm:p-4 flex flex-col items-center text-center space-y-2.5 sm:space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/panitia/Mang Jemi.jpeg"
@@ -327,14 +327,14 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Najemi</h4>
-                  <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Sekretaris Pembangunan</p>
+                  <h4 className="text-[10px] sm:text-[11px] font-black uppercase text-neutral-800 leading-tight">Najemi</h4>
+                  <p className="text-[7.5px] sm:text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Sekretaris Pembangunan</p>
                 </div>
               </div>
 
               {/* Bendahara */}
-              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[16px] p-4 flex flex-col items-center text-center space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <div className="h-20 w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
+              <div className="border-[2px] border-black bg-[#fbfaf7] rounded-[14px] sm:rounded-[16px] p-3 sm:p-4 flex flex-col items-center text-center space-y-2.5 sm:space-y-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-[2px] border-black shadow-[1.5px_1.5px_0px_0px_#000] overflow-hidden bg-emerald-50 shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/panitia/Mang Candra.jpeg"
@@ -343,8 +343,8 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-black uppercase text-neutral-800 leading-tight">Candra Gunawan, S.H</h4>
-                  <p className="text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Bendahara Pembangunan</p>
+                  <h4 className="text-[10px] sm:text-[11px] font-black uppercase text-neutral-800 leading-tight">Candra Gunawan, S.H</h4>
+                  <p className="text-[7.5px] sm:text-[8px] font-bold text-emerald-700 uppercase mt-0.5">Bendahara Pembangunan</p>
                 </div>
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function Home() {
           </div>
 
           {/* SEKSI-SEKSI KERJA */}
-          <div className="border-[2.5px] border-black bg-white rounded-[22px] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-4 relative z-10">
+          <div className="border-[2.5px] border-black bg-white rounded-[18px] sm:rounded-[22px] p-4 sm:p-5 shadow-[3.5px_3.5px_0px_0px_rgba(0,0,0,1)] sm:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] space-y-4 relative z-10">
             <div className="text-center">
               <span className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-[1px_1px_0px_0px_#000]">
                 Seksi-Seksi Kerja
@@ -421,7 +421,7 @@ export default function Home() {
                         <span className="text-[7.5px] font-black text-neutral-500 uppercase tracking-wider">
                           👥 Anggota ({seksi.anggota.length} Orang)
                         </span>
-                        <div className="grid grid-cols-2 gap-1.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                           {seksi.anggota.map((m, idx) => (
                             <div
                               key={idx}
